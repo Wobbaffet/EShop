@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EShopModel
+namespace EShop.Model
 {
     public class Book
     {
