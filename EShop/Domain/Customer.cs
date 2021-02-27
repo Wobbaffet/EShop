@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EShop.Model
+namespace EShop.Model.Domain
 {
     public abstract class Customer
     {
@@ -12,5 +12,6 @@ namespace EShop.Model
         public string PhoneNumber { get; set; }
         public int AddressId { get; set; }
         public Address Address { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

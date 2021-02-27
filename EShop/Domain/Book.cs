@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace EShop.Model
+namespace EShop.Model.Domain
 {
     public class Book
     {
@@ -8,5 +9,7 @@ namespace EShop.Model
         public string Title { get; set; }
         public double Price { get; set; }
         public int Supplies { get; set; }
+        public List<Genre> Genres { get; set; }
+        public List<Autor> Autors { get; set; }
     }
 }

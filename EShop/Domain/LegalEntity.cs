@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EShop.Model
+namespace EShop.Model.Domain
 {
     public class LegalEntity : Customer
     {

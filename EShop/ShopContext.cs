@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EShop.Model.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,8 @@ namespace EShop.Model
 
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Address> Address { get; set; }
+        public DbSet<Book> Book { get; set; }
+        public DbSet<Order> Order { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -20,12 +23,13 @@ namespace EShop.Model
         {
             modelBuilder.Entity<LegalEntity>().ToTable("Legal entity");
             modelBuilder.Entity<NaturalPerson>().ToTable("Natural person");
-            modelBuilder.Entity<Address>().HasData(new Address() { AddressId = 1, PTT = 123 });
-            modelBuilder.Entity<LegalEntity>().HasData(new LegalEntity() { CompanyName = "asd", CompanyNumber = "1234", CustomerId = 1, Email = "asdfgg", Password = "draga peder", PhoneNumber = "123", TIN = 123, AddressId = 1 });
+
             modelBuilder.Entity<Address>()
             .HasOne<Customer>(a => a.Customer)
             .WithOne(c => c.Address)
             .HasForeignKey<Customer>(c => c.AddressId);
+
+            modelBuilder.Entity<Order>().OwnsMany(o => o.OrderItems);
         }
     }
 }
