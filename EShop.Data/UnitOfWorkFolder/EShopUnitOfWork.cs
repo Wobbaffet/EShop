@@ -7,11 +7,11 @@ using System.Text;
 
 namespace EShop.Data.UnitOfWorkFolder
 {
-    public class UnitOfWork : IUnitOfWork
+    public class EShopUnitOfWork : IUnitOfWork
     {
         private ShopContext context;
 
-        public UnitOfWork(ShopContext context)
+        public EShopUnitOfWork(ShopContext context)
         {
             this.context = context;
         }
