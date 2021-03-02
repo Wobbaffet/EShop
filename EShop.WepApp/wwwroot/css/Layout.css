@@ -1,0 +1,59 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    justify-content: center;
+}
+
+body {
+    width: 90%;
+    margin: auto;
+    margin-top: 1.8rem;
+}
+/* HEADER */
+#wish-cart {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#wish_number, #cart_number {
+    margin-left: 10px;
+}
+
+.logo {
+    text-align: center;
+    font-size: 30px;
+}
+
+@media only screen and (max-width: 768px) {
+    body {
+        width: 90%;
+    }
+
+    header {
+        display: flex;
+    }
+
+    #wish-cart {
+        order: 1;
+    }
+
+    body {
+        width: 90%;
+        margin: auto;
+        margin-top: 1.8rem;
+    }
+
+    .logo {
+        padding-bottom: 1.5rem;
+    }
+}
+
+/* NAVBAR */
+
+
+
+
+

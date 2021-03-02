@@ -31,7 +31,7 @@ namespace EShop.Model
 
             modelBuilder.Entity<Order>().OwnsMany(o => o.OrderItems);
 
-            modelBuilder.Entity<Book>().HasCheckConstraint("NotLessThenZero", "[Supplies]>=0");
+            modelBuilder.Entity<Book>().HasCheckConstraint("NotLessThenZero", "[Supplies] >= 0");
         }
     }
 }

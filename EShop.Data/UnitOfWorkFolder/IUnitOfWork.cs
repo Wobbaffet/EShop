@@ -5,11 +5,10 @@ using System.Text;
 
 namespace EShop.Data.UnitOfWork
 {
-     public     interface IUnitOfWork
+    public interface IUnitOfWork
     {
-        void Commit();
-
         public IRepositoryBook RepositoryBook { get; set; }
-        public IRepostiryCustomer RepostiryCustomer{ get; set; }
+        public IRepostiryCustomer RepostiryCustomer { get; set; }
+        void Commit();
     }
 }
