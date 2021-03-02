@@ -1,4 +1,6 @@
 ﻿using EShop.Data.UnitOfWork;
+using EShop.Model.Domain;
+using EShop.WepApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,9 +21,36 @@ namespace EShop.WepApp.Controllers
         {
             return View("SignUp");
         }
-        public IActionResult Index()
+
+
+        [HttpPost]
+        public ActionResult Create(SignUpViewModel model)
         {
-            return View();
+
+            NaturalPerson naturalPerson = new NaturalPerson()
+            {
+
+                Email=model.Email,
+                Password=model.Password,
+                FirstName=model.FirstName,
+                LastName=model.LastName,
+                PhoneNumber=model.PhoneNumber,
+
+                Address=new Address()
+                {
+
+                    PTT=model.PTT,
+                    CityName=model.CityName,
+                    StreetName=model.StreetName,
+                    StreetNumber=model.StreetNumber
+                    
+                }
+            };
+
+            uow.RepostiryCustomer.Add(naturalPerson);
+            uow.Commit();
+            return null;
         }
+       
     }
 }

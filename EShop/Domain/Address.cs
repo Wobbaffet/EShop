@@ -9,7 +9,6 @@ namespace EShop.Model.Domain
         public int AddressId { get; set; }
         public string StreetName { get; set; }
         public string StreetNumber { get; set; }
-        public string AppartmentNumber { get; set; }
         public string CityName { get; set; }
         public int PTT { get; set; } 
         public Customer Customer { get; set; }
