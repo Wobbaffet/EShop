@@ -15,3 +15,8 @@ styled-select select {
     text-overflow: '';
     border-color: #ebebeb;
 }
+
+.marginaForma{
+
+    margin-bottom:20px;
+}
