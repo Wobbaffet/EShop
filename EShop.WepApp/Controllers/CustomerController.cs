@@ -87,13 +87,13 @@ namespace EShop.WepApp.Controllers
             customer.VerificationCode = generateCode.Next(1000, 10000);
             SmtpClient smtp = new SmtpClient();
 
-            smtp.Host = "smpt.gmail.com";
+            smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.EnableSsl = true;
 
             smtp.UseDefaultCredentials = false;
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.Credentials = new NetworkCredential("stelastelic406@gmail.com","Stela406.");
+            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com","pitajbabu406.");
 
             MailMessage message = new MailMessage();
 
@@ -102,7 +102,7 @@ namespace EShop.WepApp.Controllers
 
 
             message.To.Add(customer.Email);
-            message.From = new MailAddress("stelastelic406@gmail.com");
+            message.From = new MailAddress("dragojlo406@gmail.com");
 
             try
             {
