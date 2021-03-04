@@ -10,7 +10,6 @@ styled-select select {
     border-radius: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
     text-indent: 1px;
     text-overflow: '';
     border-color: #ebebeb;

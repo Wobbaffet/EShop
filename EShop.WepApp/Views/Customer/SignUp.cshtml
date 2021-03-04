@@ -6,76 +6,79 @@
 
 
 <div class="styled-select select marginaForma">
-    <select>
-        <option value="0">Natural Person</option>
-        <option value="1">Legal entity</option>
+    <select onchange="customerChange();" id="comboBox">
+        <option value="Natural Person">Natural Person</option>
+        <option value="Legal entity">Legal entity</option>
 
     </select>
 
 
     <form method="post" asp-controller="Customer" asp-action="Create">
-        <div class="row marginaForma">
+
+        <div class="row marginaForma" id="div1">
             <div class="col-xs-6 col-md-6">
-                <input type="text" name="firstname" value="" class="form-control input-lg" placeholder="First Name" asp-for="FirstName" />
+                <input type="text" class="form-control input-lg" placeholder="First Name" asp-for="FirstName" />
             </div>
             <div class="col-xs-6 col-md-6">
-                <input type="text" name="lastname" value="" class="form-control input-lg" placeholder="Last Name" asp-for="LastName" />
+                <input type="text" class="form-control input-lg" placeholder="Last Name" asp-for="LastName" />
+            </div>
+        </div>
+
+
+        <div class="row" id="div2" style="visibility:hidden">
+            <div class="col-xs-6 col-md-6">
+                <input type="text" class="form-control input-lg" placeholder="Company name" asp-for="CompanyName" />
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <input type="text" class="form-control input-lg" placeholder="TIN" asp-for="TIN" />
             </div>
         </div>
 
 
 
-
         <div class="row marginaForma">
             <div class="col-xs-6 col-md-6">
-                <input type="text" name="firstname" value="" class="form-control input-lg" placeholder="Email" asp-for="Email" />
+                <input type="text" class="form-control input-lg" placeholder="Email" asp-for="Email" />
             </div>
             <div class="col-xs-6 col-md-6">
-                <input type="text" name="lastname" value="" class="form-control input-lg" placeholder="Phone Number" asp-for="PhoneNumber" />
+                <input type="text" class="form-control input-lg" placeholder="Phone Number" asp-for="PhoneNumber" />
             </div>
         </div>
 
         <div class="row marginaForma">
             <div class="col-xs-6 col-md-6">
 
-                <input type="text" name="firstname" value="" class="form-control input-lg" placeholder="City name" asp-for="CityName" />
+                <input type="text" class="form-control input-lg" placeholder="City name" asp-for="CityName" />
             </div>
             <div class="col-xs-6 col-md-6">
-                <input type="text" name="lastname" value="" class="form-control input-lg" placeholder="PTT" asp-for="PTT" />
+                <input type="number" class="form-control input-lg" placeholder="PTT" asp-for="PTT" />
             </div>
         </div>
 
         <div class="row marginaForma">
             <div class="col-xs-6 col-md-6">
-                <input type="text" name="firstname" value="" class="form-control input-lg" placeholder="Street Name" asp-for="StreetName" />
+                <input type="text" class="form-control input-lg" placeholder="Street Name" asp-for="StreetName" />
             </div>
             <div class="col-xs-6 col-md-6">
-                <input type="text" name="lastname" value="" class="form-control input-lg" placeholder="Street Number" asp-for="StreetNumber" />
+                <input type="text" class="form-control input-lg" placeholder="Street Number" asp-for="StreetNumber" />
             </div>
         </div>
 
 
         <div class="row marginaForma">
             <div class="col-xs-6 col-md-6">
-                <input type="password" name="firstname" value="" class="form-control input-lg" placeholder="Password" asp-for="Password" />
+                <input type="password" class="form-control input-lg" placeholder="Password" asp-for="Password" />
             </div>
             <div class="col-xs-6 col-md-6">
-                <input type="password" name="lastname" value="" class="form-control input-lg" placeholder="Repeat password" asp-for="RepeatPassword" />
+                <input type="password" class="form-control input-lg" placeholder="Repeat password" asp-for="RepeatPassword" />
             </div>
         </div>
-
-
 
         <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">
             Create my account
         </button>
 
-       @* <input type="submit" value="Sign up" />*@
-
     </form>
-
-
-
 
 
 

@@ -8,9 +8,9 @@ namespace EShop.WepApp.Models
     public class SignUpViewModel
     {
 
+       
         public string StreetName { get; set; }
         public string StreetNumber { get; set; }
-        public string AppartmentNumber { get; set; }
         public string CityName { get; set; }
         public int PTT { get; set; }
         public string Password { get; set; }
@@ -22,5 +22,8 @@ namespace EShop.WepApp.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public string CompanyName { get; set; }
+
+        public int TIN { get; set; }
     }
 }
