@@ -14,5 +14,9 @@ namespace EShop.Model.Domain
         public int AddressId { get; set; }
         public Address Address { get; set; }
         public List<Order> Orders { get; set; }
+
+        public long VerificationCode{ get; set; }
+
+        public bool Status { get; set; }
     }
 }

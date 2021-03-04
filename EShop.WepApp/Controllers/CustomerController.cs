@@ -26,9 +26,11 @@ namespace EShop.WepApp.Controllers
         [HttpPost]
         public ActionResult Create(SignUpViewModel model)
         {
-           
-         
-            NaturalPerson naturalPerson = new NaturalPerson()
+            Customer customer;
+            if (model.CompanyName == null)
+            {
+
+             customer = new NaturalPerson()
             {
 
                 Email=model.Email,
@@ -47,8 +49,31 @@ namespace EShop.WepApp.Controllers
                     
                 }
             };
+            }
+            else
+            {
+                customer = new LegalEntity
+                {
+                    Email = model.Email,
+                    Password = model.Password,
+                    CompanyName = model.CompanyName,
+                    TIN = model.TIN,
+                    PhoneNumber = model.PhoneNumber,
 
-            uow.RepostiryCustomer.Add(naturalPerson);
+                    Address = new Address()
+                    {
+
+                        PTT = model.PTT,
+                        CityName = model.CityName,
+                        StreetName = model.StreetName,
+                        StreetNumber = model.StreetNumber
+
+                    }
+                };
+            }
+         
+
+            uow.RepostiryCustomer.Add(customer);
             uow.Commit();
             return null;
         }
