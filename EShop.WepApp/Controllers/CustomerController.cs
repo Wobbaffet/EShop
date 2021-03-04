@@ -26,7 +26,7 @@ namespace EShop.WepApp.Controllers
         [HttpPost]
         public ActionResult Create(SignUpViewModel model)
         {
-           
+          
          
             NaturalPerson naturalPerson = new NaturalPerson()
             {

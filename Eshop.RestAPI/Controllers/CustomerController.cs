@@ -1,4 +1,5 @@
 ﻿using EShop.Data.UnitOfWork;
+using EShop.Model.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,9 @@ namespace Eshop.RestAPI.Controllers
         }
         // GET: api/<CustomerController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Customer> Get()
         {
-            return new string[] { "value1", "value2" };
+            return uow.RepostiryCustomer.GetAll();
         }
 
         // GET api/<CustomerController>/5

@@ -1,6 +1,7 @@
 using EShop.Data.UnitOfWork;
 using EShop.Data.UnitOfWorkFolder;
 using EShop.Model;
+using EShop.WepApp.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +30,8 @@ namespace EShop.WepApp
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
             services.AddDbContext<ShopContext>();
+
+            services.AddHttpClient<EshopService>();
 
 
         }
