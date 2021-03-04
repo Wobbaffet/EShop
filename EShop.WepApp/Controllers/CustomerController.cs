@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace EShop.WepApp.Controllers
@@ -71,12 +73,50 @@ namespace EShop.WepApp.Controllers
                     }
                 };
             }
-         
 
+            SendEmail(customer);
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
             return null;
         }
-       
+
+
+        private void SendEmail(Customer customer) {
+
+            Random generateCode = new Random();
+            customer.VerificationCode = generateCode.Next(1000, 10000);
+            SmtpClient smtp = new SmtpClient();
+
+            smtp.Host = "smpt.gmail.com";
+            smtp.Port = 587;
+            smtp.EnableSsl = true;
+
+            smtp.UseDefaultCredentials = false;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.Credentials = new NetworkCredential("stelastelic406@gmail.com","Stela406.");
+
+            MailMessage message = new MailMessage();
+
+            message.Subject = "Activation code to Verify Email Address";
+            message.Body = $"Dear user, Your Activation Code is {customer.VerificationCode}";
+
+
+            message.To.Add(customer.Email);
+            message.From = new MailAddress("stelastelic406@gmail.com");
+
+            try
+            {
+                smtp.Send(message);
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
+
+        }
+
     }
 }
