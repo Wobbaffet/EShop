@@ -25,8 +25,10 @@ namespace EShop.WepApp.Controllers
         }
 
 
+
         [HttpPost]
-        public ActionResult Create(SignUpViewModel model)
+       
+        public ActionResult Create([FromForm]SignUpViewModel model)
         {
             Customer customer;
             if (model.CompanyName == null)
@@ -77,7 +79,42 @@ namespace EShop.WepApp.Controllers
             SendEmail(customer);
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
-            return null;
+            return View("RegistrationVerification",customer);
+        }
+
+
+       
+        [HttpPost]
+        public ActionResult Verification(long code,Customer customer)
+        {
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email==customer.Email && c.VerificationCode==code);
+
+            if(c is null)
+            {
+                //neka poruka da nije dobar vcode ! 
+                return RedirectToAction();
+            }
+            c.Status = true;
+            uow.Commit();
+
+            return View("SignIn");
+        }
+
+        [HttpPost]
+        public ActionResult SendCodeAgain([FromForm] Customer customer)
+        {
+
+            SendEmail(customer);
+
+            Customer c = uow.RepostiryCustomer.Find(c=>c.Email==customer.Email);
+
+            uow.RepostiryCustomer.Update(c);
+            uow.Commit();
+
+          
+           //ovdje treba da ga obavestimo da mu je poslat code ! 
+
+            return RedirectToAction();
         }
 
 

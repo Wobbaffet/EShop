@@ -1,0 +1,23 @@
+﻿@model Customer
+
+<h3>Please enter your code to activate your account</h3>
+
+
+<form method="post" asp-controller="Customer" >
+
+    <input type="number" name="code" />
+
+    <input type="submit" value="Verify" />
+
+    <a> @Html.ActionLink("Nesto","Verification","Customer",new { code=123,customer=(Customer)Model}) </a>
+
+
+</form>
+
+<form method="post" asp-controller="Customer" asp-action="SendCodeAgain">
+
+    <input type="submit" value="Send verification code again" />
+
+</form>
+
+

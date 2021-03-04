@@ -8,5 +8,7 @@ namespace EShop.Data.Implementation
     {
         void Add(T entity);
 
+        T Find(Predicate<T> condition);
+
     }
 }
