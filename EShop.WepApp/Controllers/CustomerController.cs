@@ -18,12 +18,34 @@ namespace EShop.WepApp.Controllers
         {
             this.uow = uow;
         }
-
+        [HttpGet]
         public ActionResult SignUp()
         {
             return View("SignUp");
         }
 
+        [HttpGet]
+          public ActionResult SignIn()
+        {
+            return View("SignIn");
+        }
+
+        [HttpPost]
+        public ActionResult SignIn(SignInViewModel model)
+        {
+            Customer customer = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Password == model.Password);
+
+            if(customer is null)
+            {
+                ModelState.AddModelError(string.Empty, "Wrong credentials");
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index","Home");
+            }
+            
+        }
 
 
         [HttpPost]
@@ -101,7 +123,7 @@ namespace EShop.WepApp.Controllers
             c.VerificationCode =0;
             uow.Commit();
 
-            return View("SignIn");
+            return SignIn();
         }
 
        
