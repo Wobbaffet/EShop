@@ -1,6 +1,7 @@
 using EShop.Data.UnitOfWork;
 using EShop.Data.UnitOfWorkFolder;
 using EShop.Model;
+using EShop.WepApp.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,15 @@ namespace EShop.WepApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
+            services.AddSession(option =>
+            {
+
+                option.IdleTimeout = TimeSpan.FromMinutes(10);
+            });
+
+
+
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
             services.AddDbContext<ShopContext>();
@@ -51,6 +61,9 @@ namespace EShop.WepApp
 
             app.UseRouting();
 
+            app.UseSession();
+
+            app.UseUserLoginMiddleware();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,6 +1,7 @@
 ﻿using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
 using EShop.WepApp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace EShop.WepApp.Controllers
 {
     public class CustomerController : Controller
     {
+        
         private IUnitOfWork uow;
         public CustomerController(IUnitOfWork uow)
         {
@@ -42,9 +44,22 @@ namespace EShop.WepApp.Controllers
             }
             else
             {
+
+                HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+                TempData["logged"] = true;
+                TempData.Keep("logged");
                 return RedirectToAction("Index","Home");
             }
             
+        }
+
+        public ActionResult SignOut()
+        {
+            
+            HttpContext.Session.Clear();
+            TempData["logged"] = false ;
+            TempData.Keep("logged");
+            return RedirectToAction("Index","Home");
         }
 
 
