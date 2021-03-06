@@ -8,7 +8,7 @@ namespace EShop.WepApp.Models
     public class SignUpViewModel
     {
 
-       
+        public long VerificationCode { get; set; }
         public string StreetName { get; set; }
         public string StreetNumber { get; set; }
         public string CityName { get; set; }

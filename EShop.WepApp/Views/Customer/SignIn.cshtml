@@ -1,2 +1,20 @@
 ﻿
-<h1>Sign in</h1>
+
+
+<div class="col-md-6 login-form-1">
+    <h3>Login for Form 1</h3>
+    <form method="post" asp-controller="Customer" asp-action="SignIn">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Your Email " name="Email"/>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Your Password " name="Password"  />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btnSubmit" value="Login" />
+        </div>
+        <div class="form-group">
+            <a href="#" class="ForgetPwd">Forget Password?</a>
+        </div>
+    </form>
+</div>

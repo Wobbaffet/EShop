@@ -79,42 +79,44 @@ namespace EShop.WepApp.Controllers
             SendEmail(customer);
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
-            return View("RegistrationVerification",customer);
+            return View("RegistrationVerification",model);
         }
 
-
+       
+       
        
         [HttpPost]
-        public ActionResult Verification(long code,Customer customer)
+        public ActionResult Verification(long code,SignUpViewModel model)
         {
-            Customer c = uow.RepostiryCustomer.Find(c => c.Email==customer.Email && c.VerificationCode==code);
 
-            if(c is null)
+          Customer c = uow.RepostiryCustomer.Find(c => c.Email==model.Email && c.VerificationCode==code);
+
+            if (c is null)
             {
                 //neka poruka da nije dobar vcode ! 
-                return RedirectToAction();
+                
+                return View("RegistrationVerification",model);
             }
             c.Status = true;
+            c.VerificationCode =0;
             uow.Commit();
 
             return View("SignIn");
         }
 
-        [HttpPost]
-        public ActionResult SendCodeAgain([FromForm] Customer customer)
+       
+        public ActionResult SendCodeAgain(SignUpViewModel model)
         {
+            Customer customer = uow.RepostiryCustomer.Find(c=>c.Email==model.Email);
 
             SendEmail(customer);
 
-            Customer c = uow.RepostiryCustomer.Find(c=>c.Email==customer.Email);
-
-            uow.RepostiryCustomer.Update(c);
             uow.Commit();
 
           
            //ovdje treba da ga obavestimo da mu je poslat code ! 
 
-            return RedirectToAction();
+            return View("RegistrationVerification",model);
         }
 
 
@@ -123,6 +125,9 @@ namespace EShop.WepApp.Controllers
             Random generateCode = new Random();
             customer.VerificationCode = generateCode.Next(1000, 10000);
             SmtpClient smtp = new SmtpClient();
+
+            //izbrisati ovo
+            Console.WriteLine(customer.VerificationCode);
 
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
@@ -146,7 +151,7 @@ namespace EShop.WepApp.Controllers
                 smtp.Send(message);
 
             }
-            catch (Exception e)
+            catch (Exception )
             {
 
                 throw;
