@@ -45,12 +45,19 @@
     font-size: 18px;
 }
 
+.btn-cart {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%
+}
+
 .description {
     position: absolute;
     top: 0;
     opacity: 0;
     background: #000;
-    transform: all 1s ease;
+    /*transform: all 1s ease;*/
     height: 100%;
     left: 0;
     color: #fff;

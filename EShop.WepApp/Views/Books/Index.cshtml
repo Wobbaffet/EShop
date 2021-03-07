@@ -36,19 +36,17 @@
                                         <div class="content">
                                             <img src="@("~/img/" + Model[i].Image)" asp-append-version="true" alt="Alternative Text">
                                             <div class="text">
-                                                <p>@Model[i].Price$</p>
+                                                <p>
+                                                    @Model[i].Title <br>
+                                                    @Model[i].Price RSD
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="description">
                                             <div class="d-text">
-                                                <h3>Title</h3>
-                                                <p>
-                                                    @Model[i].Title
-                                                </p>
-                                                <h4>Writer</h4>
-                                                <p> @Model[i].Price</p>
-                                                <button>Cart</button>
+                                                <button>Show more</button>
                                                 <button>Wish list</button>
+                                                <button class="btn-cart">Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
