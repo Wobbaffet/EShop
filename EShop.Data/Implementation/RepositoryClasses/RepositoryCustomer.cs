@@ -2,6 +2,7 @@
 using EShop.Model.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace EShop.Data.Implementation.RepositoryClasses
@@ -28,6 +29,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
         
           
             return shopContext.Customer.ToList().Find(condition);
+        }
+
+        public List<Customer> GetAll()
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(Customer customer)

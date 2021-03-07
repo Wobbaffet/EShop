@@ -19,6 +19,10 @@ namespace EShop.Data.Implementation.RepositoryClasses
         {
             context.Add(entity);
         }
+        public Book Find(Predicate<Book> condition)
+        {
+            throw new NotImplementedException();
+        }
 
         public List<Book> GetAll()
         {
