@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EShop.Model.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20210227222443_Init")]
+    [Migration("20210307121700_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,9 +58,6 @@ namespace EShop.Model.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppartmentNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CityName")
                         .HasColumnType("nvarchar(max)");
 
@@ -103,6 +100,9 @@ namespace EShop.Model.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -115,6 +115,8 @@ namespace EShop.Model.Migrations
                     b.HasKey("BookId");
 
                     b.ToTable("Book");
+
+                    b.HasCheckConstraint("NotLessThenZero", "[Supplies] >= 0");
                 });
 
             modelBuilder.Entity("EShop.Model.Domain.Customer", b =>

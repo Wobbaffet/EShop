@@ -98,6 +98,9 @@ namespace EShop.Model.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -111,7 +114,7 @@ namespace EShop.Model.Migrations
 
                     b.ToTable("Book");
 
-                    b.HasCheckConstraint("NotLessThenZero", "[Supplies]>=0");
+                    b.HasCheckConstraint("NotLessThenZero", "[Supplies] >= 0");
                 });
 
             modelBuilder.Entity("EShop.Model.Domain.Customer", b =>
