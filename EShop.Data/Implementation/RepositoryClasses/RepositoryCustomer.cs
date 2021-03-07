@@ -21,16 +21,6 @@ namespace EShop.Data.Implementation.RepositoryClasses
             shopContext.Add(entity);
         }
 
-        public Customer Find( Predicate<Customer> condition)
-        {
-
-          
-
-        
-          
-            return shopContext.Customer.ToList().Find(condition);
-        }
-
         public List<Customer> GetAll()
         {
             throw new NotImplementedException();
