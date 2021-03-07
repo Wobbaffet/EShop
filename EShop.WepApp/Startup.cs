@@ -39,8 +39,6 @@ namespace EShop.WepApp
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
             services.AddDbContext<ShopContext>();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

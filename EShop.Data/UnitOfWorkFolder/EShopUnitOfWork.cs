@@ -16,8 +16,7 @@ namespace EShop.Data.UnitOfWorkFolder
         {
             this.context = context;
             RepostiryCustomer = new RepositoryCustomer(context);
-
-
+            RepositoryBook = new RepositoryBook(context);
         }
         public IRepositoryBook RepositoryBook { get ; set ; }
         public IRepostiryCustomer RepostiryCustomer { get; set; }

@@ -2,8 +2,6 @@
 using EShop.Model.Domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 
 namespace EShop.Data.Implementation.RepositoryClasses
@@ -31,8 +29,6 @@ namespace EShop.Data.Implementation.RepositoryClasses
           
             return shopContext.Customer.ToList().Find(condition);
         }
-
-    
 
         public void Update(Customer customer)
         {

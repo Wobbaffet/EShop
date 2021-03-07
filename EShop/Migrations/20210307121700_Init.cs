@@ -15,7 +15,6 @@ namespace EShop.Model.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StreetName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StreetNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppartmentNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PTT = table.Column<int>(type: "int", nullable: false)
                 },
@@ -45,12 +44,14 @@ namespace EShop.Model.Migrations
                     BookId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Supplies = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Book", x => x.BookId);
+                    table.CheckConstraint("NotLessThenZero", "[Supplies] >= 0");
                 });
 
             migrationBuilder.CreateTable(
