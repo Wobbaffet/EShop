@@ -32,13 +32,12 @@
                             @if (i < Model.Count)
                             {
                                 <div class="list-group col-lg-3">
-                                    <a href="javascript:void(0)" class="list-group-item active">
+                                    <div class="list-group-item active">
                                         <div class="content">
                                             <img src="@("~/img/" + Model[i].Image)" asp-append-version="true" alt="Alternative Text">
                                             <div class="text">
-                                                    <h3>Tijamatin gnev</h3>
-                                                    <p>Džejms S. A. Kori</p>
-                                                </div>
+                                                <p>@Model[i].Price$</p>
+                                            </div>
                                         </div>
                                         <div class="description">
                                             <div class="d-text">
@@ -46,13 +45,13 @@
                                                 <p>
                                                     @Model[i].Title
                                                 </p>
-                                                <h4>Price</h4>
+                                                <h4>Writer</h4>
                                                 <p> @Model[i].Price</p>
                                                 <button>Cart</button>
                                                 <button>Wish list</button>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             }
                             else

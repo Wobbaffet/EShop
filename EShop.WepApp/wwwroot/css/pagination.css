@@ -30,7 +30,6 @@
 
     .list-group-item img {
         width: 100%;
-        height: 400px;
         object-fit: cover;
     }
 
@@ -57,9 +56,9 @@
     color: #fff;
 }
 
-    .description .d-text {
-        padding: 15px;
-    }
+.description .d-text {
+    padding: 15px;
+}
 
 .d-text h3 {
     font-size: 24px;
@@ -71,4 +70,5 @@
 
 .list-group-item:hover .description {
     opacity: 1;
+    width: 100%;
 }
