@@ -1,5 +1,6 @@
 ﻿using EShop.Model;
 using EShop.Model.Domain;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 
@@ -9,17 +10,28 @@ namespace EShop.ConsoleApp.Domain
     {
         static void Main(string[] args)
         {
-            ShopContext context = new ShopContext();
-            List<Genre> gs = new List<Genre>
+            SqlConnection connection = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EShop;Integrated Security=True;");
+            connection.Open();
+
+            List<Book> books = new List<Book>();
+
+            SqlCommand command = connection.CreateCommand();
+            command.CommandText = "select * from Book";
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                new Genre{ Name = "a" },
-                new Genre{ Name = "s" },
-                new Genre{ Name = "d" },
-                new Genre{ Name = "f" },
-            };
-            context.Add(new Book { Genres = gs, Price = 1000, Title = "title", Supplies = 9 });
-            context.SaveChanges();
-            context.Dispose();
+                books.Add(new Book
+                {
+                    BookId = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    Image = reader.GetString(2),
+                    Price = reader.GetDouble(3),
+                    Supplies = reader.GetInt32(4)
+                });
+            }
+
+
+            connection.Close();
         }
     }
 }

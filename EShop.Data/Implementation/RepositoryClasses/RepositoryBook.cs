@@ -2,6 +2,7 @@
 using EShop.Model.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace EShop.Data.Implementation.RepositoryClasses
@@ -17,6 +18,12 @@ namespace EShop.Data.Implementation.RepositoryClasses
         public void Add(Book entity)
         {
             context.Add(entity);
+        }
+
+        public List<Book> GetAll()
+        {
+            List<Book> books = context.Book.ToList();
+            return books;
         }
     }
 }

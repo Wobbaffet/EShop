@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EShop.Data.UnitOfWork;
+using EShop.Model.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,8 @@ namespace EShop.WepApp.Controllers
         // GET: BooksController
         public ActionResult Index()
         {
-            return View();
+            List<Book> books = uow.RepositoryBook.GetAll();
+            return View(books);
         }
 
         // GET: BooksController/Details/5

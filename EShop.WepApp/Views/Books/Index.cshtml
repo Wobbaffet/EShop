@@ -1,4 +1,5 @@
-﻿@section Style{
+﻿@model List<Book>
+@section Style{
     <link href="~/css/pagination.css" rel="stylesheet" />
 }
 @section Pagination{
@@ -22,8 +23,53 @@
             </nav>
 
             <div id="loop">
-                <!-- all added from js -->
-                @*2 foreach petlje za row i za elemente .. 2. ide do 3*@
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="row">
+                        @for (int j = 0; j < 3; j++)
+                        {
+                            @if (i < Model.Count)
+                            {
+                                <div class="list-group col-lg-3">
+                                    <a href="javascript:void(0)" class="list-group-item active">
+                                        <div class="content">
+                                            <img src="@("~/img/" + Model[i++].Image)" asp-append-version="true" alt="Alternative Text">
+                                            <div class="text">
+                                                <h3>Tijamatin gnev</h3>
+                                                <p>Džejms S. A. Kori</p>
+                                            </div>
+                                        </div>
+                                        <div class="description">
+                                            <div class="d-text">
+                                                <h3>SUMMARY</h3>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam
+                                                    doloremque
+                                                    quo molestias. Numquam vitae commodi ipsam perferendis veniam,
+                                                    praesentium
+                                                    impedit.
+                                                </p>
+                                                <h4>DIRECTOR</h4>
+                                                <p>John Doe</p>
+                                                <h4>ACTIORS</h4>
+                                                <p>John Doe</p>
+                                                <p>John Doe</p>
+                                                <p>John Doe</p>
+                                                <p>John Doe</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="list-group col-lg-3">
+                                </div>
+                            }
+                        }
+                        @{i--;}
+                    </div>
+                }
             </div>
 
 

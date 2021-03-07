@@ -1,5 +1,4 @@
-﻿
-function customerChange() {
+﻿function customerChange() {
 
     var selectItem = document.getElementById("comboBox");
 
@@ -7,13 +6,13 @@ function customerChange() {
 
     if (index == 0) {
 
-        document.getElementById("div2").style.visibility = "hidden";
-        document.getElementById("div1").style.visibility = "visible"
+        document.getElementById("div2").style.display = "none";
+        document.getElementById("div1").style.display = "flex";
 
     }
     else {
-        document.getElementById("div2").style.visibility = "visible";
-        document.getElementById("div1").style.visibility = "hidden";
+        document.getElementById("div2").style.display = "flex";
+        document.getElementById("div1").style.display = "none";
 
     }
 }
