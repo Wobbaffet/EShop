@@ -67,6 +67,8 @@ namespace EShop.WepApp.Controllers
        
         public ActionResult Create([FromForm]SignUpViewModel model)
         {
+
+         
             Customer customer;
             if (model.CompanyName == null)
             {
@@ -116,6 +118,7 @@ namespace EShop.WepApp.Controllers
             SendEmail(customer);
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
+            model.VerificationCode = customer.VerificationCode;
             return View("RegistrationVerification",model);
         }
 
@@ -135,7 +138,7 @@ namespace EShop.WepApp.Controllers
                 return View("RegistrationVerification",model);
             }
             c.Status = true;
-            c.VerificationCode =0;
+            c.VerificationCode =1;
             uow.Commit();
 
             return SignIn();
@@ -163,8 +166,7 @@ namespace EShop.WepApp.Controllers
             customer.VerificationCode = generateCode.Next(1000, 10000);
             SmtpClient smtp = new SmtpClient();
 
-            //izbrisati ovo
-            Console.WriteLine(customer.VerificationCode);
+          
 
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
