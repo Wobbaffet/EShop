@@ -1,5 +1,6 @@
 ﻿using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
+using EShop.WepApp.Fillters;
 using EShop.WepApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +21,17 @@ namespace EShop.WepApp.Controllers
         {
             this.uow = uow;
         }
+
+
+        [LoggedInFillter]
         [HttpGet]
         public ActionResult SignUp()
         {
             return View("SignUp");
         }
 
+
+        [LoggedInFillter]
         [HttpGet]
           public ActionResult SignIn()
         {
@@ -129,7 +135,7 @@ namespace EShop.WepApp.Controllers
         public ActionResult Verification(long code,SignUpViewModel model)
         {
 
-          Customer c = uow.RepostiryCustomer.Find(c => c.Email==model.Email && c.VerificationCode==code);
+          Customer c = uow.RepostiryCustomer.Find(c => c.Email==model.Email && model.VerificationCode==code);
 
             if (c is null)
             {

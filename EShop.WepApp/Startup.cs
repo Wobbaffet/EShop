@@ -1,6 +1,7 @@
 using EShop.Data.UnitOfWork;
 using EShop.Data.UnitOfWorkFolder;
 using EShop.Model;
+using EShop.WepApp.Fillters;
 using EShop.WepApp.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,7 @@ namespace EShop.WepApp
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
             services.AddDbContext<ShopContext>();
+            services.AddScoped<LoggedInFillter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
