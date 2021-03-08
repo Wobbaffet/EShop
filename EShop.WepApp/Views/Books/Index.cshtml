@@ -1,7 +1,7 @@
 ﻿@model List<Book>
-@*@section Style{
+@section Style{
     <link href="~/css/pagination.css" rel="stylesheet" />
-}*@
+}
 @section Pagination{
     <script src="~/js/Pagination.js"></script>
 }
@@ -28,37 +28,28 @@
                     <div class="row">
                         @for (int j = 0; j < 3; j++)
                         {
+                            i++;
                             @if (i < Model.Count)
                             {
                                 <div class="list-group col-lg-3">
-                                    <a href="javascript:void(0)" class="list-group-item active">
+                                    <div class="list-group-item active">
                                         <div class="content">
-                                            <img src="@("~/img/" + Model[i++].Image)" asp-append-version="true" alt="Alternative Text">
+                                            <img src="@("~/img/" + Model[i].Image)" asp-append-version="true" alt="Alternative Text">
                                             <div class="text">
-                                                <h3>Tijamatin gnev</h3>
-                                                <p>Džejms S. A. Kori</p>
+                                                <p>
+                                                    @Model[i].Title <br>
+                                                    @Model[i].Price RSD
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="description">
                                             <div class="d-text">
-                                                <h3>SUMMARY</h3>
-                                                <p>
-                                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam
-                                                    doloremque
-                                                    quo molestias. Numquam vitae commodi ipsam perferendis veniam,
-                                                    praesentium
-                                                    impedit.
-                                                </p>
-                                                <h4>DIRECTOR</h4>
-                                                <p>John Doe</p>
-                                                <h4>ACTIORS</h4>
-                                                <p>John Doe</p>
-                                                <p>John Doe</p>
-                                                <p>John Doe</p>
-                                                <p>John Doe</p>
+                                                <button>Show more</button>
+                                                <button>Wish list</button>
+                                                <button class="btn-cart">Add to cart</button>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             }
                             else
