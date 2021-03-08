@@ -31,7 +31,6 @@ namespace EShop.WepApp
             services.AddDistributedMemoryCache();
             services.AddSession(option =>
             {
-
                 option.IdleTimeout = TimeSpan.FromMinutes(10);
             });
 

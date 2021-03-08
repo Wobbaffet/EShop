@@ -1,4 +1,6 @@
-﻿using EShop.Model;
+﻿using EShop.Data.UnitOfWork;
+using EShop.Data.UnitOfWorkFolder;
+using EShop.Model;
 using EShop.Model.Domain;
 using Microsoft.Data.SqlClient;
 using System;
@@ -10,28 +12,27 @@ namespace EShop.ConsoleApp.Domain
     {
         static void Main(string[] args)
         {
-            SqlConnection connection = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EShop;Integrated Security=True;");
-            connection.Open();
+            ShopContext context = new ShopContext();
+            IUnitOfWork uow = new EShopUnitOfWork(context);
 
-            List<Book> books = new List<Book>();
+            Order o = new Order { Date = DateTime.Now, Total = 1000, OrderItems = new List<OrderItem>() };
 
-            SqlCommand command = connection.CreateCommand();
-            command.CommandText = "select * from Book";
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            Book book = uow.RepositoryBook.Find(b => b.BookId == 2);
+            OrderItem oi = new OrderItem
             {
-                books.Add(new Book
-                {
-                    BookId = reader.GetInt32(0),
-                    Title = reader.GetString(1),
-                    Image = reader.GetString(2),
-                    Price = reader.GetDouble(3),
-                    Supplies = reader.GetInt32(4)
-                });
-            }
-
-
-            connection.Close();
+                Book = book,
+                Quantity = 1
+            };
+            book = uow.RepositoryBook.Find(b => b.BookId == 3);
+            o.OrderItems.Add(oi);
+            oi = new OrderItem
+            {
+                Book = book,
+                Quantity = 1
+            };
+            o.OrderItems.Add(oi);
+            uow.RepositoryOrder.Add(o);
+            uow.Commit();
         }
     }
 }

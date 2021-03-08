@@ -9,6 +9,7 @@ namespace EShop.Data.Implementation
         void Add(T entity);
         List<T> GetAll();
         T Find(Predicate<T> condition);
+        public void Dispose();
 
     }
 }
