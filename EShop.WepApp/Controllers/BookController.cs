@@ -38,20 +38,28 @@ namespace EShop.WepApp.Controllers
 
         private void AddBookToCart(Book book)
         {
-            byte[] booksByte = HttpContext.Session.Get("books");
+            byte[] orderByte = HttpContext.Session.Get("order");
 
-            List<Book> books;
-            if (booksByte is null)
+            Order order;
+            if (orderByte is null)
             {
-                books = new List<Book>();
+                order = new Order();
+                order.OrderItems = new List<OrderItem>();
             }
             else
             {
-                books = JsonSerializer.Deserialize<List<Book>>(booksByte);
+                order = JsonSerializer.Deserialize<Order>(orderByte);
             }
 
-            books.Add(book);
-            HttpContext.Session.Set("books", JsonSerializer.SerializeToUtf8Bytes(books));
+            order.OrderItems.Add(new OrderItem { BookId = book.BookId, Quantity = 1 });
+            HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
+            if (order.OrderItems.Count == 2)
+            {
+                order.Date = DateTime.Now;
+                order.Total = 999;
+                uow.RepositoryOrder.Add(order);
+                uow.Commit();
+            }
         }
     }
 }

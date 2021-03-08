@@ -1,5 +1,6 @@
 ﻿using EShop.Model;
 using EShop.Model.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,18 @@ namespace EShop.Data.Implementation.RepositoryClasses
         }
         public Book Find(Predicate<Book> condition)
         {
-
-            
-            return context.Book.ToList().Find(condition);
+            return context.Book.AsNoTracking().ToList().Find(condition);
         }
 
         public List<Book> GetAll()
         {
             List<Book> books = context.Book.ToList();
             return books;
+        }
+
+        public void Dispose()
+        {
+            context.Dispose();
         }
     }
 }

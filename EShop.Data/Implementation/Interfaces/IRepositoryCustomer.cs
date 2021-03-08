@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EShop.Data.Implementation
 {
-  public   interface IRepostiryCustomer:IRepository<Customer>
+  public   interface IRepositoryCustomer:IRepository<Customer>
     {
         void Update(Customer customer);
     }
