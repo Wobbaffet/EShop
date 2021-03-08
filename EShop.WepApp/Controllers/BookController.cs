@@ -23,27 +23,35 @@ namespace EShop.WepApp.Controllers
         public ActionResult Index()
         {
             List<Book> books = uow.RepositoryBook.GetAll();
-            return View(books);
+            return View("Index", books);
         }
 
-      
+
 
         public ActionResult AddBookToCart(int bookId)
         {
 
-            Book book = uow.RepositoryBook.Find(b => b.BookId == bookId);
+            AddBookToCart(uow.RepositoryBook.Find(b => b.BookId == bookId));
 
-            byte[] booksByte = HttpContext.Session.Get("book");
-            List<Book> books = JsonSerializer.Deserialize<List<Book>>(booksByte);
-            if(books is null)
+            return Index();
+        }
+
+        private void AddBookToCart(Book book)
+        {
+            byte[] booksByte = HttpContext.Session.Get("books");
+
+            List<Book> books;
+            if (booksByte is null)
             {
                 books = new List<Book>();
             }
-            books.Add(book);
-            HttpContext.Session.Set("books",JsonSerializer.SerializeToUtf8Bytes(books));
+            else
+            {
+                books = JsonSerializer.Deserialize<List<Book>>(booksByte);
+            }
 
-            return null;
+            books.Add(book);
+            HttpContext.Session.Set("books", JsonSerializer.SerializeToUtf8Bytes(books));
         }
-    
     }
 }
