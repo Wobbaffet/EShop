@@ -21,7 +21,9 @@ namespace EShop.Data.Implementation.RepositoryClasses
         }
         public Book Find(Predicate<Book> condition)
         {
-            throw new NotImplementedException();
+
+            
+            return context.Book.ToList().Find(condition);
         }
 
         public List<Book> GetAll()
