@@ -49,7 +49,16 @@ namespace EShop.WepApp.Controllers
                 order = JsonSerializer.Deserialize<Order>(orderByte);
             }
 
+            OrderItem oi = order.OrderItems.Find(oi => oi.BookId == book.BookId);
+            if (oi != null)
+            {
+                oi.Quantity++;
+            }
+            else
+            {
             order.OrderItems.Add(new OrderItem { BookId = book.BookId, Book = book, Quantity = 1 });
+            }
+            
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
             //if (order.OrderItems.Count == 2)
             //{
