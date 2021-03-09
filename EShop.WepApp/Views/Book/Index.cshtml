@@ -45,13 +45,13 @@
                                         <div class="description">
                                             <div class="d-text">
                                                 <button>Show more</button>
-                                                <button>Wish list</button> 
+                                                <button>Wish list</button>
 
                                                 <a href="@Url.Action("AddBookToCart","Book",new { bookId=Model[i].BookId})" class="btn">Add to cart</a>
                                                 <!--<form  method="post" asp-action="Cart" asp-controller="Books">
 
                                                     <input type="submit" />-->
-                                               @* <submit class="btn-cart"   >Add to cart</submit>*@
+                                                @* <submit class="btn-cart"   >Add to cart</submit>*@
 
                                                 <!--</form>-->
                                             </div>
@@ -80,3 +80,8 @@
     </div>
 </div>
 
+<script>
+    $('.btn').click(function (e) {
+        e.preventDefault()
+    })
+</script>
