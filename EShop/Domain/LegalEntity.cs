@@ -8,7 +8,6 @@ namespace EShop.Model.Domain
     {
         public int TIN { get; set; }
         public string CompanyName { get; set; }
-        public string CompanyNumber { get; set; }
         public override string ToString()
         {
             return $"{CompanyName}";
