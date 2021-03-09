@@ -1,0 +1,59 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Cart";
+}
+@section Style{
+    <link href="~/css/Cart.css" rel="stylesheet" />
+}
+
+@if (Model is null || Model.OrderItems.Count == 0)
+{
+    <h1>Your cart is empty</h1>
+}
+else
+{
+    <table style="border:1px solid black">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total for the product</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr id="@item.Book.BookId">
+                    <td><img src="~/img/@item.Book.Image" asp-append-version="true" alt="Alternate Text" /> </td>
+                    <td>@item.Book.Title</td>
+                    <td>@item.Book.Price</td>
+                    <td><input type="number" value="@item.Quantity" /></td>
+                    <td>{@item.Book.Price * @item.Quantity}</td>
+                    <td><i class="far fa-times-circle"></i></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Pagination{
+    <script>
+        $('table tr').click(function () {
+            var ID = $(this).attr('id');
+            $.ajax({
+                url: '@Url.ActionLink("Metoda","Cart")',
+                data: { id: ID },
+                method: "post",
+                success: function () {
+                    alert("Radi");
+                },
+                error: function () {
+                    alert("Ne radi");
+                }
+            });
+        });
+    </script>
+}

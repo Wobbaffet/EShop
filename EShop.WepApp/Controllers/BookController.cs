@@ -30,9 +30,7 @@ namespace EShop.WepApp.Controllers
 
         public ActionResult AddBookToCart(int bookId)
         {
-
             AddBookToCart(uow.RepositoryBook.Find(b => b.BookId == bookId));
-
             return Index();
         }
 
@@ -51,15 +49,15 @@ namespace EShop.WepApp.Controllers
                 order = JsonSerializer.Deserialize<Order>(orderByte);
             }
 
-            order.OrderItems.Add(new OrderItem { BookId = book.BookId, Quantity = 1 });
+            order.OrderItems.Add(new OrderItem { BookId = book.BookId, Book = book, Quantity = 1 });
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
-            if (order.OrderItems.Count == 2)
-            {
-                order.Date = DateTime.Now;
-                order.Total = 999;
-                uow.RepositoryOrder.Add(order);
-                uow.Commit();
-            }
+            //if (order.OrderItems.Count == 2)
+            //{
+            //    order.Date = DateTime.Now;
+            //    order.Total = 999;
+            //    uow.RepositoryOrder.Add(order);
+            //    uow.Commit();
+            //}
         }
     }
 }
