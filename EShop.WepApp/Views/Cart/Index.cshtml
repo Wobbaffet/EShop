@@ -8,11 +8,11 @@
 
 @if (Model is null || Model.OrderItems.Count == 0)
 {
-    <h1>Your cart is empty</h1>
+    <h1>Cart is empty</h1>
 }
 else
 {
-    <table style="border:1px solid black">
+    <table style="border:1px solid black" id="order">
         <thead>
             <tr>
                 <th></th>
@@ -82,11 +82,21 @@ else
             }); 
             document.getElementById(`${id}`).parentElement.parentElement.remove();
             if ($('table tr').length == 1) {
-                var para = document.createElement("h1");
-                var node = document.createTextNode("Your cart is empty");
-                para.appendChild(node);
 
-                $('body main').appendChild(para)
+                var removeTab = document.getElementById('order');
+
+                var parentEl = removeTab.parentElement;
+
+                parentEl.removeChild(removeTab);
+
+                var node = document.createElement("H1");
+                var textnode = document.createTextNode("Cart is empty");
+                node.appendChild(textnode);
+                document.getElementById("main").appendChild(node);
+
+             
+
+
             }
         }
 
