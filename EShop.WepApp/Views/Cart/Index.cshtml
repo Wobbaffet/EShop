@@ -30,46 +30,58 @@ else
                     <td><img src="~/img/@item.Book.Image" asp-append-version="true" alt="Alternate Text" /> </td>
                     <td>@item.Book.Title</td>
                     <td>@item.Book.Price</td>
-                    <td><input type="number" value="@item.Quantity" id="@item.Book.BookId" onkeypress="Metoda2(this.id, this.value);"/></td>
-                    <td>{@item.Book.Price * @item.Quantity}</td>
-                    <td><i class="far fa-times-circle"></i></td>
+                    <td>
+                        <select name="suplies" id="@item.Book.BookId" onchange="changeNumberOfBooks(this.id, this.value, @item.Book.Price)" value="@item.Quantity">
+                            @for (int i = 0; i < item.Book.Supplies; i++)
+                            {
+                                if (i + 1 == item.Quantity)
+                                {
+                                    <option selected>@(i+1)</option>
+                                }
+                                else
+                                {
+                                    <option>@(i+1)</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td id="totalPrice+@item.Book.BookId">@(item.Book.Price * @item.Quantity)</td>
+                    <td><span id="@item.Book.BookId" onclick="removeItemFromCart(this.id)"><i class="far fa-times-circle"></i></span></td>
                 </tr>
             }
         </tbody>
     </table>
 }
 
-@section Pagination{
+@section JavaScript{
     <script>
-    @*    $('table tr').click(function () {
-            var ID = $(this).attr('id');
+        function changeNumberOfBooks(id, value, price) {
             $.ajax({
-                url: '@Url.ActionLink("Metoda","Cart")',
-                data: { id: ID },
+                url: '@Url.ActionLink("ChangeSupplisForThisItem", "Cart")',
+                data: { id: id, value: value },
                 method: "post",
                 success: function () {
-                    alert("Radi");
                 },
                 error: function () {
-                    alert("Ne radi");
+                    alert("Error!");
                 }
             });
-        });
-*@
-        function Metoda2(id,value) {
-
-            console.log(value);
-               $.ajax({
-                   url: '@Url.ActionLink("Metoda","Cart")',
-                   data: { id: id, value: value },
-                method: "post",
-                success: function () {
-                    alert("RadiMetoda2");
-                },
-                error: function () {
-                    alert("Ne radi");
-                }
-            });
+            document.getElementById(`totalPrice+${id}`).innerHTML = price*value;
         }
+
+        function removeItemFromCart(id) {
+            $.ajax({
+                url: '@Url.ActionLink("RemoveItemFromCart", "Cart")',
+                data: { bookid: id },
+                method: "delete",
+                success: function () {
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+            document.getElementById(`${id}`).parentElement.parentElement.remove();
+        }
+
     </script>
 }

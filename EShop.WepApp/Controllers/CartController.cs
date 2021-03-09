@@ -21,72 +21,28 @@ namespace EShop.WepApp.Controllers
             return View(model);
         }
 
-        public void Metoda(int id,int value)
+        public void ChangeSupplisForThisItem(int id, int value)
         {
+            byte[] orderByte = HttpContext.Session.Get("order");
 
+            Order order = JsonSerializer.Deserialize<Order>(orderByte);
+            order.OrderItems.Find(oi => oi.BookId == id).Quantity = value;
+            HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
         }
 
-        // GET: CartController/Create
-        public ActionResult Create()
+        [HttpDelete]
+        public void RemoveItemFromCart(int bookid)
         {
-            return View();
+            RemoveFromCart(bookid);
         }
 
-        // POST: CartController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        private void RemoveFromCart(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            byte[] orderByte = HttpContext.Session.Get("order");
 
-        // GET: CartController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CartController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CartController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: CartController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Order order = JsonSerializer.Deserialize<Order>(orderByte);
+            order.OrderItems.RemoveAll(o => o.BookId == id);
+            HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));//template method pattern
         }
     }
 }

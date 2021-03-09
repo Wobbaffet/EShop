@@ -2,9 +2,6 @@
 @section Style{
     <link href="~/css/pagination.css" rel="stylesheet" />
 }
-@section Pagination{
-    <script src="~/js/Pagination.js"></script>
-}
 <div class="container" style="margin-top: 35px;">
     <div class="row">
 
@@ -46,14 +43,7 @@
                                             <div class="d-text">
                                                 <button>Show more</button>
                                                 <button>Wish list</button>
-
-                                                <a href="@Url.Action("AddBookToCart","Book",new { bookId=Model[i].BookId})" class="btn">Add to cart</a>
-                                                <!--<form  method="post" asp-action="Cart" asp-controller="Books">
-
-                                                    <input type="submit" />-->
-                                                @* <submit class="btn-cart"   >Add to cart</submit>*@
-
-                                                <!--</form>-->
+                                                <button class="btn" onclick="AddToCart(@Model[i].BookId)">Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
@@ -80,8 +70,21 @@
     </div>
 </div>
 
-<script>
-    $('.btn').click(function (e) {
-        e.preventDefault()
-    })
-</script>
+@section JavaScript{
+    <script src="~/js/Pagination.js"></script>
+    <script>
+        function AddToCart(id) {
+            console.log(id)
+            $.ajax({
+                 url: '@Url.ActionLink("AddBookToCart", "Book")',
+                data: { bookId: id },
+                method: "post",
+                success: function () {
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }
+    </script>
+}
