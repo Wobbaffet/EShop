@@ -123,7 +123,81 @@ namespace EShop.WepApp.Controllers
         }
 
        
+        public ActionResult Update()
+        {
+          int ?id=  HttpContext.Session.GetInt32("customerId");
+
+            Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == id);
+
+            UpdateCustomerViewModel model;
+            if(customer is NaturalPerson)
+            {
+                NaturalPerson np = customer as NaturalPerson;
+                model = new UpdateCustomerViewModel()
+                {
+                    FirstName = np.FirstName,
+                    LastName = np.LastName,
+                    PhoneNumber = np.PhoneNumber,
+                    CityName = np.Address.CityName,
+                    PTT = np.Address.PTT,
+                    StreetName = np.Address.StreetName,
+                    StreetNumber = np.Address.StreetNumber,
+                    Type = CustomerType.NaturalPerson,
+                    CustomerId = np.CustomerId
+
+
+                };
+            }
+            else
+            {
+                LegalEntity np = customer as LegalEntity;
+                model = new UpdateCustomerViewModel()
+                {
+                    CompanyName = np.CompanyName,
+                    TIN = np.TIN,
+                    PhoneNumber = np.PhoneNumber,
+                    CityName = np.Address.CityName,
+                    PTT = np.Address.PTT,
+                    StreetName = np.Address.StreetName,
+                    StreetNumber = np.Address.StreetNumber,
+                    Type=CustomerType.LegalEntity,
+                    CustomerId=np.CustomerId
+                    
+                    
+
+
+
+                };
+            }
+
+            return View("Update",model);
+
+
+        }
        
+        [HttpPut]
+        public  ActionResult Update(UpdateCustomerViewModel model)
+        {
+            /* Customer customer;
+             if (model.Type==CustomerType.NaturalPerson)
+             {
+                 customer=new NaturalPerson
+                 {
+                     FirstName=model.FirstName,
+                     LastName=model.LastName,
+                     Email=model.LastName,
+                     PhoneNumber=model.PhoneNumber,
+                     Address=new Address
+                     {
+                         AddressId=model
+                     }
+                 }
+             }
+             uow.RepostiryCustomer.Update();
+             uow.Commit();
+ */
+            return null;
+        }
        
         [HttpPost]
         public ActionResult Verification(long code,SignUpViewModel model)

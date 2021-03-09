@@ -1,5 +1,6 @@
 ﻿using EShop.Model;
 using EShop.Model.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public Customer Find(Predicate<Customer> condition)
         {
-            return shopContext.Customer.ToList().Find(condition);
+            return   shopContext.Customer.Include(c=>c.Address).ToList().Find(condition);
         }
 
         public List<Customer> GetAll()
