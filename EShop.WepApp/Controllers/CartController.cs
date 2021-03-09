@@ -21,7 +21,7 @@ namespace EShop.WepApp.Controllers
             return View(model);
         }
 
-        public void Metoda(int id)
+        public void Metoda(int id,int value)
         {
 
         }

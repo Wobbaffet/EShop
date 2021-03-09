@@ -26,11 +26,11 @@ else
         <tbody>
             @foreach (var item in Model.OrderItems)
             {
-                <tr id="@item.Book.BookId">
+                <tr>
                     <td><img src="~/img/@item.Book.Image" asp-append-version="true" alt="Alternate Text" /> </td>
                     <td>@item.Book.Title</td>
                     <td>@item.Book.Price</td>
-                    <td><input type="number" value="@item.Quantity" /></td>
+                    <td><input type="number" value="@item.Quantity" id="@item.Book.BookId" onkeypress="Metoda2(this.id, this.value);"/></td>
                     <td>{@item.Book.Price * @item.Quantity}</td>
                     <td><i class="far fa-times-circle"></i></td>
                 </tr>
@@ -41,7 +41,7 @@ else
 
 @section Pagination{
     <script>
-        $('table tr').click(function () {
+    @*    $('table tr').click(function () {
             var ID = $(this).attr('id');
             $.ajax({
                 url: '@Url.ActionLink("Metoda","Cart")',
@@ -55,5 +55,21 @@ else
                 }
             });
         });
+*@
+        function Metoda2(id,value) {
+
+            console.log(value);
+               $.ajax({
+                   url: '@Url.ActionLink("Metoda","Cart")',
+                   data: { id: id, value: value },
+                method: "post",
+                success: function () {
+                    alert("RadiMetoda2");
+                },
+                error: function () {
+                    alert("Ne radi");
+                }
+            });
+        }
     </script>
 }
