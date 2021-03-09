@@ -79,8 +79,15 @@ else
                 error: function () {
                     alert("Error!");
                 }
-            });
+            }); 
             document.getElementById(`${id}`).parentElement.parentElement.remove();
+            if ($('table tr').length == 1) {
+                var para = document.createElement("h1");
+                var node = document.createTextNode("Your cart is empty");
+                para.appendChild(node);
+
+                $('body main').appendChild(para)
+            }
         }
 
     </script>
