@@ -10,5 +10,7 @@ namespace EShop.Model.Domain
         public DateTime Date { get; set; }
         public double Total { get; set; }
         public List<OrderItem> OrderItems { get; set; }
+
+        public int CustomerId { get; set; }
     }
 }

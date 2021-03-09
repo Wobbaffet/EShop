@@ -60,13 +60,7 @@ namespace EShop.WepApp.Controllers
             }
             
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
-            //if (order.OrderItems.Count == 2)
-            //{
-            //    order.Date = DateTime.Now;
-            //    order.Total = 999;
-            //    uow.RepositoryOrder.Add(order);
-            //    uow.Commit();
-            //}
+           
         }
     }
 }

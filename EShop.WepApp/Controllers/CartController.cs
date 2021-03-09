@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,12 @@ namespace EShop.WepApp.Controllers
 {
     public class CartController : Controller
     {
+        private readonly IUnitOfWork uow;
+
+        public CartController(IUnitOfWork uow)
+        {
+            this.uow = uow;
+        }
         // GET: CartController
         public ActionResult Index()
         {
@@ -34,6 +41,23 @@ namespace EShop.WepApp.Controllers
         public void RemoveItemFromCart(int bookid)
         {
             RemoveFromCart(bookid);
+        }
+
+
+        public ActionResult Purchase()
+        {
+                byte[] orderByte = HttpContext.Session.Get("order");
+
+                Order order = JsonSerializer.Deserialize<Order>(orderByte);
+
+                order.Date = DateTime.Now;
+                order.Total = order.OrderItems.Sum(ot=>ot.Quantity*ot.Book.Price);
+                order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
+                uow.RepositoryOrder.Add(order);
+                uow.Commit();
+
+                HttpContext.Session.Remove("order");
+                return RedirectToAction("Index","Book");
         }
 
         private void RemoveFromCart(int id)
