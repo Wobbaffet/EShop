@@ -1,5 +1,7 @@
-﻿using System;
+﻿using EShop.Model.Domain;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,6 +25,9 @@ namespace EShop.WepApp.Models
 
         public int TIN { get; set; }
 
+        [Browsable(false)]
         public CustomerType Type { get; set; }
+
+        public int AddressId{ get; set; }
     }
 }

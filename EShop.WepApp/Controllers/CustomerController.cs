@@ -64,7 +64,6 @@ namespace EShop.WepApp.Controllers
 
 
         [HttpPost]
-       
         public ActionResult Create([FromForm]SignUpViewModel model)
         {
 
@@ -125,7 +124,7 @@ namespace EShop.WepApp.Controllers
        
         public ActionResult Update()
         {
-          int ?id=  HttpContext.Session.GetInt32("customerId");
+            int ?id=  HttpContext.Session.GetInt32("customerId");
 
             Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == id);
 
@@ -143,9 +142,9 @@ namespace EShop.WepApp.Controllers
                     StreetName = np.Address.StreetName,
                     StreetNumber = np.Address.StreetNumber,
                     Type = CustomerType.NaturalPerson,
-                    CustomerId = np.CustomerId
-
-
+                    CustomerId = np.CustomerId,
+                    AddressId=np.AddressId,
+                    
                 };
             }
             else
@@ -161,42 +160,44 @@ namespace EShop.WepApp.Controllers
                     StreetName = np.Address.StreetName,
                     StreetNumber = np.Address.StreetNumber,
                     Type=CustomerType.LegalEntity,
-                    CustomerId=np.CustomerId
-                    
-                    
-
-
-
+                    CustomerId=np.CustomerId,
+                    AddressId=np.AddressId
                 };
             }
 
             return View("Update",model);
-
-
         }
        
-        [HttpPut]
+        [HttpPost]
         public  ActionResult Update(UpdateCustomerViewModel model)
         {
-            /* Customer customer;
-             if (model.Type==CustomerType.NaturalPerson)
-             {
-                 customer=new NaturalPerson
-                 {
-                     FirstName=model.FirstName,
-                     LastName=model.LastName,
-                     Email=model.LastName,
-                     PhoneNumber=model.PhoneNumber,
-                     Address=new Address
-                     {
-                         AddressId=model
-                     }
-                 }
-             }
-             uow.RepostiryCustomer.Update();
-             uow.Commit();
- */
-            return null;
+            Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == model.CustomerId);
+            if (model.Type == CustomerType.NaturalPerson)
+            {
+                NaturalPerson np = customer as NaturalPerson;
+                np.FirstName = model.FirstName;
+                np.LastName = model.LastName;
+                np.PhoneNumber = model.PhoneNumber;
+                np.Address.CityName = model.CityName;
+                np.Address.StreetName = model.StreetName;
+                np.Address.PTT = model.PTT;
+                np.Address.StreetNumber = model.StreetNumber;
+            }
+            else
+            {
+                LegalEntity lg = customer as LegalEntity;
+                lg.CompanyName = model.CompanyName;
+                lg.TIN = model.TIN;
+                lg.PhoneNumber = model.PhoneNumber;
+                lg.Address.CityName = model.CityName;
+                lg.Address.StreetName = model.StreetName;
+                lg.Address.PTT = model.PTT;
+                lg.Address.StreetNumber = model.StreetNumber;
+            }
+        
+            uow.Commit();
+
+            return RedirectToAction("Index","Book") ;
         }
        
         [HttpPost]
