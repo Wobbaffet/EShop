@@ -21,16 +21,17 @@ namespace EShop.WepApp.Controllers
         }
 
         // GET: BooksController
-        public ActionResult Index(List<Book> bs)
+        public ActionResult Index(/*List<Book> bs*/)
         {
             BookViewModel bvm = new BookViewModel();
 
-            List<Book> books = new List<Book>();
-            if (bs is null || bs.Count == 0)
-                books = uow.RepositoryBook.GetAll();
-            else
-                books = bs;
+            //List<Book> books = new List<Book>();
+            //if (bs is null || bs.Count == 0)
+            //    books = uow.RepositoryBook.GetAll();
+            //else
+            //    books = bs;
 
+            List<Book> books = uow.RepositoryBook.GetAll();
             List<Autor> autors = new List<Autor>();
 
             foreach (var book in uow.RepositoryBook.GetAll())
@@ -45,20 +46,36 @@ namespace EShop.WepApp.Controllers
             }
             bvm.Books = books;
             bvm.Autors = autors;
-            return View("Index", bvm);
+            return View("PartialBooks", bvm);
         }
 
         public ActionResult SearchBooks(string autor)
         {
+            BookViewModel bvm = new BookViewModel();
             List<Book> books = uow.RepositoryBook.Search(autor);
-            return Index(books);
+            List<Autor> autors = new List<Autor>();
+
+            foreach (var book in uow.RepositoryBook.GetAll())
+            {
+                foreach (var a in book.Autors)
+                {
+                    if (!autors.Contains(a))
+                    {
+                        autors.Add(a);
+                    }
+                }
+            }
+            bvm.Books = books;
+            bvm.Autors = autors;
+
+            return PartialView("PartialBooks", bvm);
         }
 
 
         public ActionResult AddBookToCart(int bookId)
         {
             AddBookToCart(uow.RepositoryBook.Find(b => b.BookId == bookId));
-            return Index(null);
+            return Index();
         }
 
         private void AddBookToCart(Book book)

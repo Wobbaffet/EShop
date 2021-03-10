@@ -66,4 +66,3 @@ $('#previous-page').on("click", function () {
         $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
     }
 });
-
