@@ -45,14 +45,15 @@ else
                             }
                         </select>
                     </td>
-                    <td id="totalPrice+@item.Book.BookId">@(item.Book.Price * @item.Quantity)</td>
+                    <td id="totalItemPrice+@item.Book.BookId">@(item.Book.Price * @item.Quantity)</td>
                     <td><span id="@item.Book.BookId" onclick="removeItemFromCart(this.id)"><i class="far fa-times-circle"></i></span></td>
                 </tr>
             }
         </tbody>
     </table>
 
-
+    <input  id ="totalPrice" type="text" value="@Model.Total" style="margin-left:100px"  />
+   
     <a href="@Url.Action("Purchase","Cart")" class="btn btn-success">Purchase</a>
 }
 
@@ -69,7 +70,19 @@ else
                     alert("Error!");
                 }
             });
-            document.getElementById(`totalPrice+${id}`).innerHTML = price*value;
+            document.getElementById(`totalItemPrice+${id}`).innerHTML = price*value;
+
+            var table = document.getElementById("order");
+
+            var total =0;
+            for (var i = 1;i< table.rows.length;i++) {
+
+                total = total + parseInt(table.rows[i].cells[4].innerHTML,10);
+
+            }
+            document.getElementById("totalPrice").value = total;
+
+
         }
 
         function removeItemFromCart(id) {
@@ -96,10 +109,6 @@ else
                 var textnode = document.createTextNode("Cart is empty");
                 node.appendChild(textnode);
                 document.getElementById("main").appendChild(node);
-
-             
-
-
             }
         }
 
