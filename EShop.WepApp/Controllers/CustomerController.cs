@@ -1,6 +1,7 @@
 ﻿using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
 using EShop.WepApp.Models;
+using EShop.WepApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,18 +17,23 @@ namespace EShop.WepApp.Controllers
     {
         
         private IUnitOfWork uow;
-        public CustomerController(IUnitOfWork uow)
+
+        public EShopServices Services { get; }
+
+        public CustomerController(IUnitOfWork uow, EShopServices services)
         {
             this.uow = uow;
+            Services = services;
         }
         [HttpGet]
-        public ActionResult SignUp()
+        public async Task<ActionResult> SignUp()
         {
-            return View("SignUp");
+            var res = await Services.GetView();
+            return View(res);
         }
 
         [HttpGet]
-          public ActionResult SignIn()
+        public ActionResult SignIn()
         {
             return View("SignIn");
         }
