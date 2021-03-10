@@ -62,6 +62,18 @@ namespace EShop.WepApp.Controllers
             return RedirectToAction("Index","Home");
         }
 
+        public ActionResult ForgotPassword()
+        {
+            return View("ForgotPassword");
+        }
+        
+        public ActionResult ForgotPassword(string Email)
+        {
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == Email);
+            
+            return View("ForgotPassword");
+        }
+        
 
         [HttpPost]
         public ActionResult Create([FromForm]SignUpViewModel model)
