@@ -46,18 +46,18 @@ namespace EShop.WepApp.Controllers
 
         public ActionResult Purchase()
         {
-                byte[] orderByte = HttpContext.Session.Get("order");
+            byte[] orderByte = HttpContext.Session.Get("order");
 
-                Order order = JsonSerializer.Deserialize<Order>(orderByte);
+            Order order = JsonSerializer.Deserialize<Order>(orderByte);
 
-                order.Date = DateTime.Now;
-                order.Total = order.OrderItems.Sum(ot=>ot.Quantity*ot.Book.Price);
-                order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
-                uow.RepositoryOrder.Add(order);
-                uow.Commit();
+            order.Date = DateTime.Now;
+            order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
+            order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
+            uow.RepositoryOrder.Add(order);
+            uow.Commit();
 
-                HttpContext.Session.Remove("order");
-                return RedirectToAction("Index","Book");
+            HttpContext.Session.Remove("order");
+            return RedirectToAction("Index", "Book");
         }
 
         private void RemoveFromCart(int id)

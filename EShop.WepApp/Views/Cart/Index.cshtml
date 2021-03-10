@@ -31,7 +31,7 @@ else
                     <td>@item.Book.Title</td>
                     <td>@item.Book.Price</td>
                     <td>
-                        <select name="suplies" id="@item.Book.BookId" onchange="changeNumberOfBooks(this.id, this.value, @item.Book.Price)" value="@item.Quantity">
+                        <select name="suplies" id="@item.Book.BookId" onchange="changeBookQuantity(this.id, this.value, @item.Book.Price)" value="@item.Quantity">
                             @for (int i = 0; i < item.Book.Supplies; i++)
                             {
                                 if (i + 1 == item.Quantity)
@@ -45,21 +45,21 @@ else
                             }
                         </select>
                     </td>
-                    <td id="totalItemPrice+@item.Book.BookId">@(item.Book.Price * @item.Quantity)</td>
+                    <td id="totalItemPrice-@item.Book.BookId">@(item.Book.Price * @item.Quantity)</td>
                     <td><span id="@item.Book.BookId" onclick="removeItemFromCart(this.id)"><i class="far fa-times-circle"></i></span></td>
                 </tr>
             }
         </tbody>
     </table>
-
-    <input  id ="totalPrice" type="text" value="@Model.Total" style="margin-left:100px"  />
-   
-    <a href="@Url.Action("Purchase","Cart")" class="btn btn-success">Purchase</a>
+    <div class="total">
+        <a href="@Url.Action("Purchase","Cart")" class="btn btn-success">Purchase</a>
+        <p id="totalPrice">Total price <span>@Model.Total</span> RSD</p>
+    </div>
 }
 
 @section JavaScript{
     <script>
-        function changeNumberOfBooks(id, value, price) {
+        function changeBookQuantity(id, value, price) {
             $.ajax({
                 url: '@Url.ActionLink("ChangeSupplisForThisItem", "Cart")',
                 data: { id: id, value: value },
@@ -75,14 +75,12 @@ else
             var table = document.getElementById("order");
 
             var total =0;
-            for (var i = 1;i< table.rows.length;i++) {
+            for (var i = 1; i< table.rows.length; i++) {
 
                 total = total + parseInt(table.rows[i].cells[4].innerHTML,10);
 
             }
-            document.getElementById("totalPrice").value = total;
-
-
+            document.getElementById("totalPrice").innerHTML = total;
         }
 
         function removeItemFromCart(id) {
@@ -95,15 +93,18 @@ else
                 error: function () {
                     alert("Error!");
                 }
-            }); 
+            });
+            priceOfDeletedItem = document.getElementById(`totalItemPrice-${id}`).innerHTML;
+
+            var field = $(`#totalPrice span`);
+            field.text(field.text() - priceOfDeletedItem)
+
             document.getElementById(`${id}`).parentElement.parentElement.remove();
+
             if ($('table tr').length == 1) {
 
                 var removeTab = document.getElementById('order');
-
-                var parentEl = removeTab.parentElement;
-
-                parentEl.removeChild(removeTab);
+                removeTab.parentElement.innerHTML = "";
 
                 var node = document.createElement("H1");
                 var textnode = document.createTextNode("Cart is empty");

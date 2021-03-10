@@ -1,4 +1,4 @@
-﻿@model List<Book>
+﻿@model BookViewModel
 @section Style{
     <link href="~/css/pagination.css" rel="stylesheet" />
 }
@@ -20,22 +20,22 @@
             </nav>
 
             <div id="loop">
-                @for (int i = 0; i < Model.Count; i++)
+                @for (int i = 0; i < Model.Books.Count; i++)
                 {
                     <div class="row">
                         @for (int j = 0; j < 3; j++)
                         {
                             i++;
-                            @if (i < Model.Count)
+                            @if (i < Model.Books.Count)
                             {
                                 <div class="list-group col-lg-3">
                                     <div class="list-group-item active">
                                         <div class="content">
-                                            <img src="@("~/img/" + Model[i].Image)" asp-append-version="true" alt="Alternative Text">
+                                            <img src="@("~/img/" + Model.Books[i].Image)" asp-append-version="true" alt="Alternative Text">
                                             <div class="text">
                                                 <p>
-                                                    @Model[i].Title <br>
-                                                    @Model[i].Price RSD
+                                                    @Model.Books[i].Title <br>
+                                                    @Model.Books[i].Price RSD
                                                 </p>
                                             </div>
                                         </div>
@@ -43,7 +43,7 @@
                                             <div class="d-text">
                                                 <button>Show more</button>
                                                 <button>Wish list</button>
-                                                <button class="btn" onclick="AddToCart(@Model[i].BookId)">Add to cart</button>
+                                                <button class="btn" onclick="AddToCart(@Model.Books[i].BookId)">Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
@@ -63,8 +63,15 @@
 
 
         </div>
-        <div class="col-lg-2">
-            FILTER
+        <div class="col-lg-2 col-md-12">
+            <div id="myDropdown" class="dropdown-content">
+                <select name="autors" id="autors" onchange="filterFunction()">
+                    @foreach (var item in Model.Autors)
+                    {
+                        <option value="@item.FirstName.ToLower() @item.LastName.ToLower()">@item.FirstName @item.LastName</option>
+                    }
+                </select>
+            </div>
         </div>
 
     </div>
@@ -73,8 +80,26 @@
 @section JavaScript{
     <script src="~/js/Pagination.js"></script>
     <script>
+
+        function filterFunction() {
+            var removeTab = document.getElementById("main");
+            removeTab.innerHTML = "";
+
+             $.ajax({
+                url: '@Url.ActionLink("SearchBooks", "Book")',
+                data: { autor: $("#autors").val() },
+                method: "get",
+                 success: function () {
+
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }
+
+
         function AddToCart(id) {
-            console.log(id)
             $.ajax({
                  url: '@Url.ActionLink("AddBookToCart", "Book")',
                 data: { bookId: id },
@@ -86,5 +111,7 @@
                 }
             });
         }
+
+
     </script>
 }

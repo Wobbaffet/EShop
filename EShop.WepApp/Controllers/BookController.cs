@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
+using EShop.WepApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,18 +21,44 @@ namespace EShop.WepApp.Controllers
         }
 
         // GET: BooksController
-        public ActionResult Index()
+        public ActionResult Index(List<Book> bs)
         {
-            List<Book> books = uow.RepositoryBook.GetAll();
-            return View("Index", books);
+            BookViewModel bvm = new BookViewModel();
+
+            List<Book> books = new List<Book>();
+            if (bs is null || bs.Count == 0)
+                books = uow.RepositoryBook.GetAll();
+            else
+                books = bs;
+
+            List<Autor> autors = new List<Autor>();
+
+            foreach (var book in uow.RepositoryBook.GetAll())
+            {
+                foreach (var autor in book.Autors)
+                {
+                    if (!autors.Contains(autor))
+                    {
+                        autors.Add(autor);
+                    }
+                }
+            }
+            bvm.Books = books;
+            bvm.Autors = autors;
+            return View("Index", bvm);
         }
 
+        public ActionResult SearchBooks(string autor)
+        {
+            List<Book> books = uow.RepositoryBook.Search(autor);
+            return Index(books);
+        }
 
 
         public ActionResult AddBookToCart(int bookId)
         {
             AddBookToCart(uow.RepositoryBook.Find(b => b.BookId == bookId));
-            return Index();
+            return Index(null);
         }
 
         private void AddBookToCart(Book book)
@@ -56,13 +83,13 @@ namespace EShop.WepApp.Controllers
             }
             else
             {
-            order.OrderItems.Add(new OrderItem { BookId = book.BookId, Book = book, Quantity = 1 });
+                order.OrderItems.Add(new OrderItem { BookId = book.BookId, Book = book, Quantity = 1 });
             }
 
-            order.Total= order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
+            order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
 
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
-           
+
         }
     }
 }

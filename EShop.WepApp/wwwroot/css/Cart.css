@@ -1,18 +1,25 @@
 ﻿
-table{
+table {
     width: 80%;
     margin: auto;
     text-align: center;
 }
 
-table img{
-    width: 100%;
-}
+    table img {
+        width: 100%;
+    }
 
-table td, table th{
-    width: calc(100%/6);
-}
+    table td, table th {
+        width: calc(100%/6);
+    }
 
-td input{
+td input {
     width: 100px;
+}
+
+.total {
+    display: flex;
+    width: 80%;
+    margin: auto;
+    justify-content: space-between;
 }
