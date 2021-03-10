@@ -4,17 +4,14 @@ using EShop.WepApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace EShop.WepApp.Controllers
 {
     public class CustomerController : Controller
     {
-        
+
         private IUnitOfWork uow;
         public CustomerController(IUnitOfWork uow)
         {
@@ -27,7 +24,7 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpGet]
-          public ActionResult SignIn()
+        public ActionResult SignIn()
         {
             return View("SignIn");
         }
@@ -37,7 +34,7 @@ namespace EShop.WepApp.Controllers
         {
             Customer customer = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Password == model.Password);
 
-            if(customer is null)
+            if (customer is null)
             {
                 ModelState.AddModelError(string.Empty, "Wrong credentials");
                 return View();
@@ -48,61 +45,85 @@ namespace EShop.WepApp.Controllers
                 HttpContext.Session.SetInt32("customerId", customer.CustomerId);
                 TempData["logged"] = true;
                 TempData.Keep("logged");
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
-            
+
         }
 
         public ActionResult SignOut()
         {
-            
+
             HttpContext.Session.Clear();
-            TempData["logged"] = false ;
+            TempData["logged"] = false;
             TempData.Keep("logged");
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
         public ActionResult ForgotPassword()
         {
             return View("ForgotPassword");
         }
-        
-        public ActionResult ForgotPassword(string Email)
-        {
-            Customer c = uow.RepostiryCustomer.Find(c => c.Email == Email);
-            
-            return View("ForgotPassword");
-        }
-        
 
         [HttpPost]
-        public ActionResult Create([FromForm]SignUpViewModel model)
+        public ActionResult ForgotPassword(string email)
+        {
+            Random r = new Random();
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
+            string token = r.Next(10000, 100000).ToString();
+            var passwordResetLink = Url.Action("ResetPassword", "Customer", new { Email = c.Email, Token = token }, Request.Scheme);
+            SendEmail2(c, passwordResetLink);
+            return View("ForgotPasswordConfirmation");
+        }
+
+        [HttpGet]
+        public ActionResult ResetPassword(string Email, string Token)
+        {
+            ForgotPasswordViewModel model = new ForgotPasswordViewModel
+            {
+                Email = Email,
+                Token = Token
+            };
+            return View("ResetPassword", model);
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(ForgotPasswordViewModel model)
+        {
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == model.Email);
+            c.Password = model.Password;
+            uow.Commit();
+            return View("SignIn");
+        }
+
+        [HttpPost]
+        public ActionResult Create([FromForm] SignUpViewModel model)
         {
 
-         
+
             Customer customer;
             if (model.CompanyName == null)
             {
 
-             customer = new NaturalPerson()
-            {
-
-                Email=model.Email,
-                Password=model.Password,
-                FirstName=model.FirstName,
-                LastName=model.LastName,
-                PhoneNumber=model.PhoneNumber,
-
-                Address=new Address()
+                customer = new NaturalPerson()
                 {
 
-                    PTT=model.PTT,
-                    CityName=model.CityName,
-                    StreetName=model.StreetName,
-                    StreetNumber=model.StreetNumber
-                    
-                }
-            };
+                    Email = model.Email,
+                    Password = model.Password,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    PhoneNumber = model.PhoneNumber,
+
+                    Address = new Address()
+                    {
+
+                        PTT = model.PTT,
+                        CityName = model.CityName,
+                        StreetName = model.StreetName,
+                        StreetNumber = model.StreetNumber
+
+                    }
+                };
             }
             else
             {
@@ -130,18 +151,18 @@ namespace EShop.WepApp.Controllers
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
             model.VerificationCode = customer.VerificationCode;
-            return View("RegistrationVerification",model);
+            return View("RegistrationVerification", model);
         }
 
-       
+
         public ActionResult Update()
         {
-            int ?id=  HttpContext.Session.GetInt32("customerId");
+            int? id = HttpContext.Session.GetInt32("customerId");
 
             Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == id);
 
             UpdateCustomerViewModel model;
-            if(customer is NaturalPerson)
+            if (customer is NaturalPerson)
             {
                 NaturalPerson np = customer as NaturalPerson;
                 model = new UpdateCustomerViewModel()
@@ -155,8 +176,8 @@ namespace EShop.WepApp.Controllers
                     StreetNumber = np.Address.StreetNumber,
                     Type = CustomerType.NaturalPerson,
                     CustomerId = np.CustomerId,
-                    AddressId=np.AddressId,
-                    
+                    AddressId = np.AddressId,
+
                 };
             }
             else
@@ -171,17 +192,17 @@ namespace EShop.WepApp.Controllers
                     PTT = np.Address.PTT,
                     StreetName = np.Address.StreetName,
                     StreetNumber = np.Address.StreetNumber,
-                    Type=CustomerType.LegalEntity,
-                    CustomerId=np.CustomerId,
-                    AddressId=np.AddressId
+                    Type = CustomerType.LegalEntity,
+                    CustomerId = np.CustomerId,
+                    AddressId = np.AddressId
                 };
             }
 
-            return View("Update",model);
+            return View("Update", model);
         }
-       
+
         [HttpPost]
-        public  ActionResult Update(UpdateCustomerViewModel model)
+        public ActionResult Update(UpdateCustomerViewModel model)
         {
             Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == model.CustomerId);
             if (model.Type == CustomerType.NaturalPerson)
@@ -206,54 +227,55 @@ namespace EShop.WepApp.Controllers
                 lg.Address.PTT = model.PTT;
                 lg.Address.StreetNumber = model.StreetNumber;
             }
-        
+
             uow.Commit();
 
-            return RedirectToAction("Index","Book") ;
+            return RedirectToAction("Index", "Book");
         }
-       
+
         [HttpPost]
-        public ActionResult Verification(long code,SignUpViewModel model)
+        public ActionResult Verification(long code, SignUpViewModel model)
         {
 
-          Customer c = uow.RepostiryCustomer.Find(c => c.Email==model.Email && c.VerificationCode==code);
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.VerificationCode == code);
 
             if (c is null)
             {
                 //neka poruka da nije dobar vcode ! 
-                
-                return View("RegistrationVerification",model);
+
+                return View("RegistrationVerification", model);
             }
             c.Status = true;
-            c.VerificationCode =1;
+            c.VerificationCode = 1;
             uow.Commit();
 
             return SignIn();
         }
 
-       
+
         public ActionResult SendCodeAgain(SignUpViewModel model)
         {
-            Customer customer = uow.RepostiryCustomer.Find(c=>c.Email==model.Email);
+            Customer customer = uow.RepostiryCustomer.Find(c => c.Email == model.Email);
 
             SendEmail(customer);
 
             uow.Commit();
 
-          
-           //ovdje treba da ga obavestimo da mu je poslat code ! 
 
-            return View("RegistrationVerification",model);
+            //ovdje treba da ga obavestimo da mu je poslat code ! 
+
+            return View("RegistrationVerification", model);
         }
 
 
-        private void SendEmail(Customer customer) {
+        private void SendEmail(Customer customer)
+        {
 
             Random generateCode = new Random();
             customer.VerificationCode = generateCode.Next(1000, 10000);
             SmtpClient smtp = new SmtpClient();
 
-          
+
 
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
@@ -261,7 +283,7 @@ namespace EShop.WepApp.Controllers
 
             smtp.UseDefaultCredentials = false;
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com","pitajbabu406.");
+            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com", "pitajbabu406.");
 
             MailMessage message = new MailMessage();
 
@@ -277,7 +299,43 @@ namespace EShop.WepApp.Controllers
                 smtp.Send(message);
 
             }
-            catch (Exception )
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        private void SendEmail2(Customer customer, string url)
+        {
+
+            SmtpClient smtp = new SmtpClient();
+
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.EnableSsl = true;
+
+            smtp.UseDefaultCredentials = false;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com", "pitajbabu406.");
+
+            MailMessage message = new MailMessage();
+
+            message.Subject = "Reset password link";
+            message.Body = $"Reset password link: {url}";
+
+
+            message.To.Add(customer.Email);
+            message.From = new MailAddress("dragojlo406@gmail.com");
+
+            try
+            {
+                smtp.Send(message);
+
+            }
+            catch (Exception)
             {
 
                 throw;
