@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,13 @@ namespace EShop.WepApp.Fillters
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
+            if (context.HttpContext.Session.GetInt32("customerId") != null)
+            {
+            context.HttpContext.Response.Redirect("/book/index");
+              
+            }
+
             
-            base.OnActionExecuted(context);
         }
     }
 }

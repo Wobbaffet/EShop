@@ -1,6 +1,7 @@
 using EShop.Data.UnitOfWork;
 using EShop.Data.UnitOfWorkFolder;
 using EShop.Model;
+using EShop.WepApp.Fillters;
 using EShop.WepApp.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,7 +31,6 @@ namespace EShop.WepApp
             services.AddDistributedMemoryCache();
             services.AddSession(option =>
             {
-
                 option.IdleTimeout = TimeSpan.FromMinutes(10);
             });
 
@@ -39,6 +39,7 @@ namespace EShop.WepApp
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
             services.AddDbContext<ShopContext>();
+            services.AddScoped<LoggedInFillter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +69,7 @@ namespace EShop.WepApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Book}/{action=Index}/{id?}");
             });
         }
     }

@@ -31,6 +31,7 @@
     .list-group-item img {
         width: 100%;
         object-fit: cover;
+        height: 120px;
     }
 
     .list-group-item .text {

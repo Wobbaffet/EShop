@@ -55,7 +55,7 @@
             <!-- 2 -->
             <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
                 <div id="cart">
-                    <a id="cart_number" href="spisak_korpa.html"><i class="fas fa-shopping-cart">0</i></a>
+                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart">0</i></a>
                 </div>
                 
                 <div id="wish">
@@ -91,7 +91,7 @@
         </nav>
     </div>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" id="main">
             @RenderBody()
         </main>
     </div>
@@ -106,6 +106,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/ComboBox.js"></script>
     @RenderSection("Scripts", required: false)
-    @RenderSection("Pagination", required: false)
+    @RenderSection("JavaScript", required: false)
 </body>
 </html>
