@@ -40,6 +40,8 @@ namespace EShop.WepApp
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
             services.AddDbContext<ShopContext>();
             services.AddScoped<LoggedInFillter>();
+            services.AddScoped<PurchaseFillter>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

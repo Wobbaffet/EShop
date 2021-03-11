@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
+using EShop.WepApp.Fillters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,7 @@ namespace EShop.WepApp.Controllers
 
             Order order = JsonSerializer.Deserialize<Order>(orderByte);
             order.OrderItems.Find(oi => oi.BookId == id).Quantity = value;
+            order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
         }
 
@@ -43,7 +45,7 @@ namespace EShop.WepApp.Controllers
             RemoveFromCart(bookid);
         }
 
-
+        [PurchaseFillter]
         public ActionResult Purchase()
         {
             byte[] orderByte = HttpContext.Session.Get("order");
@@ -51,7 +53,8 @@ namespace EShop.WepApp.Controllers
             Order order = JsonSerializer.Deserialize<Order>(orderByte);
 
             order.Date = DateTime.Now;
-            order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
+
+
             order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
             uow.RepositoryOrder.Add(order);
             uow.Commit();

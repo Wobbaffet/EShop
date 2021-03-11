@@ -71,9 +71,13 @@ else
                     alert("Error!");
                 }
             });
-           // document.getElementById(`totalItemPrice+${id}`).innerHTML = price*value;
 
-            document.getElementById("totalItemPrice-" + id).innerHTML = price;
+            var yourSelect = document.getElementById(id);
+            alert(yourSelect.options[yourSelect.selectedIndex].value)
+            var selectedOption =parseInt( yourSelect.options[yourSelect.selectedIndex].value);
+
+
+            document.getElementById("totalItemPrice-" + id).innerHTML = price * selectedOption;
             var table = document.getElementById("order");
 
            

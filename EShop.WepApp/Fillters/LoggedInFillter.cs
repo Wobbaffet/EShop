@@ -20,15 +20,25 @@ namespace EShop.WepApp.Fillters
             }
 
         }*/
-        public override void OnActionExecuted(ActionExecutedContext context)
+      /*  public override void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.HttpContext.Session.GetInt32("customerId") != null)
             {
-            context.HttpContext.Response.Redirect("/book/index");
+              context.HttpContext.Response.Redirect("/book/index");
                
             }
 
             
+        }*/
+
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (context.HttpContext.Session.GetInt32("customerId") != null)
+            {
+                context.HttpContext.Response.Redirect("/book/index");
+                context.Result = new EmptyResult();
+            }
         }
     }
 }
