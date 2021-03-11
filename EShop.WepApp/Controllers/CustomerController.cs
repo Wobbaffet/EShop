@@ -5,11 +5,8 @@ using EShop.WepApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace EShop.WepApp.Controllers
 {
@@ -66,6 +63,42 @@ namespace EShop.WepApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View("ForgotPassword");
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(string email)
+        {
+            Random r = new Random();
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
+            string token = r.Next(10000, 100000).ToString();
+            var passwordResetLink = Url.Action("ResetPassword", "Customer", new { Email = c.Email, Token = token }, Request.Scheme);
+            SendEmail2(c, passwordResetLink);
+            return View("ForgotPasswordConfirmation");
+        }
+
+        [HttpGet]
+        public ActionResult ResetPassword(string Email, string Token)
+        {
+            ForgotPasswordViewModel model = new ForgotPasswordViewModel
+            {
+                Email = Email,
+                Token = Token
+            };
+            return View("ResetPassword", model);
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(ForgotPasswordViewModel model)
+        {
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == model.Email);
+            c.Password = model.Password;
+            uow.Commit();
+            return View("SignIn");
+        }
 
         [HttpPost]
 
@@ -76,7 +109,6 @@ namespace EShop.WepApp.Controllers
             {
                 customer = new NaturalPerson()
                 {
-
                     Email = model.Email,
                     Password = model.Password,
                     FirstName = model.FirstName,
@@ -124,6 +156,83 @@ namespace EShop.WepApp.Controllers
         }
 
 
+        public ActionResult Update()
+        {
+            int? id = HttpContext.Session.GetInt32("customerId");
+
+            Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == id);
+
+            UpdateCustomerViewModel model;
+            if (customer is NaturalPerson)
+            {
+                NaturalPerson np = customer as NaturalPerson;
+                model = new UpdateCustomerViewModel()
+                {
+                    FirstName = np.FirstName,
+                    LastName = np.LastName,
+                    PhoneNumber = np.PhoneNumber,
+                    CityName = np.Address.CityName,
+                    PTT = np.Address.PTT,
+                    StreetName = np.Address.StreetName,
+                    StreetNumber = np.Address.StreetNumber,
+                    Type = CustomerType.NaturalPerson,
+                    CustomerId = np.CustomerId,
+                    AddressId = np.AddressId,
+
+                };
+            }
+            else
+            {
+                LegalEntity np = customer as LegalEntity;
+                model = new UpdateCustomerViewModel()
+                {
+                    CompanyName = np.CompanyName,
+                    TIN = np.TIN,
+                    PhoneNumber = np.PhoneNumber,
+                    CityName = np.Address.CityName,
+                    PTT = np.Address.PTT,
+                    StreetName = np.Address.StreetName,
+                    StreetNumber = np.Address.StreetNumber,
+                    Type = CustomerType.LegalEntity,
+                    CustomerId = np.CustomerId,
+                    AddressId = np.AddressId
+                };
+            }
+
+            return View("Update", model);
+        }
+
+        [HttpPost]
+        public ActionResult Update(UpdateCustomerViewModel model)
+        {
+            Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == model.CustomerId);
+            if (model.Type == CustomerType.NaturalPerson)
+            {
+                NaturalPerson np = customer as NaturalPerson;
+                np.FirstName = model.FirstName;
+                np.LastName = model.LastName;
+                np.PhoneNumber = model.PhoneNumber;
+                np.Address.CityName = model.CityName;
+                np.Address.StreetName = model.StreetName;
+                np.Address.PTT = model.PTT;
+                np.Address.StreetNumber = model.StreetNumber;
+            }
+            else
+            {
+                LegalEntity lg = customer as LegalEntity;
+                lg.CompanyName = model.CompanyName;
+                lg.TIN = model.TIN;
+                lg.PhoneNumber = model.PhoneNumber;
+                lg.Address.CityName = model.CityName;
+                lg.Address.StreetName = model.StreetName;
+                lg.Address.PTT = model.PTT;
+                lg.Address.StreetNumber = model.StreetNumber;
+            }
+
+            uow.Commit();
+
+            return RedirectToAction("Index", "Book");
+        }
 
 
         [HttpPost]
@@ -190,6 +299,42 @@ namespace EShop.WepApp.Controllers
             try
             {
                 smtp.Send(message);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        private void SendEmail2(Customer customer, string url)
+        {
+
+            SmtpClient smtp = new SmtpClient();
+
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.EnableSsl = true;
+
+            smtp.UseDefaultCredentials = false;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com", "pitajbabu406.");
+
+            MailMessage message = new MailMessage();
+
+            message.Subject = "Reset password link";
+            message.Body = $"Reset password link: {url}";
+
+
+            message.To.Add(customer.Email);
+            message.From = new MailAddress("dragojlo406@gmail.com");
+
+            try
+            {
+                smtp.Send(message);
+
             }
             catch (Exception)
             {
