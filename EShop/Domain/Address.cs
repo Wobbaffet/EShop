@@ -10,7 +10,7 @@ namespace EShop.Model.Domain
         public string StreetName { get; set; }
         public string StreetNumber { get; set; }
         public string CityName { get; set; }
-        public int PTT { get; set; } 
-        public Customer Customer { get; set; }
+        public int PTT { get; set; }
+        /*public Customer Customer { get; set; }*/
     }
 }

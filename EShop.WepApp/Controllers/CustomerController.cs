@@ -118,10 +118,10 @@ namespace EShop.WepApp.Controllers
                     Address = new Address()
                     {
 
-                        PTT = model.PTT,
+                       /* PTT = model.PTT,
                         CityName = model.CityName,
                         StreetName = model.StreetName,
-                        StreetNumber = model.StreetNumber
+                        StreetNumber = model.StreetNumber*/
 
                     }
                 };
@@ -139,11 +139,11 @@ namespace EShop.WepApp.Controllers
                     Address = new Address()
                     {
 
-                        PTT = model.PTT,
+                       /* PTT = model.PTT,
                         CityName = model.CityName,
                         StreetName = model.StreetName,
                         StreetNumber = model.StreetNumber
-
+*/
                     }
                 };
             }
@@ -177,8 +177,8 @@ namespace EShop.WepApp.Controllers
                     StreetNumber = np.Address.StreetNumber,
                     Type = CustomerType.NaturalPerson,
                     CustomerId = np.CustomerId,
-                    AddressId = np.AddressId,
-
+/*                    AddressId = np.AddressId,
+*/
                 };
             }
             else
@@ -195,7 +195,7 @@ namespace EShop.WepApp.Controllers
                     StreetNumber = np.Address.StreetNumber,
                     Type = CustomerType.LegalEntity,
                     CustomerId = np.CustomerId,
-                    AddressId = np.AddressId
+                    /*AddressId = np.AddressId*/
                 };
             }
 
