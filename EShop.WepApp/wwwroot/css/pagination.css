@@ -1,6 +1,4 @@
-﻿/* BOOKS */
-
-
+﻿
 /*body {
     font-family: 'Roboto', sans-serif;
     display: flex;
@@ -31,7 +29,6 @@
     .list-group-item img {
         width: 100%;
         object-fit: cover;
-        height: 120px;
     }
 
     .list-group-item .text {
@@ -58,7 +55,6 @@
     top: 0;
     opacity: 0;
     background: #000;
-    /*transform: all 1s ease;*/
     height: 100%;
     left: 0;
     color: #fff;
