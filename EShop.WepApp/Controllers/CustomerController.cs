@@ -28,7 +28,6 @@ namespace EShop.WepApp.Controllers
         [HttpGet]
         public async Task<ActionResult> SignUp()
         {
-            var res1 = await Services.GetBooksCS();
             var res = await Services.GetView();
             return View(res);
         }

@@ -29,7 +29,7 @@ namespace EShop.WepApp.Services
             return await JsonSerializer.DeserializeAsync<string>(responseStream);
         }
 
-        public async Task<string> GetBooksCS()
+        public async Task<string> GetBooksFromAPI()
         {
             var response = await Client.GetStringAsync("volumes?q=harrypotter&fields=items.volumeInfo");
 
