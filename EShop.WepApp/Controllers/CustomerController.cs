@@ -104,6 +104,13 @@ namespace EShop.WepApp.Controllers
 
         public ActionResult Create([FromForm] SignUpViewModel model)
         {
+            Customer exist = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Status == false);
+
+            if(!(exist is null))
+            {
+                uow.RepostiryCustomer.Delete(exist);
+            }
+
             Customer customer;
             if (model.CompanyName == null)
             {
@@ -118,10 +125,10 @@ namespace EShop.WepApp.Controllers
                     Address = new Address()
                     {
 
-                       /* PTT = model.PTT,
-                        CityName = model.CityName,
-                        StreetName = model.StreetName,
-                        StreetNumber = model.StreetNumber*/
+                        PTT = model.Address.PTT,
+                        CityName = model.Address.CityName,
+                        StreetName = model.Address.StreetName,
+                        StreetNumber = model.Address.StreetNumber
 
                     }
                 };
@@ -139,11 +146,10 @@ namespace EShop.WepApp.Controllers
                     Address = new Address()
                     {
 
-                       /* PTT = model.PTT,
-                        CityName = model.CityName,
-                        StreetName = model.StreetName,
-                        StreetNumber = model.StreetNumber
-*/
+                        PTT = model.Address.PTT,
+                        CityName = model.Address.CityName,
+                        StreetName = model.Address.StreetName,
+                        StreetNumber = model.Address.StreetNumber
                     }
                 };
             }
@@ -152,7 +158,7 @@ namespace EShop.WepApp.Controllers
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
             model.VerificationCode = customer.VerificationCode;
-            return View("RegistrationVerification", model);
+            return View("RegistrationVerification",model.Email);
         }
 
 
@@ -236,28 +242,31 @@ namespace EShop.WepApp.Controllers
 
 
         [HttpPost]
-        public ActionResult Verification(long code, SignUpViewModel model)
+        public ActionResult Verification(long code,string email)
         {
 
-            Customer c = uow.RepostiryCustomer.Find(c => c.Email == model.Email && model.VerificationCode == code);
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
 
-            if (c is null)
+            if (c.VerificationCode == code)
             {
-                //neka poruka da nije dobar vcode ! 
-
-                return View("RegistrationVerification", model);
+                c.Status = true;
+                c.VerificationCode = 1;
+                uow.Commit();
+                return SignIn();
             }
-            c.Status = true;
-            c.VerificationCode = 1;
-            uow.Commit();
+            else
+            {
+                
+                return View("RegistrationVerification",email);
+            }
 
-            return SignIn();
         }
 
 
-        public ActionResult SendCodeAgain(SignUpViewModel model)
+        [HttpPost]
+        public void  SendCodeAgain(string email)
         {
-            Customer customer = uow.RepostiryCustomer.Find(c => c.Email == model.Email);
+            Customer customer = uow.RepostiryCustomer.Find(c => c.Email == email);
 
             SendEmail(customer);
 
@@ -266,7 +275,7 @@ namespace EShop.WepApp.Controllers
 
             //ovdje treba da ga obavestimo da mu je poslat code ! 
 
-            return View("RegistrationVerification", model);
+            /*return View("RegistrationVerification", model);*/
         }
 
 
@@ -274,7 +283,9 @@ namespace EShop.WepApp.Controllers
         {
 
             Random generateCode = new Random();
+            
             customer.VerificationCode = generateCode.Next(1000, 10000);
+
             SmtpClient smtp = new SmtpClient();
 
 

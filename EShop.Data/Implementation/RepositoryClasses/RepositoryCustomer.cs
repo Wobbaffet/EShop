@@ -22,6 +22,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
             shopContext.Add(entity);
         }
 
+        public void Delete(Customer customer)
+        {
+            shopContext.Customer.Remove(customer);
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();

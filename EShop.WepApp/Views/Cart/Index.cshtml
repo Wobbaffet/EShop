@@ -37,6 +37,7 @@ else
                                 if (i + 1 == item.Quantity)
                                 {
                                     <option selected>@(i+1)</option>
+                                    
                                 }
                                 else
                                 {
@@ -53,7 +54,7 @@ else
     </table>
     <div class="total">
         <a href="@Url.Action("Purchase","Cart")" class="btn btn-success">Purchase</a>
-        <p id="totalPrice">Total price <span>@Model.Total</span> RSD</p>
+        <p id="totalPrice">Total price <span id="totalFinalPrice">@Model.Total</span> RSD</p>
     </div>
 }
 
@@ -70,17 +71,20 @@ else
                     alert("Error!");
                 }
             });
-            document.getElementById(`totalItemPrice+${id}`).innerHTML = price*value;
+           // document.getElementById(`totalItemPrice+${id}`).innerHTML = price*value;
 
+            document.getElementById("totalItemPrice-" + id).innerHTML = price;
             var table = document.getElementById("order");
 
+           
             var total =0;
             for (var i = 1; i< table.rows.length; i++) {
 
-                total = total + parseInt(table.rows[i].cells[4].innerHTML,10);
-
+                total+=parseInt(table.rows[i].cells[4].innerHTML,10);
+                console.log(table.rows[i].cells[4].innerHTML + "tekst");
             }
-            document.getElementById("totalPrice").innerHTML = total;
+            console.log(total);
+            document.getElementById("totalFinalPrice").innerHTML = total;
         }
 
         function removeItemFromCart(id) {
