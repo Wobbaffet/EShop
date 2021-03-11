@@ -5,7 +5,7 @@
 
 
 
-<div class="styled-select select marginaForma">
+<div class="styled-select select" style="margin-bottom: 20px;">
     <select onchange="customerChange();" id="comboBox">
         <option value="Natural Person">Natural Person</option>
         <option value="Legal entity">Legal entity</option>
@@ -15,7 +15,7 @@
 
     <form method="post" asp-controller="Customer" asp-action="Create">
 
-        <div class="row" id="div1">
+        <div class="row" id="div1" style="margin-bottom: 20px;">
             <div class="col-xs-6 col-md-6">
                 <input type="text" class="form-control input-lg" placeholder="First Name" asp-for="FirstName" />
             </div>
@@ -25,7 +25,7 @@
         </div>
 
 
-        <div class="row" id="div2" style="display:none">
+        <div class="row" id="div2" style="display:none" style="margin-bottom: 20px;">
             <div class="col-xs-6 col-md-6">
                 <input type="text" class="form-control input-lg" placeholder="Company name" asp-for="CompanyName" />
             </div>
@@ -36,7 +36,7 @@
 
 
 
-        <div class="row marginaForma">
+        <div class="row " style="margin-bottom: 20px;">
             <div class="col-xs-6 col-md-6">
                 <input type="text" class="form-control input-lg" placeholder="Email" asp-for="Email" />
             </div>
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="row marginaForma">
+        <div class="row " style="margin-bottom: 20px;">
             <div class="col-xs-6 col-md-6">
 
                 <input type="text" class="form-control input-lg" placeholder="City name" asp-for="CityName" />
@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <div class="row marginaForma">
+        <div class="row" style="margin-bottom: 20px;">
             <div class="col-xs-6 col-md-6">
                 <input type="text" class="form-control input-lg" placeholder="Street Name" asp-for="StreetName" />
             </div>
@@ -65,7 +65,7 @@
         </div>
 
 
-        <div class="row marginaForma">
+        <div class="row marginaForma" style="margin-bottom: 20px;">
             <div class="col-xs-6 col-md-6">
                 <input type="password" class="form-control input-lg" placeholder="Password" asp-for="Password" />
             </div>

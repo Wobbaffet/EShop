@@ -29,6 +29,9 @@ namespace EShop.Model
             .WithOne(c => c.Address)
             .HasForeignKey<Customer>(c => c.AddressId);
 
+          //  modelBuilder.Entity<Customer>().OwnsOne(c => c.Address);
+
+
             modelBuilder.Entity<Order>().OwnsMany(o => o.OrderItems);
 
             modelBuilder.Entity<Book>().HasCheckConstraint("NotLessThenZero", "[Supplies] >= 0");
