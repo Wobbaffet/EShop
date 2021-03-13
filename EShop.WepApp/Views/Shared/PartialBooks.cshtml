@@ -19,44 +19,44 @@
             </nav>
 
             <div id="loop">
-                @for (int i = 0; i < Model.Books.Count; i++)
-                {
-                    <div class="row">
-                        @for (int j = 0; j < 3; j++)
-                        {
-                            @if (i < Model.Books.Count)
+                @*@for (int i = 0; i < Model.Books.Count; i++)
+                    {
+                        <div class="row">
+                            @for (int j = 0; j < 3; j++)
                             {
-                                <div class="list-group col-lg-3">
-                                    <div class="list-group-item active">
-                                        <div class="content">
-                                            <img src="@("~/img/" + Model.Books[i].Image)" asp-append-version="true" alt="Alternative Text">
-                                            <div class="text">
-                                                <p>
-                                                    @Model.Books[i].Title <br>
-                                                    @Model.Books[i].Price RSD
-                                                </p>
+                                @if (i < Model.Books.Count)
+                                {
+                                    <div class="list-group col-lg-3">
+                                        <div class="list-group-item active">
+                                            <div class="content">
+                                                <img src="@("~/img/" + Model.Books[i].Image)" asp-append-version="true" alt="Alternative Text">
+                                                <div class="text">
+                                                    <p>
+                                                        @Model.Books[i].Title <br>
+                                                        @Model.Books[i].Price RSD
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="description">
-                                            <div class="d-text">
-                                                <button>Show more</button>
-                                                <button>Wish list</button>
-                                                <button class="btn" onclick="AddToCart(@Model.Books[i].BookId)">Add to cart</button>
+                                            <div class="description">
+                                                <div class="d-text">
+                                                    <button>Show more</button>
+                                                    <button>Wish list</button>
+                                                    <button class="btn" onclick="AddToCart(@Model.Books[i].BookId)">Add to cart</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
+                                else
+                                {
+                                    <div class="list-group col-lg-3">
+                                    </div>
+                                }
+                                i++;
                             }
-                            else
-                            {
-                                <div class="list-group col-lg-3">
-                                </div>
-                            }
-                            i++;
-                        }
-                        @{i--;}
-                    </div>
-                }
+                            @{i--;}
+                        </div>
+                    }*@
             </div>
         </div>
         <div class="col-lg-2 col-md-12">
@@ -73,80 +73,146 @@
 </div>
 
 @section JavaScript{
-    <script src="~/js/Pagination.js"></script>
-    <script>
-        function partialLoad() {
-            var numberOfItems = $("#loop .list-group").length;
-            var limitPerPage = 6;
+    @*<script src="~/js/Pagination.js"></script>*@
+<script>
 
-            $(`#loop .list-group:gt(${limitPerPage - 1})`).hide();
-            var totalPages = Math.round(numberOfItems / limitPerPage);
+    var limitPerPage = 6;
+    var totalPages;
 
-            //inserted first item
-            $('.pagination').append(`<li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>`);
-            //loop throught other items
-            for (var i = 2; i <= totalPages; i++) {
-                $('.pagination').append(`<li class="page-item"><a class="page-link" href="javascript:void(0)">${i}</a></li>`);
+    function GetNumberOfBooks() {
+        $.ajax({
+            url: '@Url.ActionLink("NubmerOfBooks", "Book")',
+            data: {},
+            method: "get",
+            success: function (data) {
+                partialLoad(data);
+            },
+            error: function () {
+                alert("Error!");
             }
-            //insert right arrow
-            $('.pagination').append(`<li id='next-page' class="page-item-arrow"><a class="page-link" href="javascript:void(0)" aria-label="Next">    <span aria-hidden="true">&raquo;</span></a></li>`);
+        });
+    }
+    GetNumberOfBooks();
+    function pastePicture(image, title, price, bookId) {
+        return text =`<div class="list-group col-lg-3">
+                        <div class="list-group-item active">
+                            <div class="content">
+                                <img src="img/${image}" asp-append-version="true" alt="Alternative Text">
+                                <div class="text">
+                                    <p>
+                                        ${title} <br>
+                                        ${price} RSD
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="description">
+                                <div class="d-text">
+                                    <button>Show more</button>
+                                    <button>Wish list</button>
+                                    <button class="btn" onclick="${AddToCart(bookId)}">Add to cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+    }
 
-            $('.pagination li.page-item').on("click", function () {
-                if ($(this).hasClass("active"))
-                    return false;
-                else {
-                    var currentPage = $(this).index();
-                    $('.pagination li').removeClass("active");
-                    $(this).addClass("active")
-                    $(`#loop .list-group`).hide();
-                    var grandTotal = limitPerPage * currentPage;
 
-                    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
-                        $(`#loop .list-group:eq(${i})`).show();
-                    }
-                }
-            });
-
-            $('#next-page').on("click", function () {
-                var currentPage = $('.pagination li.active').index();
-                if (currentPage === totalPages)
-                    return false;
-                else {
-                    currentPage++;
-                    $('.pagination li').removeClass("active");
-                    $(`#loop .list-group`).hide();
-
-                    var grandTotal = limitPerPage * currentPage;
-
-                    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
-                        $(`#loop .list-group:eq(${i})`).show();
-                    }
-
-                    $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
-                }
-            });
-
-            $('#previous-page').on("click", function () {
-                var currentPage = $('.pagination li.active').index();
-                if (currentPage === 1)
-                    return false;
-                else {
-                    currentPage--;
-                    $('.pagination li').removeClass("active");
-                    $(`#loop .list-group`).hide();
-
-                    var grandTotal = limitPerPage * currentPage;
-
-                    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
-                        $(`#loop .list-group:eq(${i})`).show();
-                    }
-
-                    $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
-                }
-            });
+    //ovde pozivam GetSixBooks
+    function partialLoad(numberOfBooks) {
+        totalPages = Math.ceil(numberOfBooks / limitPerPage);
+        //inserted first item
+        $('.pagination').append(`<li class="page-item active"><a name="pagiNum" class="page-link" href="javascript:void(0)">1</a></li>`);
+        //loop throught other items
+        for (var i = 2; i <= totalPages; i++) {
+            $('.pagination').append(`<li class="page-item"><a name="pagiNum" class="page-link" href="javascript:void(0)">${i}</a></li>`);
         }
+        //insert right arrow
+        $('.pagination').append(`<li id='next-page' class="page-item-arrow"><a class="page-link" href="javascript:void(0)" aria-label="Next">    <span aria-hidden="true">&raquo;</span></a></li>`);
 
-        function filterFunction() {
+        
+
+        GetSixBooks(1);
+    }
+
+    function dodajFunkcije() {
+        $(document).on("click", "a[name='pagiNum']", function (e) {
+            clickOnNumber()
+        });
+
+        $(document).on("click", "#next-page", function (e) {
+            var currentPage = $('.pagination li.active').index();
+            if (currentPage === totalPages)
+                return false;
+            else {
+                currentPage++;
+                $('.pagination li').removeClass("active");
+                GetSixBooks(currentPage);
+                $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
+            }
+        });
+
+        $('#previous-page').on("click", function () {
+            var currentPage = $('.pagination li.active').index();
+            if (currentPage === 1)
+                return false;
+            else {
+                currentPage--;
+                $('.pagination li').removeClass("active");
+                GetSixBooks(currentPage);
+                $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
+            }
+        });
+    }
+    window.onload = dodajFunkcije();
+
+    function GetSixBooks(pageNumber) {
+         $.ajax({
+            url: '@Url.ActionLink("ReturnSixBooks", "Book")',
+             data: { pagiNumber: pageNumber},
+            method: "get",
+            success: function (data) {
+                $("#loop").html("");
+                for (var i = 0; i < limitPerPage; i++) {
+                    var $div = $("<div>", { "class": "row" });
+                    for (var j = 0; j < 3; j++) {
+                        if (i < data.length) {
+                            $div.append(pastePicture(data[i].image, data[i].title, data[i].price, data[i].bookId));
+                        }
+                        else {
+                            $div.append(`<div class="list-group col-lg-3"></div>`);
+                        }
+                        i++;
+                    }
+                    i--;
+                    $("#loop").append($div);
+                }
+            },
+            error: function () {
+                alert("Error!");
+            }
+        });
+    }
+
+    
+    function clickOnNumber() {
+        $('.pagination li.page-item').on("click", function () {
+            if ($(this).hasClass("active"))
+                return false;
+            else {
+                var currentPage = $(this).index();
+                $('.pagination li').removeClass("active");
+                $(this).addClass("active");
+                GetSixBooks(currentPage);
+            }
+        });
+    }
+
+
+    
+
+
+
+    function filterFunction() {
             var nameLastName = $("#autors").val();
             $.ajax({
                 url: '@Url.ActionLink("SearchBooks", "Book")',
@@ -171,7 +237,13 @@
         }
 
 
-        function AddToCart(id) {
+
+
+
+
+
+
+    function AddToCart(id) {
             $.ajax({
                  url: '@Url.ActionLink("AddBookToCart", "Book")',
                 data: { bookId: id },
@@ -183,5 +255,5 @@
                 }
             });
         }
-    </script>
+</script>
 }

@@ -108,5 +108,23 @@ namespace EShop.WepApp.Controllers
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
 
         }
+
+       [HttpGet]
+        public int NubmerOfBooks()
+        {
+            return uow.RepositoryBook.GetAll().Count;
+        }
+
+        [HttpGet]
+        public List<Book> ReturnSixBooks(int pagiNumber)
+        {
+            int max = NubmerOfBooks();
+            if (pagiNumber * 6 > max)
+            {
+                return uow.RepositoryBook.GetAll().GetRange(pagiNumber * 6 - 6, 6 - pagiNumber * 6 + max);
+            }
+            return uow.RepositoryBook.GetAll().GetRange(pagiNumber * 6 - 6, 6);
+        }
+
     }
 }
