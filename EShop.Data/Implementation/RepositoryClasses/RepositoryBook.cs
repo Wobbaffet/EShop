@@ -41,6 +41,8 @@ namespace EShop.Data.Implementation.RepositoryClasses
         public List<Book> Search(string autor)
         {
             List<Book> books = GetAll();
+            if (autor == "all")
+                return books;
             List<Book> booksWithThatAutor = new List<Book>();
             foreach (var item in books)
             {

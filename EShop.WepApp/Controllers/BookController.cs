@@ -23,36 +23,34 @@ namespace EShop.WepApp.Controllers
         // GET: BooksController
         public ActionResult Index(/*List<Book> bs*/)
         {
-            BookViewModel bvm = new BookViewModel();
+            //BookViewModel bvm = new BookViewModel();
 
-            //List<Book> books = new List<Book>();
-            //if (bs is null || bs.Count == 0)
-            //    books = uow.RepositoryBook.GetAll();
-            //else
-            //    books = bs;
+            ////List<Book> books = new List<Book>();
+            ////if (bs is null || bs.Count == 0)
+            ////    books = uow.RepositoryBook.GetAll();
+            ////else
+            ////    books = bs;
 
-            List<Book> books = uow.RepositoryBook.GetAll();
-            List<Autor> autors = new List<Autor>();
+            //List<Book> books = uow.RepositoryBook.GetAll();
+            //List<Autor> autors = new List<Autor>();
 
-            foreach (var book in uow.RepositoryBook.GetAll())
-            {
-                foreach (var autor in book.Autors)
-                {
-                    if (!autors.Contains(autor))
-                    {
-                        autors.Add(autor);
-                    }
-                }
-            }
-            bvm.Books = books;
-            bvm.Autors = autors;
-            return View("PartialBooks", bvm);
+            //foreach (var book in uow.RepositoryBook.GetAll())
+            //{
+            //    foreach (var autor in book.Autors)
+            //    {
+            //        if (!autors.Contains(autor))
+            //        {
+            //            autors.Add(autor);
+            //        }
+            //    }
+            //}
+            //bvm.Books = books;
+            //bvm.Autors = autors;
+            return View("PartialBooks");
         }
 
-        public ActionResult SearchBooks(string autor)
+        public List<Autor> GetAllAutors()
         {
-            BookViewModel bvm = new BookViewModel();
-            List<Book> books = uow.RepositoryBook.Search(autor);
             List<Autor> autors = new List<Autor>();
 
             foreach (var book in uow.RepositoryBook.GetAll())
@@ -61,14 +59,13 @@ namespace EShop.WepApp.Controllers
                 {
                     if (!autors.Contains(a))
                     {
+                        a.Books.Clear();
                         autors.Add(a);
                     }
                 }
             }
-            bvm.Books = books;
-            bvm.Autors = autors;
-
-            return PartialView("PartialBooks", bvm);
+            
+            return autors;
         }
 
 
@@ -109,7 +106,7 @@ namespace EShop.WepApp.Controllers
 
         }
 
-       [HttpGet]
+        [HttpGet]
         public int NubmerOfBooks()
         {
             return uow.RepositoryBook.GetAll().Count;
@@ -119,11 +116,31 @@ namespace EShop.WepApp.Controllers
         public List<Book> ReturnSixBooks(int pagiNumber)
         {
             int max = NubmerOfBooks();
+            List<Book> books = new List<Book>();
             if (pagiNumber * 6 > max)
             {
-                return uow.RepositoryBook.GetAll().GetRange(pagiNumber * 6 - 6, 6 - pagiNumber * 6 + max);
+                books = uow.RepositoryBook.GetAll().GetRange(pagiNumber * 6 - 6, 6 - pagiNumber * 6 + max);
             }
-            return uow.RepositoryBook.GetAll().GetRange(pagiNumber * 6 - 6, 6);
+            else
+            {
+                books = uow.RepositoryBook.GetAll().GetRange(pagiNumber * 6 - 6, 6);
+            }
+            foreach (var book in books)
+            {
+                book.Autors.Clear();
+            }
+
+            return books;
+        }
+
+        public List<Book> SearchBooks(string autor)
+        {
+            List<Book> books = uow.RepositoryBook.Search(autor);
+            foreach (var item in books)
+            {
+                item.Autors.Clear();
+            }
+            return books;
         }
 
     }
