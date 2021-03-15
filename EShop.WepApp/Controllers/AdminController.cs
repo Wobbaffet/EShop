@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EShop.Data.UnitOfWork;
+using EShop.WepApp.APIHelpers;
+using EShop.WepApp.Services;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +11,20 @@ namespace EShop.WepApp.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Index()
+        private IUnitOfWork uow;
+
+        public EShopServices Services { get; }
+
+        public AdminController(IUnitOfWork uow, EShopServices services)
         {
-            return View();
+            this.uow = uow;
+            Services = services;
+        }
+
+        public async Task<IActionResult> Index(string name)
+        {
+            MainClass model = await Services.GetBooksFromAPI(name);
+            return View("Index", model);
         }
     }
 }

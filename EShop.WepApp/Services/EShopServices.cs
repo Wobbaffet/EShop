@@ -29,13 +29,14 @@ namespace EShop.WepApp.Services
             return await JsonSerializer.DeserializeAsync<string>(responseStream);
         }
 
-        public async Task<string> GetBooksFromAPI()
+        public async Task<MainClass> GetBooksFromAPI(string name)
         {
-            var response = await Client.GetStringAsync("volumes?q=harrypotter&fields=items.volumeInfo");
+            if (name == null)
+                name = "ASP.NET";
 
-            MainClass i = JsonConvert.DeserializeObject<MainClass>(response);
-
-            return i.items[0].volumeInfo.description;
+            var response = await Client.GetStringAsync($"volumes?q={name}&fields=items.volumeInfo");
+            
+            return JsonConvert.DeserializeObject<MainClass>(response);
         }
     }
 }

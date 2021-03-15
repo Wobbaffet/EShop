@@ -1,4 +1,133 @@
-﻿@{
+﻿@model MainClass
+@{
     Layout = "_LayoutAdmin";
 }
 
+<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
+    <div class="input-group mb-3">
+        <input id="search-bar" type="text" class="form-control" placeholder="Recipient's username"
+               aria-label="Book search" aria-describedby="button-addon2">
+        <button onclick="Search($('#search-bar').val())" class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+    </div>
+</div>
+
+@if (Model.items != null)
+{
+    <table style="border:1px solid black" id="order">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Supplies</th>
+                <th>Authors</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.items)
+            {
+                @if (item.volumeInfo.imageLinks != null)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.volumeInfo.imageLinks.thumbnail" alt="Alternate Text" />
+                        </td>
+                        <td>@item.volumeInfo.title</td>
+                        <td><input type="number" /></td>
+                        <td><input type="number" /></td>
+                        <td>
+                            @if (item.volumeInfo.authors != null)
+                            {
+                                @foreach (var author in item.volumeInfo.authors)
+                                {
+                                    <p>@author</p>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>Invalid search!</h1>
+}
+
+<style>
+    td {
+        border: 1px solid black;
+    }
+    th {
+        border: 1px solid black;
+    }
+    table{
+        text-align: center;
+    }
+    input{
+        width: 70%
+    }
+</style>
+<script>
+    function Search(name) {
+        $.ajax({
+            url: '@Url.ActionLink("Index", "Admin")',
+            data: { name: name },
+            method: "get",
+            success: function (data) {
+
+            },
+            error: function () {
+                alert("Error!");
+            }
+        });
+    }
+    function DefaultTable() {
+        return `@if (Model.items != null)
+{
+    <table style="border:1px solid black" id="order">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Supplies</th>
+                <th>Authors</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.items)
+            {
+                @if (item.volumeInfo.imageLinks != null)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.volumeInfo.imageLinks.thumbnail" alt="Alternate Text" />
+                        </td>
+                        <td>@item.volumeInfo.title</td>
+                        <td><input type="number" /></td>
+                        <td><input type="number" /></td>
+                        <td>
+                            @if (item.volumeInfo.authors != null)
+                            {
+                                @foreach (var author in item.volumeInfo.authors)
+                                {
+                                    <p>@author</p>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>Invalid search!</h1>
+}`;
+    }
+</script>
