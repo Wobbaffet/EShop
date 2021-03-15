@@ -296,8 +296,6 @@ namespace EShop.WepApp.Controllers
 
             SmtpClient smtp = new SmtpClient();
 
-
-
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.EnableSsl = true;
@@ -321,11 +319,8 @@ namespace EShop.WepApp.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
-
-
         }
 
         private void SendEmail2(Customer customer, string url)
