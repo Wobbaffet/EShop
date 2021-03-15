@@ -52,8 +52,10 @@
                 if (nameLastName != null) {
                     var options = $("#autors option");
                     for (var i = 0; i < options.length; i++) {
-                        if (options[i].id == nameLastName)
+                        if (options[i].id == nameLastName) {
                             options[i].selected = 'selected';
+                            return;
+                        }
                         else
                             options[i].selected = '';
                     }
@@ -71,8 +73,8 @@
             url: '@Url.ActionLink("NubmerOfBooks", "Book")',
             data: {},
             method: "get",
-            success: function (data) {
-                partialLoad(data, false, null);
+            success: function (totalNumberOfBooks) {
+                partialLoad(totalNumberOfBooks, false, "all");
             },
             error: function () {
                 alert("Error!");
@@ -135,7 +137,7 @@
                     </div>`;
     }
 
-    function partialLoad(numberOfBooks, searched, data) {
+    function partialLoad(numberOfBooks, searching, autorName) {
         totalPages = Math.ceil(numberOfBooks / limitPerPage);
         //inserted first item
         $('.pagination').append(`<li class="page-item active"><a name="pagiNum" class="page-link" href="javascript:void(0)">1</a></li>`);
@@ -146,10 +148,13 @@
         //insert right arrow
         $('.pagination').append(`<li id='next-page' class="page-item-arrow"><a class="page-link" href="javascript:void(0)" aria-label="Next">    <span aria-hidden="true">&raquo;</span></a></li>`);
 
-        if (searched)
-            PasteThisBooks(data);
-        else
-            GetSixBooks(1);
+        //if (searching) {
+        //    GetSixBooks(1, autorName);
+        //    //PasteThisBooks(data);//treba da se doda i naziv autora
+        //    //ako je true radi ajax da vrati 6 kniga za tog autora
+        //}
+        //else
+        GetSixBooks(1, autorName);
     }
 
 
@@ -170,41 +175,12 @@
         }
     }
 
-    function addFunctions() {
-        $(document).on("click", "a[name='pagiNum']", function (e) {
-            clickOnNumber()
-        });
+  
 
-        $(document).on("click", "#next-page", function (e) {
-            var currentPage = $('.pagination li.active').index();
-            if (currentPage === totalPages)
-                return false;
-            else {
-                currentPage++;
-                $('.pagination li').removeClass("active");
-                GetSixBooks(currentPage);
-                $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
-            }
-        });
-
-        $('#previous-page').on("click", function () {
-            var currentPage = $('.pagination li.active').index();
-            if (currentPage === 1)
-                return false;
-            else {
-                currentPage--;
-                $('.pagination li').removeClass("active");
-                GetSixBooks(currentPage);
-                $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
-            }
-        });
-    }
-        window.onload = addFunctions();
-
-    function GetSixBooks(pageNumber) {
+    function GetSixBooks(pageNumber, autorName) {
          $.ajax({
             url: '@Url.ActionLink("ReturnSixBooks", "Book")',
-            data: { pagiNumber: pageNumber},
+            data: { pagiNumber: pageNumber, autor: autorName },
             method: "get",
             success: function (data) {
                 $("#loop").html("");
@@ -221,10 +197,11 @@
             if ($(this).hasClass("active"))
                 return false;
             else {
+                var nameLastName = $("#autors").val();
                 var currentPage = $(this).index();
                 $('.pagination li').removeClass("active");
                 $(this).addClass("active");
-                GetSixBooks(currentPage);
+                GetSixBooks(currentPage, nameLastName);
             }
         });
     }
@@ -232,13 +209,13 @@
     function filterFunction() {
         var nameLastName = $("#autors").val();
         $.ajax({
-            url: '@Url.ActionLink("SearchBooks", "Book")',
+            url: '@Url.ActionLink("NubmerOfBooksByAutor", "Book")',
             data: { autor: nameLastName },
             method: "get",
             success: function (data) {
                 document.getElementById("main").innerHTML = "";
                 $("#main").append(mainPart());
-                partialLoad(data.length, true, data);
+                partialLoad(data, true, nameLastName);
                 GetAllAutors(nameLastName);
             },
             error: function () {
@@ -247,6 +224,57 @@
         });
     }
 
+
+
+
+
+
+
+    function addFunctions() {
+        $(document).on("click", "a[name='pagiNum']", function (e) {
+            clickOnNumber()
+        });
+
+        $(document).on("click", "#next-page", function (e) {
+            var currentPage = $('.pagination li.active').index();
+            if (currentPage === totalPages)
+                return false;
+            else {
+                var nameLastName = $("#autors").val();
+                currentPage++;
+                $('.pagination li').removeClass("active");
+                GetSixBooks(currentPage, nameLastName);
+                $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
+            }
+        });
+
+        $(document).on("click", "#previous-page", function (e) {
+            var currentPage = $('.pagination li.active').index();
+            if (currentPage === 1)
+                return false;
+            else {
+                var nameLastName = $("#autors").val();
+                currentPage--;
+                $('.pagination li').removeClass("active");
+                GetSixBooks(currentPage, nameLastName);
+                $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
+            }
+        });
+
+        //$('#previous-page').on("click", function () {
+        //    var currentPage = $('.pagination li.active').index();
+        //    if (currentPage === 1)
+        //        return false;
+        //    else {
+        //        var nameLastName = $("#autors").val();
+        //        currentPage--;
+        //        $('.pagination li').removeClass("active");
+        //        GetSixBooks(currentPage, nameLastName);
+        //        $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
+        //    }
+        //});
+    }
+        window.onload = addFunctions();
     function AddToCart(id) {
             $.ajax({
                  url: '@Url.ActionLink("AddBookToCart", "Book")',

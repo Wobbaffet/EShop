@@ -113,9 +113,23 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpGet]
-        public List<Book> ReturnSixBooks(int pagiNumber)
+        public int NubmerOfBooksByAutor(string autor)
         {
-            int max = NubmerOfBooks();
+            if (autor == "All")
+                return uow.RepositoryBook.GetAll().Count;
+            else
+                return uow.RepositoryBook.Search(autor).Count;
+        }
+
+        [HttpGet]
+        public List<Book> ReturnSixBooks(int pagiNumber, string autor)
+        {//kad se radi filtriranje za all ovde vraca nekog drugog autora
+            int max;
+            if (autor == "all" || autor == "All")
+                max = NubmerOfBooks();
+            else
+                max = NubmerOfBooksByAutor(autor);
+
             List<Book> books = new List<Book>();
             if (pagiNumber * 6 > max)
             {
