@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EShop.Data.Implementation.RepositoryClasses
 {
-    public class RepositoryCustomer : IRepostiryCustomer
+    public class RepositoryCustomer : IRepositoryCustomer
     {
         private ShopContext shopContext;
 
@@ -20,6 +20,16 @@ namespace EShop.Data.Implementation.RepositoryClasses
         public void Add(Customer entity)
         {
             shopContext.Add(entity);
+        }
+
+        public void Delete(Customer customer)
+        {
+            shopContext.Customer.Remove(customer);
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
 
         public Customer Find(Predicate<Customer> condition)

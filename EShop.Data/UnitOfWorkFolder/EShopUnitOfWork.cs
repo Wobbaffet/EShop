@@ -1,4 +1,5 @@
 ﻿using EShop.Data.Implementation;
+using EShop.Data.Implementation.Interfaces;
 using EShop.Data.Implementation.RepositoryClasses;
 using EShop.Data.UnitOfWork;
 using EShop.Model;
@@ -17,9 +18,11 @@ namespace EShop.Data.UnitOfWorkFolder
             this.context = context;
             RepostiryCustomer = new RepositoryCustomer(context);
             RepositoryBook = new RepositoryBook(context);
+            RepositoryOrder = new RepositoryOrder(context);
         }
         public IRepositoryBook RepositoryBook { get ; set ; }
-        public IRepostiryCustomer RepostiryCustomer { get; set; }
+        public IRepositoryCustomer RepostiryCustomer { get; set; }
+        public IRepositoryOrder RepositoryOrder { get; set; }
 
         public void Commit()
         {

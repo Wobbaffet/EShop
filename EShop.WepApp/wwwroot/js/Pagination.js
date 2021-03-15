@@ -22,7 +22,7 @@ $('.pagination li.page-item').on("click", function () {
         $(this).addClass("active")
         $(`#loop .list-group`).hide();
         var grandTotal = limitPerPage * currentPage;
-
+        //lopp.listgroup.append
         for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
             $(`#loop .list-group:eq(${i})`).show();
         }
@@ -58,7 +58,7 @@ $('#previous-page').on("click", function () {
         $(`#loop .list-group`).hide();
 
         var grandTotal = limitPerPage * currentPage;
-
+        //sa servera povlaciti ! 
         for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
             $(`#loop .list-group:eq(${i})`).show();
         }
@@ -66,4 +66,3 @@ $('#previous-page').on("click", function () {
         $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
     }
 });
-

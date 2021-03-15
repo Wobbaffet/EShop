@@ -10,7 +10,7 @@ namespace EShop.Model
     {
 
         public DbSet<Customer> Customer { get; set; }
-        public DbSet<Address> Address { get; set; }
+      /*  public DbSet<Address> Address { get; set; }*/
         public DbSet<Book> Book { get; set; }
         public DbSet<Order> Order { get; set; }
 
@@ -23,11 +23,14 @@ namespace EShop.Model
         {
             modelBuilder.Entity<LegalEntity>().ToTable("Legal entity");
             modelBuilder.Entity<NaturalPerson>().ToTable("Natural person");
+            /*
+                        modelBuilder.Entity<Address>()
+                        .HasOne<Customer>(a => a.Customer)
+                        .WithOne(c => c.Address)
+                        .HasForeignKey<Customer>(c => c.AddressId);*/
 
-            modelBuilder.Entity<Address>()
-            .HasOne<Customer>(a => a.Customer)
-            .WithOne(c => c.Address)
-            .HasForeignKey<Customer>(c => c.AddressId);
+            modelBuilder.Entity<Customer>().OwnsOne(c => c.Address);
+
 
             modelBuilder.Entity<Order>().OwnsMany(o => o.OrderItems);
 
