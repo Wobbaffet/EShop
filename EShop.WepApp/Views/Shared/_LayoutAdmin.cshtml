@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+          crossorigin="anonymous" />
+    <link href="~/css/signUp.css" rel="stylesheet" />
+    @RenderSection("Style", required: false)
+</head>
+<body>
+    <div class="container">
+        <header id="header" class="row">
+            <!-- 2 -->
+            <div class="logo col-lg-2 col-md-12 col-sm-12 col-xs-24 ">Logo</div>
+            <!-- 1 -->
+            <div class="col-lg-1 col-md-1 col-sm-3 hidden-xs"></div>
+            <!-- 5 -->
+            <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Recipient's username"
+                           aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                </div>
+            </div>
+            <!-- 1 -->
+            <div class="col-lg-1 hidden-md col-sm-3 hidden-xs"></div>
+            <!-- 1 -->
+
+            @if (TempData["logged"] != null && (bool)TempData["logged"])
+
+            {
+                TempData.Keep("logged");
+                <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                    <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
+                    <a asp-controller="Customer" asp-action="Update">Admin</a>
+
+                </div>
+            }
+
+            <!-- 2 -->
+            <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
+                <div id="cart">
+                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart">0</i></a>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Book" asp-action="Index">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Top-lists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Add books</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <main role="main" class="pb-3" id="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - EShop.WepApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/ComboBox.js"></script>
+    @RenderSection("Scripts", required: false)
+    @RenderSection("JavaScript", required: false)
+</body>
+</html>

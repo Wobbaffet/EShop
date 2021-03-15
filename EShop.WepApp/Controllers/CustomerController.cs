@@ -27,10 +27,9 @@ namespace EShop.WepApp.Controllers
 
         [LoggedInFillter]
         [HttpGet]
-        public async Task<ActionResult> SignUp()
+        public ActionResult SignUp()
         {
-            var res = await Services.GetView();
-            return View(res);
+            return View("SignUp");
         }
 
 
@@ -56,7 +55,10 @@ namespace EShop.WepApp.Controllers
                 HttpContext.Session.SetInt32("customerId", customer.CustomerId);
                 TempData["logged"] = true;
                 TempData.Keep("logged");
-                return RedirectToAction("Index", "Home");
+                if (!customer.IsAdmin)
+                    return RedirectToAction("Index", "Home");
+                else
+                    return RedirectToAction("Index", "Admin");
             }
 
         }
@@ -112,7 +114,7 @@ namespace EShop.WepApp.Controllers
         {
             Customer exist = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Status == false);
 
-            if(!(exist is null))
+            if (!(exist is null))
             {
                 uow.RepostiryCustomer.Delete(exist);
             }
@@ -164,7 +166,7 @@ namespace EShop.WepApp.Controllers
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
             model.VerificationCode = customer.VerificationCode;
-            return View("RegistrationVerification",model.Email);
+            return View("RegistrationVerification", model.Email);
         }
 
 
@@ -189,8 +191,8 @@ namespace EShop.WepApp.Controllers
                     StreetNumber = np.Address.StreetNumber,
                     Type = CustomerType.NaturalPerson,
                     CustomerId = np.CustomerId,
-/*                    AddressId = np.AddressId,
-*/
+                    /*                    AddressId = np.AddressId,
+                    */
                 };
             }
             else
@@ -248,7 +250,7 @@ namespace EShop.WepApp.Controllers
 
 
         [HttpPost]
-        public ActionResult Verification(long code,string email)
+        public ActionResult Verification(long code, string email)
         {
 
             Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
@@ -262,15 +264,15 @@ namespace EShop.WepApp.Controllers
             }
             else
             {
-                
-                return View("RegistrationVerification",email);
+
+                return View("RegistrationVerification", email);
             }
 
         }
 
 
         [HttpPost]
-        public void  SendCodeAgain(string email)
+        public void SendCodeAgain(string email)
         {
             Customer customer = uow.RepostiryCustomer.Find(c => c.Email == email);
 
@@ -289,7 +291,7 @@ namespace EShop.WepApp.Controllers
         {
 
             Random generateCode = new Random();
-            
+
             customer.VerificationCode = generateCode.Next(1000, 10000);
 
             SmtpClient smtp = new SmtpClient();

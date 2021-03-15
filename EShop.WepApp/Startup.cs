@@ -3,6 +3,7 @@ using EShop.Data.UnitOfWorkFolder;
 using EShop.Model;
 using EShop.WepApp.Fillters;
 using EShop.WepApp.Middleware;
+using EShop.WepApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -41,6 +42,7 @@ namespace EShop.WepApp
             services.AddDbContext<ShopContext>();
             services.AddScoped<LoggedInFillter>();
             services.AddScoped<PurchaseFillter>();
+            services.AddHttpClient<EShopServices>();
 
         }
 
