@@ -24,6 +24,7 @@ namespace EShop.WepApp.Controllers
         public async Task<IActionResult> Index(string name)
         {
             MainClass model = await Services.GetBooksFromAPI(name);
+            
             return View("Index", model);
         }
     }

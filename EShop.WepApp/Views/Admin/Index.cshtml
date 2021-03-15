@@ -5,44 +5,15 @@
 
 <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
     <div class="input-group mb-3">
-        <input id="search-bar" type="text" class="form-control" placeholder="Recipient's username"
-               aria-label="Book search" aria-describedby="button-addon2">
-        <button onclick="Search($('#search-bar').val())" class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+        <form asp-controller="Admin" asp-action="Index">
+            <input name="name" type="text" class="form-control" placeholder="Recipient's username"
+                   aria-label="Book search" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" id="button-addon2">Search</button>
+        </form>
+
     </div>
 </div>
-
-<div class="container"></div>
-
-<style>
-    td {
-        border: 1px solid black;
-    }
-    th {
-        border: 1px solid black;
-    }
-    table{
-        text-align: center;
-    }
-    input{
-        width: 70%
-    }
-</style>
-<script>
-    function Search(name) {
-        $.ajax({
-            url: '@Url.ActionLink("Index", "Admin")',
-            data: { name: name },
-            method: "get",
-            success: function (data) {
-
-            },
-            error: function () {
-                alert("Error!");
-            }
-        });
-    }
-    function DefaultTable() {
-        return `@if (Model.items != null)
+@if (Model.items != null)
 {
     <table style="border:1px solid black" id="order">
         <thead>
@@ -76,6 +47,7 @@
                                 }
                             }
                         </td>
+                        <td><button>Add</button></td>
                     </tr>
                 }
             }
@@ -85,6 +57,46 @@
 else
 {
     <h1>Invalid search!</h1>
-}`;
+}
+
+
+<style>
+    td {
+        border: 1px solid black;
+        width: 17%;
     }
-</script>
+
+    th {
+        border: 1px solid black;
+    }
+
+    table {
+        text-align: center;
+    }
+
+        @*table td:nth-child(2) {
+            max-width: 250px;
+        }*@
+
+    input {
+        width: 70%
+    }
+</style>
+@*<script>
+        function Search(name) {
+            $.ajax({
+                url: '@Url.ActionLink("Index", "Admin")',
+                data: { name: name },
+                method: "get",
+                success: function (data) {
+
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }
+        function DefaultTable() {
+            return ``;
+        }
+    </script>*@
