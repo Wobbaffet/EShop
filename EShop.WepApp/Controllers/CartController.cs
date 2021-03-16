@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.WepApp.Controllers
 {
+    [AddToCartFillter]
     public class CartController : Controller
     {
         private readonly IUnitOfWork uow;
@@ -70,6 +71,12 @@ namespace EShop.WepApp.Controllers
             Order order = JsonSerializer.Deserialize<Order>(orderByte);
             order.OrderItems.RemoveAll(o => o.BookId == id);
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));//template method pattern
+
+
+            int ? items= HttpContext.Session.GetInt32("cartItems");
+
+           
+            HttpContext.Session.SetInt32("cartItems", (int)--items);
         }
     }
 }

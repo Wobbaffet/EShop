@@ -97,6 +97,9 @@ else
                 data: { bookid: id },
                 method: "delete",
                 success: function () {
+
+                    var x = parseInt($("#cartI").text()) - 1
+                    $("#cartI").text(x);
                 },
                 error: function () {
                     alert("Error!");

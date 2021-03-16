@@ -41,6 +41,8 @@ namespace EShop.WepApp
             services.AddDbContext<ShopContext>();
             services.AddScoped<LoggedInFillter>();
             services.AddScoped<PurchaseFillter>();
+            services.AddScoped<AddToCartFillter>();
+
 
         }
 
@@ -64,7 +66,7 @@ namespace EShop.WepApp
 
             app.UseSession();
 
-            app.UseUserLoginMiddleware();
+           
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

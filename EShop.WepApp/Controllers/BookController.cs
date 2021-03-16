@@ -5,12 +5,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
+using EShop.WepApp.Fillters;
 using EShop.WepApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.WepApp.Controllers
 {
+    [AddToCartFillter]
     public class BookController : Controller
     {
         private readonly IUnitOfWork uow;
@@ -72,6 +74,18 @@ namespace EShop.WepApp.Controllers
         public ActionResult AddBookToCart(int bookId)
         {
             AddBookToCart(uow.RepositoryBook.Find(b => b.BookId == bookId));
+
+           int ?cartItems = HttpContext.Session.GetInt32("cartItems");
+            if (cartItems is null)
+            {
+                cartItems = 0;
+            }
+            else
+                cartItems++;
+
+            HttpContext.Session.SetInt32("cartItems", (int)cartItems);
+
+            
             return Index();
         }
 

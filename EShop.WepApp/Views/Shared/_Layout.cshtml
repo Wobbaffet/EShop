@@ -7,6 +7,7 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/Layout.css">
+    <link rel="stylesheet" href="~/css/Code.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous" />
@@ -55,7 +56,8 @@
             <!-- 2 -->
             <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
                 <div id="cart">
-                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart">0</i></a>
+                    
+                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i @*class="fas fa-shopping-cart"*@ id="cartI">@ViewBag.CartItems</i></a>
                 </div>
                 
                 <div id="wish">
@@ -66,7 +68,7 @@
 
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -104,8 +106,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/ComboBox.js"></script>
+    <script src="~/js/Functions.js"></script>
     @RenderSection("Scripts", required: false)
     @RenderSection("JavaScript", required: false)
+
+
+    
 </body>
 </html>

@@ -1,0 +1,118 @@
+﻿@model string
+
+
+<div id="wrapper">
+    <div id="dialog">
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <h3>Please enter the 4-digit verification code we sent via  gmail:</h3>
+
+
+
+        <div id="form">
+            <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
+            <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
+            <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
+            <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
+
+            <button id="verify" class="btn btn-primary btn-embossed" value="@Model">Verify</button>
+        </div>
+
+
+
+        <div>
+            Didn't receive the code?<br />
+            <a id="@Model" onclick="SendCode(this.id)" href="#">Send code again</a><br />
+
+
+        </div>
+
+
+
+    </div>
+</div>
+
+@section JavaScript{
+
+    <script>
+
+        $(document).ready(function () {
+            $("#verify").click(function (event) {
+
+                console.log("Verify button clicked");
+                var code = 0;
+                var brojac = 0;
+                $("#form input").each(function () {
+
+                    switch (brojac) {
+
+                        case 0:
+                            code += this.value * 1000;
+
+                            break;
+                        case 1:
+                            code += this.value * 100;
+
+
+                            break;
+
+                        case 2:
+                            code += this.value * 10;
+
+
+                            break;
+
+                        case 3:
+                            code += this.value * 1;
+
+
+                            break;
+
+                    }
+
+                    brojac++;
+
+                });
+                console.log(code + " verify");
+                console.log($("#verify").attr("value"))
+
+                 $.ajax({
+                     url: '@Url.ActionLink("Verification", "Customer")',
+                     data: { code: code, email:$("#verify").attr("value")},
+
+                 success: function (result) {
+                    console.log(result);
+                    window.location.replace(result.redirectUrl);
+                },
+                error: function () {
+                alert("Error!");
+                }
+                 });
+
+
+
+
+            });
+        });
+
+
+    function SendCode(email) {
+
+    $.ajax({
+        url: '@Url.ActionLink("SendCodeAgain", "Customer")',
+        data: { email:email },
+        method: "post",
+        success: function () {
+            
+            
+        },
+        error: function () {
+            alert("Error!");
+        }
+    });
+
+}
+
+
+    </script>
+}

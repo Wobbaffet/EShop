@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,12 @@ namespace EShop.WepApp.Middleware
             _next = next;
         }
 
-        public Task Invoke(HttpContext httpContext)
-        {
-
-            
-            return _next(httpContext);
-        }
+        //public Task Invoke(HttpContext httpContext)
+        //{
+          
+             
+        //    return _next(httpContext);
+        //}
     }
 
     // Extension method used to add the middleware to the HTTP request pipeline.

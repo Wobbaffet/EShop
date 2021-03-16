@@ -10,6 +10,7 @@ using System.Net.Mail;
 
 namespace EShop.WepApp.Controllers
 {
+    [AddToCartFillter]
     public class CustomerController : Controller
     {
 
@@ -24,7 +25,7 @@ namespace EShop.WepApp.Controllers
         [HttpGet]
         public ActionResult SignUp()
         {
-            return View("SignUp");
+            return View("SignUp2");
         }
 
 
@@ -104,13 +105,21 @@ namespace EShop.WepApp.Controllers
 
         public ActionResult Create([FromForm] SignUpViewModel model)
         {
+          
+            if (ModelState.ErrorCount>1 || (ModelState.ErrorCount==1 && model.TIN!=0))
+            {
+             
+                ModelState.AddModelError(string.Empty, "Email already exist");
+                return SignUp();
+            }
+
             Customer exist = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Status == false);
 
             if(!(exist is null))
             {
                 uow.RepostiryCustomer.Delete(exist);
             }
-
+           
             Customer customer;
             if (model.CompanyName == null)
             {
@@ -158,7 +167,7 @@ namespace EShop.WepApp.Controllers
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
             model.VerificationCode = customer.VerificationCode;
-            return View("RegistrationVerification",model.Email);
+            return View("RegistrationVerification2",model.Email);
         }
 
 
@@ -241,7 +250,7 @@ namespace EShop.WepApp.Controllers
         }
 
 
-        [HttpPost]
+       
         public ActionResult Verification(long code,string email)
         {
 
@@ -252,12 +261,13 @@ namespace EShop.WepApp.Controllers
                 c.Status = true;
                 c.VerificationCode = 1;
                 uow.Commit();
-                return SignIn();
+                return Json(new { redirectUrl = Url.Action("SignIn", "Customer") });
+               // return SignIn();
             }
             else
             {
-                
-                return View("RegistrationVerification",email);
+                ModelState.AddModelError(string.Empty, "Code is not good");
+                return View("RegistrationVerification2",email);
             }
 
         }
