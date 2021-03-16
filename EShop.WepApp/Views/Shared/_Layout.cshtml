@@ -54,14 +54,19 @@
 
             }
             <!-- 2 -->
-            <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
-                <div id="cart">
-                    
-                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
-                </div>
-                
-               
+        <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
+            <div id="cart">
+
+                <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
             </div>
+
+            <div id="cart">
+
+                <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
+            </div>
+
+
+        </div>
         </header>
 
         <!-- NAVBAR -->
