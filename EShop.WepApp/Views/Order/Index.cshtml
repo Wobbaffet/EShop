@@ -1,0 +1,53 @@
+﻿
+
+@model List<Order>
+@{
+    ViewData["Title"] = "Cart";
+}
+@section Style{
+    <link href="~/css/Cart.css" rel="stylesheet" />
+}
+
+@if (Model is null || Model.Count == 0)
+{
+    <h1>You have not placed any orders in 2021</h1>
+}
+else
+{
+    <table style="border:1px solid black" id="order">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total for the product</th>
+                <th>Purchase Date</th>
+                <th>Order status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+
+            @foreach (var orderItem in order.OrderItems)
+            {
+                <tr>
+                    <td><img src="~/img/@orderItem.Book.Image" asp-append-version="true" alt="Alternate Text" /> </td>
+                    <td>@orderItem.Book.Title</td>
+                    <td>@orderItem.Book.Price</td>
+                    <td>
+                        @orderItem.Quantity
+                    </td>
+                    <td id="totalItemPrice-@orderItem.Book.BookId">@(orderItem.Book.Price * @orderItem.Quantity)</td>
+                    <td>@order.Date</td>
+                    <td>@order.OrderStatus</td>
+
+                </tr>
+            }
+            }
+        </tbody>
+    </table>
+  
+}
+

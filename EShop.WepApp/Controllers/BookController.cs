@@ -104,14 +104,15 @@ namespace EShop.WepApp.Controllers
                 order = JsonSerializer.Deserialize<Order>(orderByte);
             }
 
-            OrderItem oi = order.OrderItems.Find(oi => oi.BookId == book.BookId);
+            OrderItem oi = order.OrderItems.Find(oi => oi.Book.BookId == book.BookId);
             if (oi != null)
             {
                 oi.Quantity++;
             }
             else
             {
-                order.OrderItems.Add(new OrderItem { BookId = book.BookId, Book = book, Quantity = 1 });
+               
+                order.OrderItems.Add(new OrderItem { Book=book,Quantity = 1 });
             }
 
             order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);

@@ -10,7 +10,7 @@
 
 
         <div id="form">
-            <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
+            <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[1-9]{1}" />
             <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
             <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
             <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
@@ -81,8 +81,11 @@
                      data: { code: code, email:$("#verify").attr("value")},
 
                  success: function (result) {
-                    console.log(result);
-                    window.location.replace(result.redirectUrl);
+                     
+                     
+                         window.location.replace(result.redirectUrl);
+
+                     
                 },
                 error: function () {
                 alert("Error!");
@@ -103,7 +106,8 @@
         data: { email:email },
         method: "post",
         success: function () {
-            
+
+            alert("Code was send");
             
         },
         error: function () {

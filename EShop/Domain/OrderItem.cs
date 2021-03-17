@@ -9,9 +9,9 @@ namespace EShop.Model.Domain
     {
         public int OrderItemId { get; set; }
         public int Quantity { get; set; }
-        [NotMapped]
+       
         public Book Book { get; set; }
-        public int BookId { get; set; }
+      
 
     }
 }

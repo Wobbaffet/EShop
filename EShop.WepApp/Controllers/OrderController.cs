@@ -1,4 +1,6 @@
 ﻿using EShop.Data.UnitOfWork;
+using EShop.Model.Domain;
+using EShop.WepApp.Fillters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,9 +19,12 @@ namespace EShop.WepApp.Controllers
             this.uow = uow;
         }
         // GET: OrderController
+        [PurchaseFillter]
         public ActionResult Index()
         {
-            return View();
+
+            List<Order> orders = uow.RepositoryOrder.GetAllOrders(o=>o.CustomerId==(int)HttpContext.Session.GetInt32("customerId"));
+            return View(orders);
         }
 
         // GET: OrderController/Details/5

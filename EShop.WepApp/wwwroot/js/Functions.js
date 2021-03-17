@@ -20,7 +20,8 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    $("input").focusout(function () {
+    $("#signUp input").focusout(function () {
+        console.log("Focusout");
         if ($(this).val() == "") {
             $(this).addClass("is-invalid");
             $(this).removeClass("is-valid");
@@ -42,7 +43,7 @@ $(document).ready(function () {
         }
     });
 
-    $("input").keyup(function () {
+    $("#signUp input").keyup(function () {
 
         switch ($(this).attr("name")) {
             case "Email":

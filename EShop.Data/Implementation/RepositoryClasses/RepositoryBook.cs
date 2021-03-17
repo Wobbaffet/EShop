@@ -24,7 +24,8 @@ namespace EShop.Data.Implementation.RepositoryClasses
         }
         public Book Find(Predicate<Book> condition)
         {
-            return context.Book.AsNoTracking().ToList().Find(condition);
+           
+            return context.Book.ToList().Find(condition);
         }
 
         public List<Book> GetAll()

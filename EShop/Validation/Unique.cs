@@ -14,7 +14,7 @@ namespace EShop.Model.Validation
         {
            
 
-            Customer c=   context.Customer.ToList().Find(c => c.Email == value.ToString());
+            Customer c=   context.Customer.ToList().Find(c => c.Email == value.ToString() && c.Status);
             return c is null;
 
         }
