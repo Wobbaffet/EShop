@@ -49,7 +49,7 @@
                             }
                         </td>
                         <td>
-                            @Html.DropDownListFor(m => m.genres, new SelectList(Model.genres), "Select authors", new
+                            @Html.DropDownListFor(m => m.genres, new SelectList(Model.genres), "Select genres", new
                                 {
                                     onchange = $"SaveGenre(this.id)",
                                     id = $"genres-{i}"
@@ -57,7 +57,7 @@
                             )
                             <p></p>
                         </td>
-                        <td><span onclick="AddBook(this.id, '@Model.items[i].volumeInfo.description')" id="icon-@i"><i class="fas fa-plus-circle"></i></span></td>
+                        <td><span onclick="AddBook(this.id, `@Model.items[i].volumeInfo.description`)" id="icon-@i"><i class="fas fa-plus-circle"></i></span></td>
                     </tr>
                 }
             }
@@ -104,26 +104,30 @@ else
         var supplies = row.find('td:eq(3)').children('input').val();
         var authors = row.find('td:eq(4)').text();
         var genres = row.find('td:eq(5)').children('p').text();
+        if (price > 0 && supplies > 0 && genres != "") {
+            $.ajax({
+                url: '@Url.ActionLink("PickedBooks", "Admin")',
+                data: {
+                    image: image,
+                    title: title,
+                    price: price,
+                    supplies: supplies,
+                    authors: authors,
+                    genres: genres,
+                    description: description
+                },
+                method: "get",
+                success: function (data) {
 
-        $.ajax({
-            url: '@Url.ActionLink("PickedBooks", "Admin")',
-            data: {
-                image: image,
-                title: title,
-                price: price,
-                supplies: supplies,
-                authors: authors,
-                genres: genres,
-                description: description
-            },
-            method: "get",
-            success: function (data) {
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        } else {
+            row.css({ "background-color": "red" });
+        }
 
-            },
-            error: function () {
-                alert("Error!");
-            }
-        });
     }
 
     function SaveGenre(id) {
@@ -132,5 +136,7 @@ else
         if (text != "Select authors" && !cmb.includes(text))
             $(`#${id}`).parent().children('p').append(text + ", ")
     }
+
+    
 
 </script>

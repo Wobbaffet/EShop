@@ -28,7 +28,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public Genre Find(Predicate<Genre> condition)
         {
-            throw new NotImplementedException();
+            return context.Genre.ToList().Find(condition);
         }
 
         public List<Genre> GetAll()

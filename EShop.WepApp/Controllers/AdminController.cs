@@ -73,14 +73,18 @@ namespace EShop.WepApp.Controllers
         {
             byte[] booksByte = HttpContext.Session.Get("book");
             List<Book> books = null;
-            if (!(booksByte is null))
+            //if (!(booksByte is null))
                 books = JsonSerializer.Deserialize<List<Book>>(booksByte);
             foreach (var item in books)
             {
+                for (int i = 0; i < item.Genres.Count; i++)
+                {
+                    item.Genres[i] = uow.RepositoryGenre.Find(g => g.Name == item.Genres[i].Name);
+                }
                 uow.RepositoryBook.Add(item);
             }
             uow.Commit();
-            books = null;
+            books = new List<Book>();
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
         }
 
@@ -101,7 +105,11 @@ namespace EShop.WepApp.Controllers
             foreach (string item in genresArr)
             {
                 if (item != "")
-                    genresList.Add(new Genre { Name = item });
+                {
+                    var genre = new Genre() { Name = item };
+                    genresList.Add(genre);
+                }
+                    
             }
             return genresList;
         }
@@ -120,7 +128,12 @@ namespace EShop.WepApp.Controllers
                         authorsList.Add(new Autor { FirstName = name[0], LastName = name[1] });
                     else if (name.Length > 2)
                     {
-                        authorsList.Add(new Autor { FirstName = name[0] + name[1], LastName = name[2] });
+                        string lastname = "";
+                        for (int i = 2; i < name.Length; i++)
+                        {
+                            lastname = lastname + name[i];
+                        }
+                        authorsList.Add(new Autor { FirstName = name[0] + " " + name[1], LastName = lastname });
                     }
                 }
             }
