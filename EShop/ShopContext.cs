@@ -13,6 +13,7 @@ namespace EShop.Model
       /*  public DbSet<Address> Address { get; set; }*/
         public DbSet<Book> Book { get; set; }
         public DbSet<Order> Order { get; set; }
+        public DbSet<Genre> Genre { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -34,7 +34,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public Customer Find(Predicate<Customer> condition)
         {
-            return   shopContext.Customer.Include(c=>c.Address).ToList().Find(condition);
+            return   shopContext.Customer.ToList().Find(condition);
         }
 
         public List<Customer> GetAll()

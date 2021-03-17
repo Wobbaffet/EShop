@@ -30,7 +30,8 @@ namespace EShop.Model.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Supplies = table.Column<int>(type: "int", nullable: false)
+                    Supplies = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,7 +48,6 @@ namespace EShop.Model.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address_AddressId = table.Column<int>(type: "int", nullable: true),
                     Address_StreetName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_StreetNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_CityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
