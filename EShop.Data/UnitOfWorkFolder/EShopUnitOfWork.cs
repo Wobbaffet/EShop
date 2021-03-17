@@ -19,10 +19,14 @@ namespace EShop.Data.UnitOfWorkFolder
             RepostiryCustomer = new RepositoryCustomer(context);
             RepositoryBook = new RepositoryBook(context);
             RepositoryOrder = new RepositoryOrder(context);
+            RepositoryGenre = new RepositoryGenre(context);
+            RepositoryAutor = new RepositoryAutor(context);
         }
         public IRepositoryBook RepositoryBook { get ; set ; }
         public IRepositoryCustomer RepostiryCustomer { get; set; }
         public IRepositoryOrder RepositoryOrder { get; set; }
+        public IRepositoryGenre RepositoryGenre { get; set; }
+        public IRepositoryAutor RepositoryAutor { get; set; }
 
         public void Commit()
         {

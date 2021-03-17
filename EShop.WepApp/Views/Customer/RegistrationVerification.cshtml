@@ -1,4 +1,4 @@
-﻿@model SignUpViewModel
+﻿@model string 
 
 
 <h2>Please enter your code for verification</h2>
@@ -6,21 +6,59 @@
 
 <form method="post" asp-action="Verification" asp-controller="Customer">
 
-    
-    <input type="number" value="Code" name="code" id="nesto"/>
+    <input type="number"  name="code" />
 
-    <input type="text" name="Email" value="@Model.Email" style="display:none"/>
-    <input type="text" name="VerificationCode" value="@Model.VerificationCode" style="display:none"/>
+    <input type="text" name="Email" value="@Model" style="display:none" />
 
-    @* Html.id ili Html.Name () i to je to *@
     <input type="submit" value="Verify">
 
+    <label class="code"></label>
 
 
-   
 </form>
 
-    <a href="@Url.Action("SendCodeAgain", "Customer", new { Email = Model.Email, VerificationCode = Model.VerificationCode 
-        })" class="btn btn-dark">Send code again</a>
+<button onclick="SendCode(this.value)" value="@Model"  class="btn btn-dark">Send code again</button>
 
-    
+
+@section JavaScript{
+
+    <script>
+
+
+        function SendCode(email) {
+
+                $.ajax({
+                url: '@Url.ActionLink("SendCodeAgain", "Customer")',
+                data: { email:email},
+                method: "post",
+                success: function () {
+                  alert("Code sent")
+                },
+                error: function () {
+                alert("Error!");
+                }
+                });
+
+
+
+        }
+
+        @* function SendCode(email) {
+
+                $.ajax({
+                url: '@Url.ActionLink("SendCodeAgain", "Customer")',
+                data: { email:email},
+                method: "post",
+                success: function () {
+                 
+                },
+                error: function () {
+                    $(".code").append("code is not good")                }
+                });
+        }*@
+
+
+
+    </script>
+}
+

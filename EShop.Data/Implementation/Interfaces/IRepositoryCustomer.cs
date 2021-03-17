@@ -8,5 +8,7 @@ namespace EShop.Data.Implementation
   public   interface IRepositoryCustomer:IRepository<Customer>
     {
         void Update(Customer customer);
+
+        void Delete(Customer customer);
     }
 }

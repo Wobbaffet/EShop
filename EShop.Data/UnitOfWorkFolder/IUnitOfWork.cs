@@ -11,6 +11,8 @@ namespace EShop.Data.UnitOfWork
         public IRepositoryBook RepositoryBook { get; set; }
         public IRepositoryCustomer RepostiryCustomer { get; set; }
         public IRepositoryOrder RepositoryOrder { get; set; }
+        public IRepositoryGenre RepositoryGenre { get; set; }
+        public IRepositoryAutor RepositoryAutor { get; set; }
         void Commit();
     }
 }

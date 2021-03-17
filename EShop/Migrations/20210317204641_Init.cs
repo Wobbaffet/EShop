@@ -3,26 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EShop.Model.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Address",
-                columns: table => new
-                {
-                    AddressId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StreetName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StreetNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PTT = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Address", x => x.AddressId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Autor",
                 columns: table => new
@@ -46,12 +30,35 @@ namespace EShop.Model.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Supplies = table.Column<int>(type: "int", nullable: false)
+                    Supplies = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Book", x => x.BookId);
                     table.CheckConstraint("NotLessThenZero", "[Supplies] >= 0");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customer",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address_StreetName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address_StreetNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address_CityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address_PTT = table.Column<int>(type: "int", nullable: true),
+                    VerificationCode = table.Column<long>(type: "bigint", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customer", x => x.CustomerId);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,30 +72,6 @@ namespace EShop.Model.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genre", x => x.GenreId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customer",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    VerificationCode = table.Column<long>(type: "bigint", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer", x => x.CustomerId);
-                    table.ForeignKey(
-                        name: "FK_Customer_Address_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Address",
-                        principalColumn: "AddressId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,37 +99,12 @@ namespace EShop.Model.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookGenre",
-                columns: table => new
-                {
-                    BooksBookId = table.Column<int>(type: "int", nullable: false),
-                    GenresGenreId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BookGenre", x => new { x.BooksBookId, x.GenresGenreId });
-                    table.ForeignKey(
-                        name: "FK_BookGenre_Book_BooksBookId",
-                        column: x => x.BooksBookId,
-                        principalTable: "Book",
-                        principalColumn: "BookId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BookGenre_Genre_GenresGenreId",
-                        column: x => x.GenresGenreId,
-                        principalTable: "Genre",
-                        principalColumn: "GenreId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Legal entity",
                 columns: table => new
                 {
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     TIN = table.Column<int>(type: "int", nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CompanyNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -186,7 +144,8 @@ namespace EShop.Model.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Total = table.Column<double>(type: "float", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                    OrderStatus = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -196,7 +155,31 @@ namespace EShop.Model.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customer",
                         principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BookGenre",
+                columns: table => new
+                {
+                    BooksBookId = table.Column<int>(type: "int", nullable: false),
+                    GenresGenreId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookGenre", x => new { x.BooksBookId, x.GenresGenreId });
+                    table.ForeignKey(
+                        name: "FK_BookGenre_Book_BooksBookId",
+                        column: x => x.BooksBookId,
+                        principalTable: "Book",
+                        principalColumn: "BookId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookGenre_Genre_GenresGenreId",
+                        column: x => x.GenresGenreId,
+                        principalTable: "Genre",
+                        principalColumn: "GenreId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -206,11 +189,18 @@ namespace EShop.Model.Migrations
                     OrderItemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItem", x => new { x.OrderId, x.OrderItemId });
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Book_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Book",
+                        principalColumn: "BookId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OrderItem_Order_OrderId",
                         column: x => x.OrderId,
@@ -230,15 +220,14 @@ namespace EShop.Model.Migrations
                 column: "GenresGenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customer_AddressId",
-                table: "Customer",
-                column: "AddressId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerId",
                 table: "Order",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_BookId",
+                table: "OrderItem",
+                column: "BookId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -262,19 +251,16 @@ namespace EShop.Model.Migrations
                 name: "Autor");
 
             migrationBuilder.DropTable(
-                name: "Book");
+                name: "Genre");
 
             migrationBuilder.DropTable(
-                name: "Genre");
+                name: "Book");
 
             migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Customer");
-
-            migrationBuilder.DropTable(
-                name: "Address");
         }
     }
 }

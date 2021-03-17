@@ -1,4 +1,4 @@
-﻿@model BookViewModel
+﻿@model List<Genre>
 @section Style{
     <link href="~/css/pagination.css" rel="stylesheet" />
 }
@@ -19,169 +19,314 @@
             </nav>
 
             <div id="loop">
-                @for (int i = 0; i < Model.Books.Count; i++)
-                {
-                    <div class="row">
-                        @for (int j = 0; j < 3; j++)
-                        {
-                            @if (i < Model.Books.Count)
-                            {
-                                <div class="list-group col-lg-3">
-                                    <div class="list-group-item active">
-                                        <div class="content">
-                                            <img src="@("~/img/" + Model.Books[i].Image)" asp-append-version="true" alt="Alternative Text">
-                                            <div class="text">
-                                                <p>
-                                                    @Model.Books[i].Title <br>
-                                                    @Model.Books[i].Price RSD
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="description">
-                                            <div class="d-text">
-                                                <button>Show more</button>
-                                                <button>Wish list</button>
-                                                <button class="btn" onclick="AddToCart(@Model.Books[i].BookId)">Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="list-group col-lg-3">
-                                </div>
-                            }
-                            i++;
-                        }
-                        @{i--;}
-                    </div>
-                }
+
             </div>
         </div>
         <div class="col-lg-2 col-md-12">
             <div id="myDropdown" class="dropdown-content">
                 <select id="autors" onchange="filterFunction()">
-                    @foreach (var item in Model.Autors)
-                    {
-                        <option id="@item.FirstName.ToLower() @item.LastName.ToLower()" value="@item.FirstName.ToLower() @item.LastName.ToLower()">@item.FirstName @item.LastName</option>
-                    }
+                    <option id="all">All</option>
+
                 </select>
+            </div>
+            <div id="myCheckboxes" class="dropdown-content">
+                @foreach (var item in Model)
+                {
+                    <input onchange="filterFunction()" type="checkbox" id="genre-@item.GenreId" name="@item" value="@item">
+                    <label for="@item">@item</label><br>
+                }
             </div>
         </div>
     </div>
 </div>
 
 @section JavaScript{
-    <script src="~/js/Pagination.js"></script>
     <script>
-        function partialLoad() {
-            var numberOfItems = $("#loop .list-group").length;
-            var limitPerPage = 6;
 
-            $(`#loop .list-group:gt(${limitPerPage - 1})`).hide();
-            var totalPages = Math.round(numberOfItems / limitPerPage);
+        var limitPerPage = 6;
+        var totalPages;
 
+        function SelectChosenCBs(array) {
+            var allCBs = $("#myCheckboxes").children('input')
+
+            for (var i = 0; i < allCBs.length; i++) {
+                for (var j = 0; j < array.length; j++) {
+                    if (allCBs[i].value == array[j]) {
+                        allCBs[i].checked = true;
+                    }
+                }
+            }
+            //$("#genre-1").attr('id')//uzmi element sa tim idjem
+            //arr.push($("#genre-1").attr('id'));//dodaj ga u niz
+            ////cekiraj sve koji su bili cekirani
+            //for (let i = 0; i < arr.length; i++) {
+            //    $(`#${arr[i]}`).prop('checked', true);
+            //}
+        }
+
+        function GetAllAutors(nameLastName) {
+            $.ajax({
+                url: '@Url.ActionLink("GetAllAutors", "Book")',
+                data: {},
+                method: "get",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        $option = `<option id="${data[i].firstName.toLowerCase() + " " + data[i].lastName.toLowerCase()}" value="${data[i].firstName.toLowerCase() + " " + data[i].lastName.toLowerCase()}">${data[i].firstName + " " + data[i].lastName}</option>`;
+                        $("#autors").append($option);
+                    }
+                    if (nameLastName != null) {
+                        var options = $("#autors option");
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].id == nameLastName) {
+                                options[i].selected = 'selected';
+                                return;
+                            }
+                            else
+                                options[i].selected = '';
+                        }
+                    }
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }
+        GetAllAutors(null);
+
+        function GetNumberOfBooks() {
+            var checkedBoxes = $("input:checked");
+            var array = new Array();
+            for (let i = 0; i < checkedBoxes.length; i++) {
+                array.push(checkedBoxes[i].value);
+            }
+            $.ajax({
+                url: '@Url.ActionLink("NubmerOfBooks", "Book")',
+                data: {},
+                method: "get",
+                success: function (totalNumberOfBooks) {
+                    partialLoad(totalNumberOfBooks, "all", array);
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }
+        GetNumberOfBooks();
+
+        function pastePicture(image, title, price, bookId) {
+            return text =`<div class="list-group col-lg-3">
+                            <div class="list-group-item active">
+                                <div class="content">
+                                    <img src="${image}" asp-append-version="true" alt="Alternative Text">
+                                    <div class="text">
+                                        <p>
+                                            ${title} <br>
+                                            ${price} RSD
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="description">
+                                    <div class="d-text">
+                                        <button asp-controller="Admin" asp-action="ShowItem">Show more</button>
+                                        <button>Wish list</button>
+                                        <button class="btn" onclick="AddToCart(${bookId})">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+        }
+        function mainPart() {
+            return text =`<div class="container" style="margin-top: 35px;">
+                            <div class="row">
+
+                                <div class="col-lg-10 col-md-12 col-sm-12">
+
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li id='previous-page' class="page-item-arrow">
+                                                <a class="page-link" href="javascript:void(0)" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+
+                                    <div id="loop">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-12">
+                                    <div id="myDropdown" class="dropdown-content">
+                                        <select id="autors" onchange="filterFunction()">
+                                            <option id="all">All</option>
+
+                                        </select>
+                                    </div>
+                                <div id="myCheckboxes" class="dropdown-content">
+                                    @foreach (var item in Model)
+                                    {
+                                        <input onchange="filterFunction()" type="checkbox" id="genre-@item.GenreId" name="@item" value="@item">
+                                        <label for="@item">@item</label><br>
+                                    }
+                                </div>
+                                </div>
+                            </div>
+                        </div>`;
+        }
+
+        function partialLoad(numberOfBooks, autorName, genres) {
+            totalPages = Math.ceil(numberOfBooks / limitPerPage);
             //inserted first item
-            $('.pagination').append(`<li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>`);
+            $('.pagination').append(`<li class="page-item active"><a name="pagiNum" class="page-link" href="javascript:void(0)">1</a></li>`);
             //loop throught other items
             for (var i = 2; i <= totalPages; i++) {
-                $('.pagination').append(`<li class="page-item"><a class="page-link" href="javascript:void(0)">${i}</a></li>`);
+                $('.pagination').append(`<li class="page-item"><a name="pagiNum" class="page-link" href="javascript:void(0)">${i}</a></li>`);
             }
             //insert right arrow
             $('.pagination').append(`<li id='next-page' class="page-item-arrow"><a class="page-link" href="javascript:void(0)" aria-label="Next">    <span aria-hidden="true">&raquo;</span></a></li>`);
+            GetSixBooks(1, autorName, genres);
+        }
 
+
+        function PasteThisBooks(data) {
+            for (var i = 0; i < limitPerPage; i++) {
+                var $div = $("<div>", { "class": "row" });
+                for (var j = 0; j < 3; j++) {
+                    if (i < data.length) {
+                        $div.append(pastePicture(data[i].image, data[i].title, data[i].price, data[i].bookId));
+                    }
+                    else {
+                        $div.append(`<div class="list-group col-lg-3"></div>`);
+                    }
+                    i++;
+                }
+                i--;
+                $("#loop").append($div);
+            }
+        }
+
+
+
+        function GetSixBooks(pageNumber, autorName, genres) {
+            jQuery.ajaxSettings.traditional = true;
+            $.ajax({
+                url: '@Url.ActionLink("ReturnSixBooks", "Book")',
+                data: { pagiNumber: pageNumber, autor: autorName, genres: genres },
+                method: "get",
+                success: function (data) {
+                    $("#loop").html("");
+                    PasteThisBooks(data);
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }
+
+        function clickOnNumber() {
             $('.pagination li.page-item').on("click", function () {
                 if ($(this).hasClass("active"))
                     return false;
                 else {
+                    var checkedBoxes = $("input:checked");
+                    var array = new Array();
+                    for (let i = 0; i < checkedBoxes.length; i++) {
+                        array.push(checkedBoxes[i].value);
+                    }
+                    var nameLastName = $("#autors").val();
                     var currentPage = $(this).index();
                     $('.pagination li').removeClass("active");
-                    $(this).addClass("active")
-                    $(`#loop .list-group`).hide();
-                    var grandTotal = limitPerPage * currentPage;
-
-                    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
-                        $(`#loop .list-group:eq(${i})`).show();
-                    }
-                }
-            });
-
-            $('#next-page').on("click", function () {
-                var currentPage = $('.pagination li.active').index();
-                if (currentPage === totalPages)
-                    return false;
-                else {
-                    currentPage++;
-                    $('.pagination li').removeClass("active");
-                    $(`#loop .list-group`).hide();
-
-                    var grandTotal = limitPerPage * currentPage;
-
-                    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
-                        $(`#loop .list-group:eq(${i})`).show();
-                    }
-
-                    $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
-                }
-            });
-
-            $('#previous-page').on("click", function () {
-                var currentPage = $('.pagination li.active').index();
-                if (currentPage === 1)
-                    return false;
-                else {
-                    currentPage--;
-                    $('.pagination li').removeClass("active");
-                    $(`#loop .list-group`).hide();
-
-                    var grandTotal = limitPerPage * currentPage;
-
-                    for (var i = grandTotal - limitPerPage; i < grandTotal; i++) {
-                        $(`#loop .list-group:eq(${i})`).show();
-                    }
-
-                    $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
+                    $(this).addClass("active");
+                    GetSixBooks(currentPage, nameLastName, array);
                 }
             });
         }
 
         function filterFunction() {
             var nameLastName = $("#autors").val();
+            var checkedBoxes = $("input:checked");
+            var array = new Array();
+            for (let i = 0; i < checkedBoxes.length; i++) {
+                array.push(checkedBoxes[i].value);
+            }
+            jQuery.ajaxSettings.traditional = true;
             $.ajax({
-                url: '@Url.ActionLink("SearchBooks", "Book")',
-                data: { autor: nameLastName },
-                method: "post",
+                url: '@Url.ActionLink("NubmerOfBooksByAutorGenre", "Book")',
+                data: { autor: nameLastName, genres: array },
+                method: "get",
                 success: function (data) {
                     document.getElementById("main").innerHTML = "";
-                    $("#main").append(data);//.html(data)
-                    partialLoad();
-                    var options = document.getElementById('autors').getElementsByTagName('option');
-                    for (var i = 0; i < options.length; i++) {
-                        if (options[i].id == nameLastName)
-                            options[i].selected = 'selected';
-                        else
-                            options[i].selected = '';
-                    }
-                },
-                error: function () {
-                    alert("Error!");
-                }
-             });
-        }
-
-
-        function AddToCart(id) {
-            $.ajax({
-                 url: '@Url.ActionLink("AddBookToCart", "Book")',
-                data: { bookId: id },
-                method: "post",
-                success: function () {
+                    $("#main").append(mainPart());
+                    partialLoad(data, nameLastName, array);
+                    GetAllAutors(nameLastName);
+                    SelectChosenCBs(array);
                 },
                 error: function () {
                     alert("Error!");
                 }
             });
         }
+
+
+
+
+
+
+
+        function addFunctions() {
+            $(document).on("click", "a[name='pagiNum']", function (e) {
+                clickOnNumber()
+            });
+
+            $(document).on("click", "#next-page", function (e) {
+                var currentPage = $('.pagination li.active').index();
+                if (currentPage === totalPages)
+                    return false;
+                else {
+                    var checkedBoxes = $("input:checked");
+                    var array = new Array();
+                    for (let i = 0; i < checkedBoxes.length; i++) {
+                        array.push(checkedBoxes[i].value);
+                    }
+                    var nameLastName = $("#autors").val();
+                    currentPage++;
+                    $('.pagination li').removeClass("active");
+                    GetSixBooks(currentPage, nameLastName, array);
+                    $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
+                }
+            });
+
+            $(document).on("click", "#previous-page", function (e) {
+                var currentPage = $('.pagination li.active').index();
+                if (currentPage === 1)
+                    return false;
+                else {
+                    var checkedBoxes = $("input:checked");
+                    var array = new Array();
+                    for (let i = 0; i < checkedBoxes.length; i++) {
+                        array.push(checkedBoxes[i].value);
+                    }
+                    var nameLastName = $("#autors").val();
+                    currentPage--;
+                    $('.pagination li').removeClass("active");
+                    GetSixBooks(currentPage, nameLastName, array);
+                    $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
+                }
+            });
+        }
+            window.onload = addFunctions();
+        function AddToCart(id) {
+                $.ajax({
+                    url: '@Url.ActionLink("AddBookToCart", "Book")',
+                    data: { bookId: id },
+                    method: "post",
+                    success: function () {
+                    },
+                    error: function () {
+                        alert("Error!");
+                    }
+                });
+            }
     </script>
 }

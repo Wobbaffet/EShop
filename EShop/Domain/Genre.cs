@@ -9,5 +9,10 @@ namespace EShop.Model.Domain
         public int GenreId { get; set; }
         public string Name { get; set; }
         public List<Book> Books { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -3,6 +3,7 @@ using EShop.Data.UnitOfWorkFolder;
 using EShop.Model;
 using EShop.WepApp.Fillters;
 using EShop.WepApp.Middleware;
+using EShop.WepApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -40,6 +41,10 @@ namespace EShop.WepApp
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
             services.AddDbContext<ShopContext>();
             services.AddScoped<LoggedInFillter>();
+            services.AddScoped<PurchaseFillter>();
+            services.AddHttpClient<EShopServices>();
+            services.AddScoped<AddToCartFillter>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +67,7 @@ namespace EShop.WepApp
 
             app.UseSession();
 
-            app.UseUserLoginMiddleware();
+           
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

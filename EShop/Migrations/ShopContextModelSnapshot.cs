@@ -49,30 +49,6 @@ namespace EShop.Model.Migrations
                     b.ToTable("BookGenre");
                 });
 
-            modelBuilder.Entity("EShop.Model.Domain.Address", b =>
-                {
-                    b.Property<int>("AddressId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CityName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PTT")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StreetName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AddressId");
-
-                    b.ToTable("Address");
-                });
-
             modelBuilder.Entity("EShop.Model.Domain.Autor", b =>
                 {
                     b.Property<int>("AutorId")
@@ -97,6 +73,9 @@ namespace EShop.Model.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
@@ -124,11 +103,11 @@ namespace EShop.Model.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -143,9 +122,6 @@ namespace EShop.Model.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("CustomerId");
-
-                    b.HasIndex("AddressId")
-                        .IsUnique();
 
                     b.ToTable("Customer");
                 });
@@ -172,11 +148,14 @@ namespace EShop.Model.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
 
                     b.Property<double>("Total")
                         .HasColumnType("float");
@@ -193,9 +172,6 @@ namespace EShop.Model.Migrations
                     b.HasBaseType("EShop.Model.Domain.Customer");
 
                     b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TIN")
@@ -249,11 +225,32 @@ namespace EShop.Model.Migrations
 
             modelBuilder.Entity("EShop.Model.Domain.Customer", b =>
                 {
-                    b.HasOne("EShop.Model.Domain.Address", "Address")
-                        .WithOne("Customer")
-                        .HasForeignKey("EShop.Model.Domain.Customer", "AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("EShop.Model.Domain.Address", "Address", b1 =>
+                        {
+                            b1.Property<int>("CustomerId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("CityName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("PTT")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("StreetName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("StreetNumber")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("Customer");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+                        });
 
                     b.Navigation("Address");
                 });
@@ -262,7 +259,9 @@ namespace EShop.Model.Migrations
                 {
                     b.HasOne("EShop.Model.Domain.Customer", null)
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsMany("EShop.Model.Domain.OrderItem", "OrderItems", b1 =>
                         {
@@ -315,11 +314,6 @@ namespace EShop.Model.Migrations
                         .HasForeignKey("EShop.Model.Domain.NaturalPerson", "CustomerId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("EShop.Model.Domain.Address", b =>
-                {
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("EShop.Model.Domain.Customer", b =>

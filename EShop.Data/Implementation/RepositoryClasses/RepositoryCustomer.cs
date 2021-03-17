@@ -22,6 +22,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
             shopContext.Add(entity);
         }
 
+        public void Delete(Customer customer)
+        {
+            shopContext.Customer.Remove(customer);
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -29,7 +34,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public Customer Find(Predicate<Customer> condition)
         {
-            return   shopContext.Customer.Include(c=>c.Address).ToList().Find(condition);
+            return   shopContext.Customer.ToList().Find(condition);
         }
 
         public List<Customer> GetAll()

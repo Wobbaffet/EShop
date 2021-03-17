@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "PartialAdmin";
+}
+
+@if (Model.items != null)
+{
+    <table style="border:1px solid black" id="order">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Supplies</th>
+                <th>Authors</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.items)
+            {
+                @if (item.volumeInfo.imageLinks != null)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.volumeInfo.imageLinks.thumbnail" alt="Alternate Text" />
+                        </td>
+                        <td>@item.volumeInfo.title</td>
+                        <td><input type="number" /></td>
+                        <td><input type="number" /></td>
+                        <td>
+                            @if (item.volumeInfo.authors != null)
+                            {
+                                @foreach (var author in item.volumeInfo.authors)
+                                {
+                                    <p>@author</p>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <button>Save</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>Invalid search!</h1>
+}
