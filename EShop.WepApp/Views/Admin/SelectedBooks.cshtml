@@ -1,0 +1,133 @@
+﻿@model List<Book>
+@{
+    Layout = "_LayoutAdmin";
+}
+@if (Model != null && Model.Count > 0)
+{
+    <table style="border:1px solid black" id="books">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Supplies</th>
+                <th>Authors</th>
+                <th>Genre</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <img src="@Model[i].Image" alt="Alternate Text" />
+                    </td>
+                    <td>@Model[i].Title</td>
+                    <td>@Model[i].Price</td>
+                    <td>@Model[i].Supplies</td>
+                    <td>
+                        @if (Model[i].Autors != null)
+                        {
+                            @foreach (var author in Model[i].Autors)
+                            {
+                                <p>@author</p>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @if (Model[i].Genres != null)
+                        {
+                            @foreach (var genre in Model[i].Genres)
+                            {
+                                <p>@genre</p>
+                            }
+                        }
+                    </td>
+                    <td><span id="book-@i" onclick="removeItemFromList(this.id, '@Model[i].Title', '@Model[i].Description')"><i class="fas fa-times-circle"></i></span></td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+    <button onclick="SaveBooks()">Save</button>
+}
+else
+{
+    <h1>There are no selected books</h1>
+}
+
+
+@section JavaScript{
+    <script>
+        
+        function removeItemFromList(id, title, description) {
+            $.ajax({
+                url: '@Url.ActionLink("RemoveItemFromList", "Admin")',
+                data: {
+                    title: title,
+                    description: description
+                },
+                method: "delete",
+                success: function () {
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+
+            document.getElementById(`${id}`).parentElement.parentElement.remove();
+
+            if ($('table tr').length == 1) {
+
+                var removeTab = document.getElementById('books');
+                removeTab.parentElement.innerHTML = "";
+
+                var node = document.createElement("H1");
+                var textnode = document.createTextNode("There are no selected books");
+                node.appendChild(textnode);
+                document.getElementById("main").appendChild(node);
+            }
+        }
+
+        function SaveBooks() {
+            $.ajax({
+            url: '@Url.ActionLink("SaveBooks", "Admin")',
+            data: {
+                
+            },
+            method: "post",
+            success: function () {
+                window.location.reload(true);
+            },
+            error: function () {
+                alert("Error!");
+            }
+            });
+        }
+
+    </script>
+}
+<style>
+    td {
+        border: 1px solid black;
+        width: 14%;
+    }
+
+    th {
+        border: 1px solid black;
+    }
+
+    table {
+        text-align: center;
+    }
+
+    input {
+        width: 70%
+    }
+
+    p {
+        max-width: 100%
+    }
+</style>

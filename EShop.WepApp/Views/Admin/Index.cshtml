@@ -23,31 +23,41 @@
                 <th>Price</th>
                 <th>Supplies</th>
                 <th>Authors</th>
+                <th>Genre</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.items)
+            @for (int i = 0; i < Model.items.Count; i++)
             {
-                @if (item.volumeInfo.imageLinks != null)
+                @if (Model.items[i].volumeInfo.imageLinks != null)
                 {
-                    <tr>
+                    <tr id="row-@i">
                         <td>
-                            <img src="@item.volumeInfo.imageLinks.thumbnail" alt="Alternate Text" />
+                            <img src="@Model.items[i].volumeInfo.imageLinks.thumbnail" alt="Alternate Text" />
                         </td>
-                        <td>@item.volumeInfo.title</td>
+                        <td>@Model.items[i].volumeInfo.title</td>
                         <td><input type="number" /></td>
                         <td><input type="number" /></td>
                         <td>
-                            @if (item.volumeInfo.authors != null)
+                            @if (Model.items[i].volumeInfo.authors != null)
                             {
-                                @foreach (var author in item.volumeInfo.authors)
+                                @foreach (var author in Model.items[i].volumeInfo.authors)
                                 {
                                     <p>@author</p>
                                 }
                             }
                         </td>
-                        <td><button>Add</button></td>
+                        <td>
+                            @Html.DropDownListFor(m => m.genres, new SelectList(Model.genres), "Select authors", new
+                                {
+                                    onchange = $"SaveGenre(this.id)",
+                                    id = $"genres-{i}"
+                                }
+                            )
+                            <p></p>
+                        </td>
+                        <td><span onclick="AddBook(this.id, '@Model.items[i].volumeInfo.description')" id="icon-@i"><i class="fas fa-plus-circle"></i></span></td>
                     </tr>
                 }
             }
@@ -63,7 +73,7 @@ else
 <style>
     td {
         border: 1px solid black;
-        width: 17%;
+        width: 14%;
     }
 
     th {
@@ -81,22 +91,46 @@ else
     input {
         width: 70%
     }
+    p{
+        max-width: 100%
+    }
 </style>
-@*<script>
-        function Search(name) {
-            $.ajax({
-                url: '@Url.ActionLink("Index", "Admin")',
-                data: { name: name },
-                method: "get",
-                success: function (data) {
+<script>
+    function AddBook(id, description) {
+        var row = $(`#${id}`).closest('tr');
+        var image = row.find('td:eq(0)').children('img').attr('src');
+        var title = row.find('td:eq(1)').text();
+        var price = row.find('td:eq(2)').children('input').val();
+        var supplies = row.find('td:eq(3)').children('input').val();
+        var authors = row.find('td:eq(4)').text();
+        var genres = row.find('td:eq(5)').children('p').text();
 
-                },
-                error: function () {
-                    alert("Error!");
-                }
-            });
-        }
-        function DefaultTable() {
-            return ``;
-        }
-    </script>*@
+        $.ajax({
+            url: '@Url.ActionLink("PickedBooks", "Admin")',
+            data: {
+                image: image,
+                title: title,
+                price: price,
+                supplies: supplies,
+                authors: authors,
+                genres: genres,
+                description: description
+            },
+            method: "get",
+            success: function (data) {
+
+            },
+            error: function () {
+                alert("Error!");
+            }
+        });
+    }
+
+    function SaveGenre(id) {
+        var text = $(`#${id} option:selected`).text();
+        var cmb = $(`#${id}`).parent().children('p').text();
+        if (text != "Select authors" && !cmb.includes(text))
+            $(`#${id}`).parent().children('p').append(text + ", ")
+    }
+
+</script>

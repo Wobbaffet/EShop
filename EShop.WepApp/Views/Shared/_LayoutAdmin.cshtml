@@ -45,7 +45,7 @@
             <!-- 2 -->
             <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
                 <div id="cart">
-                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart">0</i></a>
+                    <a id="cart_number" asp-controller="Admin" asp-action="SelectedBooks"><i class="fas fa-book">0</i></a>
                 </div>
 
             </div>
@@ -69,7 +69,7 @@
                         <a class="nav-link" href="#">Top-lists</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Add books</a>
+                        <a class="nav-link" asp-controller="Admin" asp-action="Index">Add books</a>
                     </li>
                 </ul>
             </div>

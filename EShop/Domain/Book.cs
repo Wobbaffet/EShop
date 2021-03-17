@@ -10,6 +10,7 @@ namespace EShop.Model.Domain
         public string Image { get; set; }
         public double Price { get; set; }
         public int Supplies { get; set; }
+        public string Description { get; set; }
         public List<Genre> Genres { get; set; }
         public List<Autor> Autors { get; set; }
     }

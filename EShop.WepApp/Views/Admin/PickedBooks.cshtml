@@ -1,0 +1,92 @@
+﻿@model List<Book>
+@{
+    ViewData["Title"] = "Picked books";
+}
+@section Style{
+    <link href="~/css/Cart.css" rel="stylesheet" />
+}
+
+@if (Model is null || Model.Count == 0)
+{
+    <h1>Book list is empty</h1>
+}
+else
+{
+    <table style="border:1px solid black" id="order">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Supplies</th>
+                <th>Authors</th>
+                <th>Genre</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><img src="~/img/@item.Image" asp-append-version="true" alt="Alternate Text" /> </td>
+                    <td>@item.Title</td>
+                    <td>@item.Price</td>
+                    <td>@item.Supplies</td>
+                    <td>
+                        @if (item.Autors != null)
+                        {
+                            @foreach (var author in item.Autors)
+                            {
+                                <p>@author</p>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @if (item.Genres != null)
+                        {
+                            @foreach (var genre in item.Genres)
+                            {
+                                <p>@genre</p>
+                            }
+                        }
+                    </td>
+                    <td><span onclick=""><i class="fas fa-times-circle"></i></span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section JavaScript{
+    <script>
+        function removeBook(id) {
+            $.ajax({
+                url: '@Url.ActionLink("RemoveItemFromCart", "Cart")',
+                data: { bookid: id },
+                method: "delete",
+                success: function () {
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+            priceOfDeletedItem = document.getElementById(`totalItemPrice-${id}`).innerHTML;
+
+            var field = $(`#totalPrice span`);
+            field.text(field.text() - priceOfDeletedItem)
+
+            document.getElementById(`${id}`).parentElement.parentElement.remove();
+
+            if ($('table tr').length == 1) {
+
+                var removeTab = document.getElementById('order');
+                removeTab.parentElement.innerHTML = "";
+
+                var node = document.createElement("H1");
+                var textnode = document.createTextNode("Cart is empty");
+                node.appendChild(textnode);
+                document.getElementById("main").appendChild(node);
+            }
+        }
+    </script>
+}
