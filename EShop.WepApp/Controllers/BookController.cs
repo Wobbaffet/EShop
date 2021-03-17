@@ -21,32 +21,10 @@ namespace EShop.WepApp.Controllers
         }
 
         // GET: BooksController
-        public ActionResult Index(/*List<Book> bs*/)
+        public ActionResult Index()
         {
-            //BookViewModel bvm = new BookViewModel();
-
-            ////List<Book> books = new List<Book>();
-            ////if (bs is null || bs.Count == 0)
-            ////    books = uow.RepositoryBook.GetAll();
-            ////else
-            ////    books = bs;
-
-            //List<Book> books = uow.RepositoryBook.GetAll();
-            //List<Autor> autors = new List<Autor>();
-
-            //foreach (var book in uow.RepositoryBook.GetAll())
-            //{
-            //    foreach (var autor in book.Autors)
-            //    {
-            //        if (!autors.Contains(autor))
-            //        {
-            //            autors.Add(autor);
-            //        }
-            //    }
-            //}
-            //bvm.Books = books;
-            //bvm.Autors = autors;
-            return View("PartialBooks");
+            List<Genre> model = uow.RepositoryGenre.GetAll();
+            return View("PartialBooks", model);
         }
 
         public List<Autor> GetAllAutors()
@@ -64,7 +42,6 @@ namespace EShop.WepApp.Controllers
                     }
                 }
             }
-            
             return autors;
         }
 
@@ -107,41 +84,146 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpGet]
-        public int NubmerOfBooks()
+        public int NubmerOfBooks(List<string> genres)
         {
-            return uow.RepositoryBook.GetAll().Count;
-        }
-
-        [HttpGet]
-        public int NubmerOfBooksByAutor(string autor)
-        {
-            if (autor == "All")
-                return uow.RepositoryBook.GetAll().Count;
+            List<Book> appropriate = new List<Book>();
+            if (genres.Count > 0)
+            {
+                List<Book> books = uow.RepositoryBook.GetAll();
+                foreach (var book in books)
+                {
+                    int i = 0;
+                    foreach (var genre in book.Genres)
+                    {
+                        if (genres.Contains(genre.Name))
+                            i++;
+                    }
+                    if (!(i == 0))
+                        appropriate.Add(book);
+                }
+                return appropriate.Count;
+            }
             else
-                return uow.RepositoryBook.Search(autor).Count;
+                return uow.RepositoryBook.GetAll().Count;
         }
 
         [HttpGet]
-        public List<Book> ReturnSixBooks(int pagiNumber, string autor)
+        public int NubmerOfBooksByAutorGenre(string autor, List<string> genres)
+        {
+            List<Book> appropriate = new List<Book>();
+            if (autor == "All")
+            {
+                if (genres.Count > 0)
+                {
+                    List<Book> books = uow.RepositoryBook.GetAll();
+                    foreach (var book in books)
+                    {
+                        int i = 0;
+                        foreach (var genre in book.Genres)
+                        {
+                            if (genres.Contains(genre.Name))
+                                i++;
+                        }
+                        if (!(i == 0))
+                            appropriate.Add(book);
+                    }
+                    return appropriate.Count;
+                }
+                else
+                    return uow.RepositoryBook.GetAll().Count;
+            }
+            else
+            {
+                if (genres.Count > 0)
+                {
+                    List<Book> books = uow.RepositoryBook.Search(autor);
+                    foreach (var book in books)
+                    {
+                        int i = 0;
+                        foreach (var genre in book.Genres)
+                        {
+                            if (genres.Contains(genre.Name))
+                                i++;
+                        }
+                        if (!(i == 0))
+                            appropriate.Add(book);
+                    }
+                    return appropriate.Count;
+                }
+                else
+                    return uow.RepositoryBook.Search(autor).Count;
+            }
+        }
+
+        private List<Book> AllBooksByAutorGenre(string autor, List<string> genres)
+        {
+            List<Book> appropriate = new List<Book>();
+            if (autor == "All")
+            {
+                if (genres.Count > 0)
+                {
+                    List<Book> books = uow.RepositoryBook.GetAll();
+                    foreach (var book in books)
+                    {
+                        int i = 0;
+                        foreach (var genre in book.Genres)
+                        {
+                            if (genres.Contains(genre.Name))
+                                i++;
+                        }
+                        if (!(i == 0))
+                            appropriate.Add(book);
+                    }
+                    return appropriate;
+                }
+                else
+                    return uow.RepositoryBook.GetAll();
+            }
+            else
+            {
+                if (genres.Count > 0)
+                {
+                    List<Book> books = uow.RepositoryBook.Search(autor);
+                    foreach (var book in books)
+                    {
+                        int i = 0;
+                        foreach (var genre in book.Genres)
+                        {
+                            if (genres.Contains(genre.Name))
+                                i++;
+                        }
+                        if (!(i == 0))
+                            appropriate.Add(book);
+                    }
+                    return appropriate;
+                }
+                else
+                    return uow.RepositoryBook.Search(autor);
+            }
+        }
+
+        [HttpGet]
+        public List<Book> ReturnSixBooks(int pagiNumber, string autor, List<string> genres)
         {//kad se radi filtriranje za all ovde vraca nekog drugog autora
             int max;
             if (autor == "all" || autor == "All")
-                max = NubmerOfBooks();
+                max = NubmerOfBooks(genres);
             else
-                max = NubmerOfBooksByAutor(autor);
+                max = NubmerOfBooksByAutorGenre(autor, genres);
 
             List<Book> books = new List<Book>();
             if (pagiNumber * 6 > max)
             {
-                books = uow.RepositoryBook.GetAll().GetRange(pagiNumber * 6 - 6, 6 - pagiNumber * 6 + max);
+                books = AllBooksByAutorGenre(autor, genres).GetRange(pagiNumber * 6 - 6, 6 - pagiNumber * 6 + max);
             }
             else
             {
-                books = uow.RepositoryBook.GetAll().GetRange(pagiNumber * 6 - 6, 6);
+                books = AllBooksByAutorGenre(autor, genres).GetRange(pagiNumber * 6 - 6, 6);
             }
             foreach (var book in books)
             {
                 book.Autors.Clear();
+                book.Genres.Clear();
             }
 
             return books;
