@@ -254,5 +254,9 @@ namespace EShop.WepApp.Controllers
             return books;
         }
 
+        public ActionResult ShowItem()
+        {
+            return View();
+        }
     }
 }
