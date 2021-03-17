@@ -46,7 +46,7 @@
         var limitPerPage = 6;
         var totalPages;
 
-        function SecectChosenCBs(array) {
+        function SelectChosenCBs(array) {
             var allCBs = $("#myCheckboxes").children('input')
 
             for (var i = 0; i < allCBs.length; i++) {
@@ -118,7 +118,7 @@
             return text =`<div class="list-group col-lg-3">
                             <div class="list-group-item active">
                                 <div class="content">
-                                    <img src="img/${image}" asp-append-version="true" alt="Alternative Text">
+                                    <img src="${image}" asp-append-version="true" alt="Alternative Text">
                                     <div class="text">
                                         <p>
                                             ${title} <br>
@@ -260,7 +260,7 @@
                     $("#main").append(mainPart());
                     partialLoad(data, nameLastName, array);
                     GetAllAutors(nameLastName);
-                    SecectChosenCBs(array);
+                    SelectChosenCBs(array);
                 },
                 error: function () {
                     alert("Error!");
