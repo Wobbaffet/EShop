@@ -265,7 +265,7 @@ namespace EShop.WepApp.Controllers
 
 
         [HttpPost]
-        public ActionResult Verification(long code,string email)
+        public ActionResult Verification(long code, string email)
         {
 
             Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
@@ -276,13 +276,14 @@ namespace EShop.WepApp.Controllers
                 c.VerificationCode = 1;
                 uow.Commit();
                 return Json(new { redirectUrl = Url.Action("SignIn", "Customer") });
-               
+
             }
             else
             {
-                
-                return View("RegistrationVerification",email);
+
+                return View("RegistrationVerification", email);
             }
+        }
 
         public ActionResult Create(string email)
         {

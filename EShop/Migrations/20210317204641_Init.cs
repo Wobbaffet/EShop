@@ -190,11 +190,17 @@ namespace EShop.Model.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    BookId = table.Column<int>(type: "int", nullable: false)
+                    BookId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItem", x => new { x.OrderId, x.OrderItemId });
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Book_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Book",
+                        principalColumn: "BookId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OrderItem_Order_OrderId",
                         column: x => x.OrderId,
@@ -217,6 +223,11 @@ namespace EShop.Model.Migrations
                 name: "IX_Order_CustomerId",
                 table: "Order",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_BookId",
+                table: "OrderItem",
+                column: "BookId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -240,10 +251,10 @@ namespace EShop.Model.Migrations
                 name: "Autor");
 
             migrationBuilder.DropTable(
-                name: "Book");
+                name: "Genre");
 
             migrationBuilder.DropTable(
-                name: "Genre");
+                name: "Book");
 
             migrationBuilder.DropTable(
                 name: "Order");

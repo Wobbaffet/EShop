@@ -273,7 +273,7 @@ namespace EShop.Model.Migrations
                                 .HasColumnType("int")
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                            b1.Property<int>("BookId")
+                            b1.Property<int?>("BookId")
                                 .HasColumnType("int");
 
                             b1.Property<int>("Quantity")
@@ -281,10 +281,18 @@ namespace EShop.Model.Migrations
 
                             b1.HasKey("OrderId", "OrderItemId");
 
+                            b1.HasIndex("BookId");
+
                             b1.ToTable("OrderItem");
+
+                            b1.HasOne("EShop.Model.Domain.Book", "Book")
+                                .WithMany()
+                                .HasForeignKey("BookId");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
+
+                            b1.Navigation("Book");
                         });
 
                     b.Navigation("OrderItems");
