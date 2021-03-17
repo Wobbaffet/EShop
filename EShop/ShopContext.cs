@@ -14,6 +14,7 @@ namespace EShop.Model
         public DbSet<Book> Book { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<Genre> Genre { get; set; }
+        public DbSet<Autor> Autor { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

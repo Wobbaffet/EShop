@@ -81,6 +81,14 @@ namespace EShop.WepApp.Controllers
                 {
                     item.Genres[i] = uow.RepositoryGenre.Find(g => g.Name == item.Genres[i].Name);
                 }
+                for (int i = 0; i < item.Autors.Count; i++)
+                {
+                    Autor a = uow.RepositoryAutor.Find(a => a.FirstName == item.Autors[i].FirstName && a.LastName == item.Autors[i].LastName);
+                    if(a != null)
+                    {
+                        item.Autors[i] = a;
+                    }
+                }
                 uow.RepositoryBook.Add(item);
             }
             uow.Commit();
@@ -124,6 +132,10 @@ namespace EShop.WepApp.Controllers
                 if (author != "")
                 {
                     string[] name = author.Split(" ");
+                    if (name.Length == 1)
+                    {
+                        authorsList.Add(new Autor { FirstName = name[0], LastName = "" });
+                    }
                     if (name.Length == 2)
                         authorsList.Add(new Autor { FirstName = name[0], LastName = name[1] });
                     else if (name.Length > 2)
