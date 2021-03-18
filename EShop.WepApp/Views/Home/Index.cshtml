@@ -1,12 +1,243 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "";
 }
 
-<div class="text-center">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Layout.css">
+    <link rel="stylesheet" href="~/css/Code.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+          crossorigin="anonymous" />
 
-   
 
-    <h1 class="display-4">Welcome</h1>
-    <p  class="nesto">Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-   
-</div>
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">-->
+    <!-- cdnjs.com themes-css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"
+          integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A=="
+          crossorigin="anonymous" />
+    <!-- cdnjs.com css -->
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
+        integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw=="
+        crossorigin="anonymous" />*@
+    <!-- JQuery -->
+    <link rel="stylesheet" href="https://code.jquery.com/jquery-3.5.1.js">
+    <link href="~/css/signUp.css" rel="stylesheet" />
+    <link href="~/lib/cdnjs/css/slick-theme.min.css" rel="stylesheet" />
+    <link href="~/lib/cdnjs/css/slick.min.css" rel="stylesheet" />
+    <link href="~/css/home.css" rel="stylesheet" />
+    <link href="~/css/Layout.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://code.jquery.com/jquery-3.5.1.js">
+
+</head>
+<body>
+    <div class="container">
+        <header id="header" class="row">
+            <!-- 2 -->
+            <div class="logo col-lg-2 col-md-12 col-sm-12 col-xs-24 ">Logo</div>
+            <!-- 1 -->
+            <div class="col-lg-1 col-md-1 col-sm-3 hidden-xs"></div>
+            <!-- 5 -->
+            <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Recipient's username"
+                           aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                </div>
+            </div>
+            <!-- 1 -->
+            <div class="col-lg-1 hidden-md col-sm-3 hidden-xs"></div>
+            <!-- 1 -->
+
+            @if (TempData["logged"] != null && (bool)TempData["logged"])
+
+            {
+                TempData.Keep("logged");
+                <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                    <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
+                    <a asp-controller="Customer" asp-action="Update">User</a>
+
+                </div>
+            }
+            else
+            {
+                //Obratiti paznju  na ovo
+                TempData.Keep("logged");
+                <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                    <a asp-controller="Customer" asp-action="SignIn">Sign in</a>
+                    <a asp-controller="Customer" asp-action="SignUp">Sign up</a>
+                </div>
+
+            }
+            <!-- 2 -->
+            <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
+                <div id="cart">
+
+                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
+                </div>
+
+                <div>
+
+                    <a id="cart_number" asp-controller="Order" asp-action="Index"> Orders</a>
+
+                </div>
+
+
+            </div>
+        </header>
+
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Book" asp-action="Index">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Top-lists</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <main role="main" class="pb-3" id="main">
+
+
+            <hr>
+            <h1>NEW TITLES</h1>
+            <!-- New books -->
+            <div class="row slider">
+
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4989/evgenije_onjegin-aleksandar_puskin_s.jpg" alt="">
+                    </div>
+                    <h2>Evgenije Onjegin</h2>
+                    <p>Aleksandar Puškin</p>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4971/50_velikih_ideja_koje_bi_stvarno_trebalo_da_znate-ben_dupre_s.jpg"
+                             alt="">
+                    </div>
+                    <h2>50 velikih ideja koje bi stvarno trebalo da znate</h2>
+                    <p>Ben Dupre</p>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4941/50_ideja_koje_bi_stvarno_trebalo_da_znate_nauka-pol_parsons-_gejl_dikson_s.jpg"
+                             alt="">
+                    </div>
+                    <h2>50 ideja koje bi stvarno trebalo da znate: Nauka</h2>
+                    <p>
+                        Pol Parsons <br>
+                        Gejl Dikson
+                    </p>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4947/dva_su_jahaca_prilazila-mik_vol_s.jpg" alt="">
+                    </div>
+                    <h2>Dva su jahača prilazila</h2>
+                    <p>Mik Vol</p>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4849/hakovanje_darvina-dzejmi_mecl_s.jpg" alt="">
+                    </div>
+                    <h2>Hakovanje Darvina</h2>
+                    <p>Džejmi Mecl</p>
+                </div>
+            </div>
+            <hr>
+            <h1>TOP</h1>
+            <!-- Top list fiction(beletristics) -->
+            <div class="row slider">
+
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4928/medvedgrad-fredrik_bakman_v.jpg" alt="">
+                    </div>
+                    <h1>1.</h1>
+                    <h2>Medvedgrad</h2>
+                    <p>Fredrik Bakman</p>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4939/srce_moje-mirjana_bobic_mojsilovic_v.jpg" alt="">
+                    </div>
+                    <h1>2.</h1>
+                    <h2>Srce moje</h2>
+                    <p>Miljana Bobic Mojsilovic</p>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4862/djubre-marko_vidojkovic_v.jpg" alt="">
+                    </div>
+                    <h1>3.</h1>
+                    <h2>Djubre</h2>
+                    <p>Marko Vidojkovic</p>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4647/zamalek-dejan_tiago-stankovic_v.jpg" alt="">
+                    </div>
+                    <h1>4.</h1>
+                    <h2>Zamalek</h2>
+                    <p>Dejan Tiago-Stankovic</p>
+                </div>
+                <div class="carousel-item col-md-4">
+                    <div class="details">
+                        <img src="https://www.laguna.rs/_img/korice/4751/neki_drugi_zivot-jelena_bacic_alimpic_v.jpg"
+                             alt="">
+                    </div>
+                    <h1>5.</h1>
+                    <h2>Neki drugi zivot</h2>
+                    <p>Jelena Baciv Alimpic</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - EShop.WepApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    @*<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
+                integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A=="
+                crossorigin="anonymous"></script>*@
+    <script src="~/lib/jquery/dist/jquery-3.3.1.slim.min.js"></script>
+    <script src="~/lib/jquery/dist/cdnjs/slick.min.js"></script>
+    <script src="~/js/carousel1.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/Functions.js"></script>
+</body>
+</html>
+
+

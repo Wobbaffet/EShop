@@ -17,21 +17,27 @@
     justify-content: center;
 }
 
-.catousel-item h2, .catousel-item p {
+.carousel-item h2, .carousel-item p {
     color: darkgrey;
     text-align: center;
 }
 
-.catousel-item h1 {
+.carousel-item h1 {
     color: red;
     text-align: center;
 }
 
-.catousel-item img {
+.carousel-item img {
     height: 16.5625rem;
     width: 10.9375rem;
 }
 
 h1 {
     text-align: center;
+}
+
+@media (min-width: 768px) {
+    .col-md-4 {
+        max-width: 100%;
+    }
 }
