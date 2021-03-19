@@ -1,5 +1,154 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+
+@model List<Order>
 @{
+    ViewData["Title"] = "Customer orders";
 }
+@section Style{
+    <link href="~/css/Cart.css" rel="stylesheet" />
+}
+
+@if (Model is null || Model.Count == 0)
+{
+    <h1>You have not placed any orders in 2021</h1>
+}
+else
+{
+    <table style="border:1px solid black" id="orderCustomer" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                @*<th></th>*@
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total for the product</th>
+                <th>Purchase Date</th>
+                <th>Order status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+
+                @foreach (var orderItem in order.OrderItems)
+                {
+                    <tr>
+                        @*<td><img src="" asp-append-version="true" alt="Alternate Text" /> </td>*@
+                        <td>@orderItem.Book.Title</td>
+                        <td>@orderItem.Book.Price</td>
+                        <td>
+                            @orderItem.Quantity
+                        </td>
+                        <td id="totalItemPrice-@orderItem.Book.BookId">@(orderItem.Book.Price * @orderItem.Quantity)</td>
+                        <td>@order.Date</td>
+                        <td>
+                           
+                            <select>
+                                <option selected value="@order.OrderStatus">@order.OrderStatus</option>
+                                @if (order.OrderStatus != OrderStatus.Completed)
+                                {
+
+                                    <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
+                                }
+
+                                @if (order.OrderStatus != OrderStatus.InProgress)
+                                {
+                                    <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
+
+                                }
+
+                                @if (order.OrderStatus != OrderStatus.Shipped)
+                                {
+                                    <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
+
+                                }
+
+                                @if (order.OrderStatus != OrderStatus.Uncompleted)
+                                {
+                                    <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
+
+                                }
+                            </select>
+
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+
+    <div class="pagination-container">
+        <nav>
+            <ul class="pagination">
+            </ul>
+        </nav>
+    </div>
+
+     <button class="btn btn-primary">Save changes</button>
+
+
+    @section JavaScript{
+        <script>
+            var table = '#orderCustomer'
+
+                $('.pagination').html('')
+                var trnum = 0
+
+             
+                var maxRows = 5
+
+            var totalRows = $(table + ' tbody tr').length
+            alert(totalRows)
+                $(table + ' tr:gt(0)').each(function () {
+                    trnum++
+
+                    if (trnum > maxRows) {
+                        $(this).hide()
+                    }
+                    if (trnum <= maxRows) {
+                        $(this).show()
+                    }
+
+                })
+
+                if (totalRows > maxRows) {
+                    var pagenum = Math.ceil(totalRows / maxRows)
+
+                    alert(pagenum)
+                    for (var i = 1; i <= pagenum;) {
+
+                        $('.pagination').append('<li data-page="' + i + '"><span class="page-link">' + i++ + '</span></li>').show()
+
+                    }
+
+
+                }
+
+                $('.pagination li:first-child').addClass('active')
+                $('.pagination li').on('click', function () {
+                    var pageNum = $(this).attr('data-page')
+                    console.log("data page" + pageNum)
+                    var trIndex = 0;
+                    $('.pagination li').removeClass('active')
+                    $(this).addClass('active')
+                    $(table + ' tr:gt(0)').each(function () {
+                        trIndex++
+                        if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
+                            $(this).hide()
+                        }
+                        else {
+                            $(this).show()
+                        }
+                    })
+                })
+
+
+
+
+        </script>
+    }
+
+}
+

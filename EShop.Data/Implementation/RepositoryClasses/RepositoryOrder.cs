@@ -29,7 +29,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public List<Order> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Order.Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList();
         }
         public void Dispose()
         {

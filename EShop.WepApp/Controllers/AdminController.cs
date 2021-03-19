@@ -24,9 +24,11 @@ namespace EShop.WepApp.Controllers
             Services = services;
         }
 
-        public static ActionResult ViewOrders()
+        public  ActionResult ViewOrders()
         {
-            return View("Orders");
+
+            var orders = uow.RepositoryOrder.GetAll();
+            return View("Orders",orders);
         }
 
         public async Task<IActionResult> Index(string name)
