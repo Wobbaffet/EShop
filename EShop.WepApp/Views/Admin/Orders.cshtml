@@ -10,7 +10,7 @@
 
 @if (Model is null || Model.Count == 0)
 {
-    <h1>You have not placed any orders in 2021</h1>
+    <h1>There are no orders from customers</h1>
 }
 else
 {
@@ -18,89 +18,80 @@ else
         <thead>
             <tr>
                 @*<th></th>*@
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total for the product</th>
-                <th>Purchase Date</th>
+                <th>OrderNumber</th>
+                <th>Purchase date</th>
+                <th>Total</th>
+                <th>Customer</th>
                 <th>Order status</th>
             </tr>
         </thead>
         <tbody>
+
+
             @foreach (var order in Model)
             {
+            <td>@order.OrderId</td>
+            <td>@order.Date</td>
+            <td>@order.Total</td>
+            <td>@order.Customer</td>
 
-                @foreach (var orderItem in order.OrderItems)
+
+            <select asp-for="@order.OrderStatus">
+                <option selected value="@order.OrderStatus">@order.OrderStatus</option>
+                @if (order.OrderStatus != OrderStatus.Completed)
                 {
-                    <tr>
-                        @*<td><img src="" asp-append-version="true" alt="Alternate Text" /> </td>*@
-                        <td>@orderItem.Book.Title</td>
-                        <td>@orderItem.Book.Price</td>
-                        <td>
-                            @orderItem.Quantity
-                        </td>
-                        <td id="totalItemPrice-@orderItem.Book.BookId">@(orderItem.Book.Price * @orderItem.Quantity)</td>
-                        <td>@order.Date</td>
-                        <td>
-                           
-                            <select>
-                                <option selected value="@order.OrderStatus">@order.OrderStatus</option>
-                                @if (order.OrderStatus != OrderStatus.Completed)
-                                {
 
-                                    <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
-                                }
-
-                                @if (order.OrderStatus != OrderStatus.InProgress)
-                                {
-                                    <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
-
-                                }
-
-                                @if (order.OrderStatus != OrderStatus.Shipped)
-                                {
-                                    <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
-
-                                }
-
-                                @if (order.OrderStatus != OrderStatus.Uncompleted)
-                                {
-                                    <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
-
-                                }
-                            </select>
-
-                        </td>
-
-                    </tr>
+                    <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
                 }
+
+                @if (order.OrderStatus != OrderStatus.InProgress)
+                {
+                    <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
+
+                }
+
+                @if (order.OrderStatus != OrderStatus.Shipped)
+                {
+                    <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
+
+                }
+
+                @if (order.OrderStatus != OrderStatus.Uncompleted)
+                {
+                    <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
+
+                }
+            </select>
+
+
+        }
             }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
 
-    <div class="pagination-container">
-        <nav>
-            <ul class="pagination">
-            </ul>
-        </nav>
-    </div>
+        <div class="pagination-container">
+            <nav>
+                <ul class="pagination">
+                </ul>
+            </nav>
+        </div>
 
-     <button class="btn btn-primary">Save changes</button>
+        <button class="btn btn-primary" id="submitOrders">Save changes</button>
 
 
-    @section JavaScript{
-        <script>
-            var table = '#orderCustomer'
+        @section JavaScript{
+            <script>
+                var table = '#orderCustomer'
 
                 $('.pagination').html('')
                 var trnum = 0
 
-             
+
                 var maxRows = 5
 
-            var totalRows = $(table + ' tbody tr').length
-            alert(totalRows)
+                var totalRows = $(table + ' tbody tr').length
+                alert(totalRows)
                 $(table + ' tr:gt(0)').each(function () {
                     trnum++
 
@@ -147,8 +138,19 @@ else
 
 
 
-        </script>
-    }
+            </script>
 
-}
+            <script>
+
+
+
+                $("#submitOrders").on('click', function () {
+
+
+                })
+            </script>
+
+        }
+
+    }
 

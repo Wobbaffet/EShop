@@ -12,6 +12,7 @@ namespace EShop.Model.Domain
         public OrderStatus OrderStatus { get; set; }
         public List<OrderItem> OrderItems { get; set; }
 
+        public Customer Customer { get; set; }
         public int CustomerId { get; set; }
     }
 }
