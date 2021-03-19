@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.WepApp.Controllers
 {
+    [LoggedUserFillter]
     [ForbiddenForAdminFillter]
     [AddToCartFillter]
     public class CartController : Controller

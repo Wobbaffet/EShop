@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace EShop.WepApp.Fillters
 {
-    public class ForbiddenForLoggedUserFillter : ActionFilterAttribute
+    public class LoggedUserFillter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            Controller controller = context.Controller as Controller;
             if (context.HttpContext.Session.GetInt32("customerId") != null)
-            {
-                context.HttpContext.Response.Redirect("/Book/Index");
-                context.Result = new EmptyResult();
-            }
+                controller.ViewBag.IsLogged = true;
+            else
+                controller.ViewBag.IsLogged = false;
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace EShop.WepApp.Controllers
 {
+    [LoggedUserFillter]
     [ForbiddenForAdminFillter]
     [AddToCartFillter]
     public class HomeController : Controller

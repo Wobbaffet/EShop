@@ -115,7 +115,7 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpDelete]
-        public void RemoveItemFromList(string title, string description)
+        public int RemoveItemFromList(string title, string description)
         {
             byte[] booksByte = HttpContext.Session.Get("book");
 
@@ -126,6 +126,7 @@ namespace EShop.WepApp.Controllers
 
 
             HttpContext.Session.SetInt32("numberOfSelectedBooks", (int)--items);
+            return books.Count;
         }
 
         private List<Genre> GetGenres(string genres)

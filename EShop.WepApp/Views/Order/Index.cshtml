@@ -33,7 +33,7 @@ else
                 @foreach (var orderItem in order.OrderItems)
                 {
                     <tr>
-                        <td><img src="~/img/@orderItem.Book.Image" asp-append-version="true" alt="Alternate Text" /> </td>
+                        <td><img src="@orderItem.Book.Image" asp-append-version="true" alt="Alternate Text" /> </td>
                         <td>@orderItem.Book.Title</td>
                         <td>@orderItem.Book.Price</td>
                         <td>

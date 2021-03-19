@@ -70,7 +70,8 @@ else
                     description: description
                 },
                 method: "delete",
-                success: function () {
+                success: function (data) {
+                    $("#cart_number").html(data + `<i class="fas fa-book"></i>`);
                 },
                 error: function () {
                     alert("Error!");

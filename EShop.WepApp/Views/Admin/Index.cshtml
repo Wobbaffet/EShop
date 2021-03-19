@@ -84,10 +84,6 @@ else
         text-align: center;
     }
 
-        @*table td:nth-child(2) {
-            max-width: 250px;
-        }*@
-
     input {
         width: 70%
     }
@@ -118,7 +114,7 @@ else
                 },
                 method: "get",
                 success: function (data) {
-                    $("#cart_number").text(data)
+                    $("#cart_number").html(data + `<i class="fas fa-book"></i>`);
                 },
                 error: function () {
                     alert("Error!");

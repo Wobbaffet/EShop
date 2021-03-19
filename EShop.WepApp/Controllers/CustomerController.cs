@@ -11,6 +11,7 @@ using System.Net.Mail;
 
 namespace EShop.WepApp.Controllers
 {
+    [LoggedUserFillter]
     [ForbiddenForAdminFillter]
     [AddToCartFillter]
     public class CustomerController : Controller

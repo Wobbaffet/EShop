@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.WepApp.Controllers
 {
+    [LoggedUserFillter]
     [ForbiddenForAdminFillter]
     [AddToCartFillter]
     public class BookController : Controller
