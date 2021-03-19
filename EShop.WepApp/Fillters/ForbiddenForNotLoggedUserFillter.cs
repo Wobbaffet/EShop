@@ -15,6 +15,7 @@ namespace EShop.WepApp.Fillters
             if (context.HttpContext.Session.GetInt32("customerId") == null && context.HttpContext.Session.GetInt32("adminId") == null)
             {
                 context.HttpContext.Response.Redirect("/Home/Index");
+                context.Result = new EmptyResult();
             }
         }
     }

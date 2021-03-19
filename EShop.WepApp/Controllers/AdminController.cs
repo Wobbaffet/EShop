@@ -49,7 +49,7 @@ namespace EShop.WepApp.Controllers
             return View("SelectedBooks", model);
         }
 
-        public void PickedBooks(string image, string title, double price, int supplies, string authors, string genres, string description)
+        public int PickedBooks(string image, string title, double price, int supplies, string authors, string genres, string description)
         {
             Book book = new Book
             {
@@ -82,6 +82,7 @@ namespace EShop.WepApp.Controllers
             }
             books.Add(book);
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
+            return books.Count;
         }
 
         public void SaveBooks()
