@@ -322,6 +322,9 @@
                     data: { bookId: id },
                     method: "post",
                     success: function () {
+
+                        var x = parseInt($("#cartI").text()) + 1
+                        $("#cartI").text(x);
                     },
                     error: function () {
                         alert("Error!");
