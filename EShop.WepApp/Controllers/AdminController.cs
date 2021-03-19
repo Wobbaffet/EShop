@@ -24,6 +24,11 @@ namespace EShop.WepApp.Controllers
             Services = services;
         }
 
+        public static ActionResult ViewOrders()
+        {
+            return View("Orders");
+        }
+
         public async Task<IActionResult> Index(string name)
         {
             MainClass model = await Services.GetBooksFromAPI(name);
@@ -151,5 +156,8 @@ namespace EShop.WepApp.Controllers
             }
             return authorsList;
         }
+
+
+        
     }
 }
