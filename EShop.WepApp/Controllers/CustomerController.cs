@@ -270,7 +270,7 @@ namespace EShop.WepApp.Controllers
         }
 
 
-        [HttpPost]
+       
         public ActionResult Verification(long code, string email)
         {
 
