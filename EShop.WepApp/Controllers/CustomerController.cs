@@ -11,6 +11,7 @@ using System.Net.Mail;
 
 namespace EShop.WepApp.Controllers
 {
+    [ForbiddenForAdminFillter]
     [AddToCartFillter]
     public class CustomerController : Controller
     {
@@ -26,7 +27,7 @@ namespace EShop.WepApp.Controllers
         }
 
 
-        [LoggedInFillter]
+        [ForbiddenForLoggedUserFillter]
         [HttpGet]
         public ActionResult SignUp()
         {
@@ -34,7 +35,7 @@ namespace EShop.WepApp.Controllers
         }
 
 
-        [LoggedInFillter]
+        [ForbiddenForLoggedUserFillter]
         [HttpGet]
         public ActionResult SignIn()
         {
@@ -53,22 +54,27 @@ namespace EShop.WepApp.Controllers
             }
             else
             {
-                HttpContext.Session.SetInt32("customerId", customer.CustomerId);
-                TempData["logged"] = true;
-                TempData.Keep("logged");
+                //TempData["logged"] = true;
+                //TempData.Keep("logged");
                 if (!customer.IsAdmin)
+                {
+                    HttpContext.Session.SetInt32("customerId", customer.CustomerId);
                     return RedirectToAction("Index", "Home");
+                }
                 else
+                {
+                    HttpContext.Session.Clear();
+                    HttpContext.Session.SetInt32("adminId", customer.CustomerId);
                     return RedirectToAction("Index", "Admin");
+                }
             }
-
         }
 
         public ActionResult SignOut()
         {
             HttpContext.Session.Clear();
-            TempData["logged"] = false;
-            TempData.Keep("logged");
+            //TempData["logged"] = false;
+            //TempData.Keep("logged");
             return RedirectToAction("Index", "Home");
         }
 
@@ -290,7 +296,7 @@ namespace EShop.WepApp.Controllers
             return View("RegistrationVerification2", email);
         }
 
-        
+
 
         [HttpPost]
         public void SendCodeAgain(string email)

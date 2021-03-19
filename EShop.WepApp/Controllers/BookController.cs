@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.WepApp.Controllers
 {
+    [ForbiddenForAdminFillter]
     [AddToCartFillter]
     public class BookController : Controller
     {
@@ -52,7 +53,7 @@ namespace EShop.WepApp.Controllers
         {
             AddBookToCart(uow.RepositoryBook.Find(b => b.BookId == bookId));
 
-           int ?cartItems = HttpContext.Session.GetInt32("cartItems");
+            int? cartItems = HttpContext.Session.GetInt32("cartItems");
             if (cartItems is null)
             {
                 cartItems = 0;
@@ -62,7 +63,7 @@ namespace EShop.WepApp.Controllers
 
             HttpContext.Session.SetInt32("cartItems", (int)cartItems);
 
-            
+
             return Index();
         }
 
@@ -88,8 +89,8 @@ namespace EShop.WepApp.Controllers
             }
             else
             {
-               
-                order.OrderItems.Add(new OrderItem { Book=book,Quantity = 1 });
+
+                order.OrderItems.Add(new OrderItem { Book = book, Quantity = 1 });
             }
 
             order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
@@ -219,7 +220,7 @@ namespace EShop.WepApp.Controllers
 
         [HttpGet]
         public List<Book> ReturnSixBooks(int pagiNumber, string autor, List<string> genres)
-        {//kad se radi filtriranje za all ovde vraca nekog drugog autora
+        {
             int max;
             if (autor == "all" || autor == "All")
                 max = NubmerOfBooks(genres);

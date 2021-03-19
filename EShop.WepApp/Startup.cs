@@ -40,7 +40,7 @@ namespace EShop.WepApp
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
             services.AddDbContext<ShopContext>();
-            services.AddScoped<LoggedInFillter>();
+            services.AddScoped<ForbiddenForLoggedUserFillter>();
             services.AddScoped<PurchaseFillter>();
             services.AddHttpClient<EShopServices>();
             services.AddScoped<AddToCartFillter>();

@@ -22,32 +22,29 @@
             <!-- 5 -->
             <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Recipient's username"
+                    <input type="text" class="form-control" placeholder="Find book by name"
                            aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
                 </div>
             </div>
             <!-- 1 -->
             <div class="col-lg-1 hidden-md col-sm-3 hidden-xs"></div>
             <!-- 1 -->
-
-            @if (TempData["logged"] != null && (bool)TempData["logged"])
-
-            {
-                TempData.Keep("logged");
-                <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
-                    <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
-                    <a asp-controller="Customer" asp-action="Update">Admin</a>
-
-                </div>
-            }
+            @*@if (TempData["logged"] != null && (bool)TempData["logged"])
+                {
+                    TempData.Keep("logged");*@
+            <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                <a><i class="fas fa-users-cog"></i></a> @*not need for admin to change his data*@
+                @*<a asp-controller="Customer" asp-action="Update">Admin</a>*@
+                <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
+            </div>
+            @*}*@
 
             <!-- 2 -->
             <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
                 <div id="cart">
-                    <a id="cart_number" asp-controller="Admin" asp-action="SelectedBooks"><i class="fas fa-book">0</i></a>
+                    <a id="cart_number" asp-controller="Admin" asp-action="SelectedBooks">@ViewBag.ChosenBooks<i class="fas fa-book"></i></a>
                 </div>
-
             </div>
         </header>
 
@@ -56,18 +53,6 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sales</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Book" asp-action="Index">Books</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Top-lists</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Admin" asp-action="Index">Add books</a>
                     </li>
