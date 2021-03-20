@@ -43,6 +43,14 @@
 @section JavaScript{
     <script>
 
+        //var windowSize = window.innerWidth;
+
+        //if (windowSize >= 769)
+        //    $('.pagination').parent().parent().parent().addClass("row");
+        //else if (windowSize <= 768)
+        //    $('.pagination').parent().parent().parent().removeClass("row");
+
+
         var limitPerPage = 6;
         var totalPages;
 
@@ -56,12 +64,6 @@
                     }
                 }
             }
-            //$("#genre-1").attr('id')//uzmi element sa tim idjem
-            //arr.push($("#genre-1").attr('id'));//dodaj ga u niz
-            ////cekiraj sve koji su bili cekirani
-            //for (let i = 0; i < arr.length; i++) {
-            //    $(`#${arr[i]}`).prop('checked', true);
-            //}
         }
 
         function GetAllAutors(nameLastName) {
@@ -120,17 +122,14 @@
                                 <div class="content">
                                     <img src="${image}" asp-append-version="true" alt="Alternative Text">
                                     <div class="text">
-                                        <p>
-                                            ${title} <br>
-                                            ${price} RSD
-                                        </p>
+                                        <p>${title}</p>
+                                        <p>${price} RSD</p>
                                     </div>
                                 </div>
                                 <div class="description">
                                     <div class="d-text">
                                         <button onclick="ShowItem(${bookId})">Show more</button>
-                                        <button>Wish list</button>
-                                        <button class="btn" onclick="AddToCart(${bookId})">Add to cart</button>
+                                        <button class="btn btn-success" onclick="AddToCart(${bookId})">Add to cart</button>
                                     </div>
                                 </div>
                             </div>
@@ -338,7 +337,6 @@
                     data: { bookId: id },
                     method: "post",
                     success: function () {
-
                         var x = parseInt($("#cartI").text()) + 1
                         $("#cartI").text(x);
                     },

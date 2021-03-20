@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.WepApp.Controllers
 {
+    [LoggedUserFillter]
+    [ForbiddenForAdminFillter]
     [AddToCartFillter]
     public class CartController : Controller
     {
@@ -37,7 +39,7 @@ namespace EShop.WepApp.Controllers
             byte[] orderByte = HttpContext.Session.Get("order");
 
             Order order = JsonSerializer.Deserialize<Order>(orderByte);
-            order.OrderItems.Find(oi => oi.Book.BookId== id).Quantity = value;
+            order.OrderItems.Find(oi => oi.Book.BookId == id).Quantity = value;
             order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
         }
@@ -61,14 +63,14 @@ namespace EShop.WepApp.Controllers
 
 
             order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
-            
-            
+
+
             uow.RepositoryOrder.Add(order);
             uow.Commit();
 
             HttpContext.Session.Remove("order");
             HttpContext.Session.Remove("cartItems");
-        
+
             return RedirectToAction("Index", "Book");
         }
 
@@ -81,9 +83,9 @@ namespace EShop.WepApp.Controllers
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));//template method pattern
 
 
-            int ? items= HttpContext.Session.GetInt32("cartItems");
+            int? items = HttpContext.Session.GetInt32("cartItems");
 
-           
+
             HttpContext.Session.SetInt32("cartItems", (int)--items);
         }
     }

@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.WepApp.Controllers
 {
+    [LoggedUserFillter]
+    [ForbiddenForAdminFillter]
     [AddToCartFillter]
     public class BookController : Controller
     {
@@ -52,7 +54,7 @@ namespace EShop.WepApp.Controllers
         {
             AddBookToCart(uow.RepositoryBook.FindWithoutInclude(b => b.BookId == bookId));
 
-           int ?cartItems = HttpContext.Session.GetInt32("cartItems");
+            int? cartItems = HttpContext.Session.GetInt32("cartItems");
             if (cartItems is null)
             {
                 cartItems = 0;
@@ -62,7 +64,7 @@ namespace EShop.WepApp.Controllers
 
             HttpContext.Session.SetInt32("cartItems", (int)cartItems);
 
-            
+
             return Index();
         }
 
@@ -88,8 +90,8 @@ namespace EShop.WepApp.Controllers
             }
             else
             {
-               
-                order.OrderItems.Add(new OrderItem { Book=book,Quantity = 1 });
+
+                order.OrderItems.Add(new OrderItem { Book = book, Quantity = 1 });
             }
 
             order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
@@ -219,7 +221,7 @@ namespace EShop.WepApp.Controllers
 
         [HttpGet]
         public List<Book> ReturnSixBooks(int pagiNumber, string autor, List<string> genres)
-        {//kad se radi filtriranje za all ovde vraca nekog drugog autora
+        {
             int max;
             if (autor == "all" || autor == "All")
                 max = NubmerOfBooks(genres);
@@ -264,6 +266,23 @@ namespace EShop.WepApp.Controllers
         {
             Book model = uow.RepositoryBook.FindWithInclude(b => b.BookId == bookId);
             return View("ShowItem", model);
+        }
+
+        public List<Book> FindBooksByTitle(string title)
+        {
+            List<Book> books = new List<Book>();
+            if (title == null)
+                return books;
+            foreach (var item in uow.RepositoryBook.GetAll())
+            {
+                if (item.Title.ToLower().StartsWith(title))
+                {
+                    item.Autors = null;
+                    item.Genres = null;
+                    books.Add(item);
+                }
+            }
+            return books;
         }
     }
 }

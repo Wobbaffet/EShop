@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace EShop.WepApp.Controllers
 {
+    [LoggedUserFillter]
+    [ForbiddenForAdminFillter]
+    [AddToCartFillter]
     public class OrderController : Controller
     {
         private readonly IUnitOfWork uow;
@@ -22,8 +25,7 @@ namespace EShop.WepApp.Controllers
         [PurchaseFillter]
         public ActionResult Index()
         {
-
-            List<Order> orders = uow.RepositoryOrder.GetAllOrders(o=>o.CustomerId==(int)HttpContext.Session.GetInt32("customerId"));
+            List<Order> orders = uow.RepositoryOrder.GetAllOrders(o => o.CustomerId == (int)HttpContext.Session.GetInt32("customerId"));
             return View(orders);
         }
 

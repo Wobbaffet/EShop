@@ -24,19 +24,19 @@
             <!-- 5 -->
             <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Recipient's username"
-                           aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    <input onkeyup="FindBooksByTitle()" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+                    <datalist id="datalistOptions">
+                    </datalist>
+                    @*<input type="text" class="form-control" placeholder="Recipient's username"
+                               aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>*@
                 </div>
             </div>
             <!-- 1 -->
             <div class="col-lg-1 hidden-md col-sm-3 hidden-xs"></div>
             <!-- 1 -->
-
-            @if (TempData["logged"]!=null &&(bool)TempData["logged"])
-
+            @if (ViewBag.IsLogged)
             {
-                TempData.Keep("logged");
                 <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
                     <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
                     <a asp-controller="Customer" asp-action="Update">User</a>
@@ -45,29 +45,22 @@
             }
             else
             {
-                //Obratiti paznju  na ovo 
-                TempData.Keep("logged");
                 <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
                     <a asp-controller="Customer" asp-action="SignIn">Sign in</a>
                     <a asp-controller="Customer" asp-action="SignUp">Sign up</a>
                 </div>
-
             }
             <!-- 2 -->
-        <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
-            <div id="cart">
+            <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
+                <div id="cart">
+                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
+                </div>
+                <div>
+                    <a id="cart_number" asp-controller="Order" asp-action="Index"> Orders</a>
+                </div>
 
-                <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
+
             </div>
-
-            <div >
-
-                <a id="cart_number" asp-controller="Order" asp-action="Index"> Orders</a>
-                    
-            </div>
-
-
-        </div>
         </header>
 
         <!-- NAVBAR -->
@@ -84,13 +77,7 @@
                         <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Sales</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" asp-controller="Book" asp-action="Index">Books</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Top-lists</a>
                     </li>
                 </ul>
             </div>
@@ -107,6 +94,33 @@
             &copy; 2021 - EShop.WepApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script>
+        function FindBooksByTitle() {
+            if (event.keyCode === 13) {
+                console.log("enter")
+            }
+            else {
+                var selectedValue = $("#exampleDataList").val();
+                jQuery.ajaxSettings.traditional = true;
+                $.ajax({
+                    url: '@Url.Action("FindBooksByTitle", "Book")',
+                    data: { title: selectedValue },
+                    method: "post",
+                    success: function (data) {
+                        $("#datalistOptions").html("");
+                        for (var i = 0; i < data.length; i++) {
+                            _option = `<option>${data[i].title} (${data[i].price}RSD)</option>`;
+                            $("#datalistOptions").append(_option);
+                        }
+                        
+                    },
+                    error: function () {
+                        alert("Error!");
+                    }
+                });
+            }
+        }
+    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -115,6 +129,6 @@
     @RenderSection("JavaScript", required: false)
 
 
-    
+
 </body>
 </html>

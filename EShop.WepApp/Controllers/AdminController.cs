@@ -1,6 +1,7 @@
 using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
 using EShop.WepApp.APIHelpers;
+using EShop.WepApp.Fillters;
 using EShop.WepApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 namespace EShop.WepApp.Controllers
 {
+    [ForbiddenForLoggedUserFillter]
+    [ForbiddenForNotLoggedUserFillter]
+    [AdminAddedBookFillter]
     public class AdminController : Controller
     {
         private IUnitOfWork uow;
@@ -89,7 +93,8 @@ namespace EShop.WepApp.Controllers
             }
             return View("SelectedBooks", model);
         }
-        public void PickedBooks(string image, string title, double price, int supplies, string authors, string genres, string description)
+
+        public int PickedBooks(string image, string title, double price, int supplies, string authors, string genres, string description)
         {
             Book book = new Book
             {
@@ -101,6 +106,17 @@ namespace EShop.WepApp.Controllers
                 Genres = GetGenres(genres),
                 Description = description
             };
+            int? numberOfBooks = HttpContext.Session.GetInt32("numberOfSelectedBooks");
+            if (numberOfBooks is null)
+            {
+                numberOfBooks = 1;
+            }
+            else
+            {
+                numberOfBooks++;
+            }
+            HttpContext.Session.SetInt32("numberOfSelectedBooks", (int)numberOfBooks);
+
             byte[] booksByte = HttpContext.Session.Get("book");
             List<Book> books = null;
             if (!(booksByte is null))
@@ -111,6 +127,7 @@ namespace EShop.WepApp.Controllers
             }
             books.Add(book);
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
+            return books.Count;
         }
         public void SaveBooks()
         {
@@ -127,7 +144,7 @@ namespace EShop.WepApp.Controllers
                 for (int i = 0; i < item.Autors.Count; i++)
                 {
                     Autor a = uow.RepositoryAutor.FindWithoutInclude(a => a.FirstName == item.Autors[i].FirstName && a.LastName == item.Autors[i].LastName);
-                    if (a != null)
+                    if(a != null)
                     {
                         item.Autors[i] = a;
                     }
@@ -137,14 +154,21 @@ namespace EShop.WepApp.Controllers
             uow.Commit();
             books = new List<Book>();
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
+
+            HttpContext.Session.Remove("numberOfSelectedBooks");
         }
         [HttpDelete]
-        public void RemoveItemFromList(string title, string description)
+        public int RemoveItemFromList(string title, string description)
         {
             byte[] booksByte = HttpContext.Session.Get("book");
             List<Book> books = JsonSerializer.Deserialize<List<Book>>(booksByte);
             books.RemoveAll(b => b.Title == title && b.Description == description);
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));//template method pattern
+            int? items = HttpContext.Session.GetInt32("numberOfSelectedBooks");
+
+
+            HttpContext.Session.SetInt32("numberOfSelectedBooks", (int)--items);
+            return books.Count;
         }
         private List<Genre> GetGenres(string genres)
         {
@@ -157,6 +181,7 @@ namespace EShop.WepApp.Controllers
                     var genre = new Genre() { Name = item };
                     genresList.Add(genre);
                 }
+                    
             }
             return genresList;
         }
