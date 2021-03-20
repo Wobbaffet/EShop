@@ -128,7 +128,7 @@
                                 </div>
                                 <div class="description">
                                     <div class="d-text">
-                                        <button asp-controller="Admin" asp-action="ShowItem">Show more</button>
+                                        <button onclick="ShowItem(${bookId})">Show more</button>
                                         <button>Wish list</button>
                                         <button class="btn" onclick="AddToCart(${bookId})">Add to cart</button>
                                     </div>
@@ -188,6 +188,22 @@
             GetSixBooks(1, autorName, genres);
         }
 
+
+        function ShowItem(bookId) {
+            $.ajax({
+                url: '@Url.ActionLink("GenerateBookUrl", "Book")',
+                data: {
+                    bookId: bookId
+                },
+                method: "post",
+                success: function (data) {
+                    window.location.replace(data.redirectUrl);
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }
 
         function PasteThisBooks(data) {
             for (var i = 0; i < limitPerPage; i++) {

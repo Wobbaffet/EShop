@@ -22,10 +22,16 @@ namespace EShop.Data.Implementation.RepositoryClasses
         {
             context.Add(entity);
         }
-        public Book Find(Predicate<Book> condition)
+        public Book FindWithoutInclude(Predicate<Book> condition)
         {
            
             return context.Book.ToList().Find(condition);
+        }
+
+        public Book FindWithInclude(Predicate<Book> condition)
+        {
+
+            return context.Book.Include(a => a.Autors).Include(a => a.Genres).ToList().Find(condition);
         }
 
         public List<Book> GetAll()

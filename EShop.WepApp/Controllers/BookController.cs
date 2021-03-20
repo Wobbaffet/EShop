@@ -50,7 +50,7 @@ namespace EShop.WepApp.Controllers
 
         public ActionResult AddBookToCart(int bookId)
         {
-            AddBookToCart(uow.RepositoryBook.Find(b => b.BookId == bookId));
+            AddBookToCart(uow.RepositoryBook.FindWithoutInclude(b => b.BookId == bookId));
 
            int ?cartItems = HttpContext.Session.GetInt32("cartItems");
             if (cartItems is null)
@@ -253,10 +253,17 @@ namespace EShop.WepApp.Controllers
             }
             return books;
         }
-
-        public ActionResult ShowItem()
+        [HttpPost]
+        public ActionResult GenerateBookUrl(int bookId)
         {
-            return View();
+            
+            return Json(new { redirectUrl = Url.Action("ShowItem", "Book", new { bookId = bookId }, Request.Scheme) });
+        }
+
+        public ActionResult ShowItem(int bookId)
+        {
+            Book model = uow.RepositoryBook.FindWithInclude(b => b.BookId == bookId);
+            return View("ShowItem", model);
         }
     }
 }

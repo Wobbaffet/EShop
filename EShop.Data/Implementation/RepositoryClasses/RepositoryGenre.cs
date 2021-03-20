@@ -26,7 +26,12 @@ namespace EShop.Data.Implementation.RepositoryClasses
             throw new NotImplementedException();
         }
 
-        public Genre Find(Predicate<Genre> condition)
+        public Genre FindWithInclude(Predicate<Genre> condition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Genre FindWithoutInclude(Predicate<Genre> condition)
         {
             return context.Genre.ToList().Find(condition);
         }

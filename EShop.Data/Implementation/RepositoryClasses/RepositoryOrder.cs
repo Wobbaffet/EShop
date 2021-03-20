@@ -22,7 +22,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
             context.Add(entity);
         }
 
-        public Order Find(Predicate<Order> condition)
+        public Order FindWithoutInclude(Predicate<Order> condition)
         {
             return context.Order.ToList().Find(condition);
         }
@@ -40,6 +40,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
         {
           
             return context.Order.Include(o=>o.OrderItems).ThenInclude(oi=>oi.Book).ToList().FindAll(condition);
+        }
+
+        public Order FindWithInclude(Predicate<Order> condition)
+        {
+            throw new NotImplementedException();
         }
     }
 }

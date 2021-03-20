@@ -1,0 +1,97 @@
+﻿@model Book
+
+<div class="wrapper">
+    <div class="topblock">
+        <div class="col-lg-3 col-md-3 col-sm-12 leftblock">
+            <img id="bookimg" src="@Model.Image" alt="Alternate Text" />
+        </div>
+        <div class="col-lg-9 col-sm-12 rightblock">
+            <div class="col-lg-9 col-sm-12 book">
+                <h3>@Model.Title</h3>
+                <p>@Model.Description</p>
+                <div class="genres">
+                    <h5>Genres:</h5>
+                    @foreach (Genre item in Model.Genres)
+                    {
+                        <p>@item.Name</p>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-12 autors">
+                <h5>Autors:</h5>
+                @foreach (Autor item in Model.Autors)
+                {
+                    <p>@item</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="bottomblock">
+        <button class="btn btn-success" onclick="AddToCart(@Model.BookId)">ADD TO CART</button>
+        <h3>Price: @Model.Price</h3>
+    </div>
+</div>
+
+<script>
+    function AddToCart(id) {
+                $.ajax({
+                    url: '@Url.ActionLink("AddBookToCart", "Book")',
+                    data: { bookId: id },
+                    method: "post",
+                    success: function () {
+                    },
+                    error: function () {
+                        alert("Error!");
+                    }
+                });
+            }
+</script>
+
+
+<style>
+    .wrapper {
+        margin: 2%;
+    }
+
+    .topblock, .bottomblock {
+        display: flex;
+    }
+
+    .bottomblock {
+        margin: 2%;
+    }
+
+        .bottomblock button {
+            min-width: 22%;
+            margin-right: 5%;
+        }
+
+    .leftblock {
+        min-width: 25%;
+    }
+
+    #bookimg {
+        width: 100%;
+    }
+
+    .rightblock {
+        display: flex;
+        margin: 2%;
+    }
+
+    .book {
+        width: 80%;
+    }
+
+    .autors p {
+        margin-bottom: 2%;
+    }
+
+    .genres{
+        align-items: flex-end;
+    }
+
+    .genres p {
+        display: inline;
+    }
+</style>
