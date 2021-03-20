@@ -28,7 +28,12 @@ namespace EShop.Data.Implementation.RepositoryClasses
             throw new NotImplementedException();
         }
 
-        public Autor Find(Predicate<Autor> condition)
+        public Autor FindWithInclude(Predicate<Autor> condition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Autor FindWithoutInclude(Predicate<Autor> condition)
         {
             return context.Autor.ToList().Find(condition);
         }

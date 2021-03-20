@@ -32,7 +32,12 @@ namespace EShop.Data.Implementation.RepositoryClasses
             throw new NotImplementedException();
         }
 
-        public Customer Find(Predicate<Customer> condition)
+        public Customer FindWithInclude(Predicate<Customer> condition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Customer FindWithoutInclude(Predicate<Customer> condition)
         {
             return   shopContext.Customer.ToList().Find(condition);
         }

@@ -44,7 +44,7 @@ namespace EShop.WepApp.Controllers
         [HttpPost]
         public ActionResult SignIn(SignInViewModel model)
         {
-            Customer customer = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Password == model.Password);
+            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Password == model.Password);
 
             if (customer is null)
             {
@@ -84,7 +84,7 @@ namespace EShop.WepApp.Controllers
         public ActionResult ForgotPassword(string email)
         {
             Random r = new Random();
-            Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
             string token = r.Next(10000, 100000).ToString();
             var passwordResetLink = Url.Action("ResetPassword", "Customer", new { Email = c.Email, Token = token }, Request.Scheme);
             SendEmail2(c, passwordResetLink);
@@ -108,7 +108,7 @@ namespace EShop.WepApp.Controllers
         [HttpPost]
         public ActionResult ResetPassword(ForgotPasswordViewModel model)
         {
-            Customer c = uow.RepostiryCustomer.Find(c => c.Email == model.Email);
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email);
             c.Password = model.Password;
             uow.Commit();
             return View("SignIn");
@@ -126,7 +126,7 @@ namespace EShop.WepApp.Controllers
                 return SignUp();
             }
 
-            Customer exist = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Status == false);
+            Customer exist = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Status == false);
 
             if (!(exist is null))
             {
@@ -189,7 +189,7 @@ namespace EShop.WepApp.Controllers
         {
             int? id = HttpContext.Session.GetInt32("customerId");
 
-            Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == id);
+            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == id);
 
             UpdateCustomerViewModel model;
             if (customer is NaturalPerson)
@@ -234,7 +234,7 @@ namespace EShop.WepApp.Controllers
         [HttpPost]
         public ActionResult Update(UpdateCustomerViewModel model)
         {
-            Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == model.CustomerId);
+            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == model.CustomerId);
             if (model.Type == CustomerType.NaturalPerson)
             {
                 NaturalPerson np = customer as NaturalPerson;
@@ -268,7 +268,7 @@ namespace EShop.WepApp.Controllers
         public ActionResult Verification(long code, string email)
         {
 
-            Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
 
             if (c.VerificationCode == code)
             {
@@ -295,7 +295,7 @@ namespace EShop.WepApp.Controllers
         [HttpPost]
         public void SendCodeAgain(string email)
         {
-            Customer customer = uow.RepostiryCustomer.Find(c => c.Email == email);
+            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
 
             SendEmail(customer);
 
