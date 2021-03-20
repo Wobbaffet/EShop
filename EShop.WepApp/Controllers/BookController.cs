@@ -260,5 +260,22 @@ namespace EShop.WepApp.Controllers
         {
             return View();
         }
+
+        public List<Book> FindBooksByTitle(string title)
+        {
+            List<Book> books = new List<Book>();
+            if (title == null)
+                return books;
+            foreach (var item in uow.RepositoryBook.GetAll())
+            {
+                if (item.Title.ToLower().StartsWith(title))
+                {
+                    item.Autors = null;
+                    item.Genres = null;
+                    books.Add(item);
+                }
+            }
+            return books;
+        }
     }
 }
