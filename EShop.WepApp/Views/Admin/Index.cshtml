@@ -15,7 +15,7 @@
 </div>
 @if (Model.items != null)
 {
-    <table style="border:1px solid black" id="order">
+    <table class="table-bordered table-striped" style="border:1px solid black" id="order">
         <thead>
             <tr>
                 <th></th>
@@ -96,7 +96,7 @@ else
     }
 </style>
 <script>
-    function AddBook(id, description) {
+    function AddBook(id, description = "") {
         var row = $(`#${id}`).closest('tr');
         var image = row.find('td:eq(0)').children('img').attr('src');
         var title = row.find('td:eq(1)').text();
@@ -116,7 +116,7 @@ else
                     genres: genres,
                     description: description
                 },
-                method: "get",
+                method: "post",
                 success: function (data) {
 
                 },

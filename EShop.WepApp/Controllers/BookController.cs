@@ -262,7 +262,7 @@ namespace EShop.WepApp.Controllers
 
         public ActionResult ShowItem(int bookId)
         {
-            Book model = uow.RepositoryBook.FindWithoutInclude(b => b.BookId == bookId);
+            Book model = uow.RepositoryBook.FindWithInclude(b => b.BookId == bookId);
             return View("ShowItem", model);
         }
     }

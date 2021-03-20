@@ -4,7 +4,7 @@
 }
 @if (Model != null && Model.Count > 0)
 {
-    <table style="border:1px solid black" id="books">
+    <table class="table-bordered table-striped" style="border:1px solid black" id="books">
         <thead>
             <tr>
                 <th></th>
@@ -51,7 +51,7 @@
         </tbody>
     </table>
 
-    <button onclick="SaveBooks()">Save</button>
+    <button class="btn btn-primary" onclick="SaveBooks()">Save</button>
 }
 else
 {
