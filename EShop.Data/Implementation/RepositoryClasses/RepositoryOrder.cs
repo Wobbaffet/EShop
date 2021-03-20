@@ -24,12 +24,12 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public Order Find(Predicate<Order> condition)
         {
-            throw new NotImplementedException();
+            return context.Order.ToList().Find(condition);
         }
 
         public List<Order> GetAll()
         {
-            return context.Order.Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList();
+            return context.Order.Include(o => o.Customer).ToList();
         }
         public void Dispose()
         {

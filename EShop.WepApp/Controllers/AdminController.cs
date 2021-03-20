@@ -24,11 +24,71 @@ namespace EShop.WepApp.Controllers
             Services = services;
         }
 
-        public  ActionResult ViewOrders()
+        public ActionResult ViewOrders()
         {
 
             var orders = uow.RepositoryOrder.GetAll();
-            return View("Orders",orders);
+            return View("Orders", orders);
+        }
+
+
+        public void OrderStatusChanged(int orderId, OrderStatus status)
+        {
+
+            byte[] orderByte = HttpContext.Session.Get("orderStatusChanged");
+            List<Order> orders;
+            if (orderByte is null)
+            {
+                orders = new List<Order>()
+                {
+                    new Order()
+                    {
+
+                   OrderId = orderId,
+                   OrderStatus=status
+                    }
+                 };
+            }
+            else
+            {
+
+            orders = JsonSerializer.Deserialize<List<Order>>(orderByte);
+
+
+            var exist = orders.Find(o => o.OrderId == orderId);
+            if (exist is null)
+            {
+                orders.Add(new Order() { OrderId = orderId, OrderStatus = status });
+            }
+            else
+                exist.OrderStatus = status;
+
+
+            }
+
+            HttpContext.Session.Set("orderStatusChanged", JsonSerializer.SerializeToUtf8Bytes(orders));
+
+
+        }
+
+        public ActionResult UpdateOrder()
+        {
+            byte[] orderByte = HttpContext.Session.Get("orderStatusChanged");
+            if (orderByte is null)
+                return ViewOrders();
+
+            List<Order> orders= JsonSerializer.Deserialize<List<Order>>(orderByte);
+
+            orders.ForEach(o =>
+            {
+                Order order = uow.RepositoryOrder.Find(or => or.OrderId == o.OrderId);
+                order.OrderStatus = o.OrderStatus;
+                uow.Commit();
+            });
+
+            HttpContext.Session.Remove("orderStatusChanged");
+
+            return ViewOrders();
         }
 
         public async Task<IActionResult> Index(string name)
@@ -81,7 +141,7 @@ namespace EShop.WepApp.Controllers
             byte[] booksByte = HttpContext.Session.Get("book");
             List<Book> books = null;
             //if (!(booksByte is null))
-                books = JsonSerializer.Deserialize<List<Book>>(booksByte);
+            books = JsonSerializer.Deserialize<List<Book>>(booksByte);
             foreach (var item in books)
             {
                 for (int i = 0; i < item.Genres.Count; i++)
@@ -91,7 +151,7 @@ namespace EShop.WepApp.Controllers
                 for (int i = 0; i < item.Autors.Count; i++)
                 {
                     Autor a = uow.RepositoryAutor.Find(a => a.FirstName == item.Autors[i].FirstName && a.LastName == item.Autors[i].LastName);
-                    if(a != null)
+                    if (a != null)
                     {
                         item.Autors[i] = a;
                     }
@@ -124,7 +184,7 @@ namespace EShop.WepApp.Controllers
                     var genre = new Genre() { Name = item };
                     genresList.Add(genre);
                 }
-                    
+
             }
             return genresList;
         }
@@ -160,6 +220,6 @@ namespace EShop.WepApp.Controllers
         }
 
 
-        
+
     }
 }

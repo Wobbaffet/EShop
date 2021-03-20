@@ -14,6 +14,7 @@
 }
 else
 {
+          
     <table style="border:1px solid black" id="orderCustomer" class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -27,45 +28,52 @@ else
         </thead>
         <tbody>
 
-
             @foreach (var order in Model)
             {
+                <tr>
+
             <td>@order.OrderId</td>
             <td>@order.Date</td>
             <td>@order.Total</td>
             <td>@order.Customer</td>
+            <td >
+
+                <div id="@order.OrderId">
+
+                <select  id="orderStatus" >
+                    <option selected value="@order.OrderStatus">@order.OrderStatus</option>
+                    @if (order.OrderStatus != OrderStatus.Completed)
+                    {
+
+                        <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
+                    }
+
+                    @if (order.OrderStatus != OrderStatus.InProgress)
+                    {
+                        <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
+
+                    }
+
+                    @if (order.OrderStatus != OrderStatus.Shipped)
+                    {
+                        <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
+
+                    }
+
+                    @if (order.OrderStatus != OrderStatus.Uncompleted)
+                    {
+                        <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
+
+                    }
+                </select>
+                </div>
+            </td>
+                </tr>
 
 
-            <select asp-for="@order.OrderStatus">
-                <option selected value="@order.OrderStatus">@order.OrderStatus</option>
-                @if (order.OrderStatus != OrderStatus.Completed)
-                {
-
-                    <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
-                }
-
-                @if (order.OrderStatus != OrderStatus.InProgress)
-                {
-                    <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
-
-                }
-
-                @if (order.OrderStatus != OrderStatus.Shipped)
-                {
-                    <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
-
-                }
-
-                @if (order.OrderStatus != OrderStatus.Uncompleted)
-                {
-                    <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
-
-                }
-            </select>
-
-
-        }
             }
+
+
             </tbody>
         </table>
 
@@ -77,8 +85,9 @@ else
             </nav>
         </div>
 
-        <button class="btn btn-primary" id="submitOrders">Save changes</button>
-
+        <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders" >Save changes</a>
+ 
+    }
 
         @section JavaScript{
             <script>
@@ -91,7 +100,7 @@ else
                 var maxRows = 5
 
                 var totalRows = $(table + ' tbody tr').length
-                alert(totalRows)
+               
                 $(table + ' tr:gt(0)').each(function () {
                     trnum++
 
@@ -142,15 +151,29 @@ else
 
             <script>
 
+              
 
+                $('select').on('change', function () {
 
-                $("#submitOrders").on('click', function () {
+                    var id = this.parentElement.id;
+                    var status = this.value;
+                        $.ajax({
+                            url: '@Url.ActionLink("OrderStatusChanged", "Admin")',
+                            data: { orderId:id,status:status},
+                           
+                            success: function () {
 
+                            },
+                            error: function () {
+                                alert("error")
+                            }
+                        });
 
                 })
+
+               
             </script>
 
         }
 
-    }
 
