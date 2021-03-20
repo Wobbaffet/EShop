@@ -3,7 +3,11 @@
 @model List<Order>
 @{
     ViewData["Title"] = "Customer orders";
+    Layout = "_LayoutAdmin";
 }
+
+
+
 @section Style{
     <link href="~/css/Cart.css" rel="stylesheet" />
 }
@@ -14,11 +18,11 @@
 }
 else
 {
-          
+
     <table style="border:1px solid black" id="orderCustomer" class="table table-bordered table-striped">
         <thead>
             <tr>
-                @*<th></th>*@
+              
                 <th>OrderNumber</th>
                 <th>Purchase date</th>
                 <th>Total</th>
@@ -31,127 +35,127 @@ else
             @foreach (var order in Model)
             {
                 <tr>
+                    
+                    <td>@order.OrderId</td>
+                    <td>@order.Date</td>
+                    <td>@order.Total</td>
+                    <td>@order.Customer</td>
+                    <td>
 
-            <td>@order.OrderId</td>
-            <td>@order.Date</td>
-            <td>@order.Total</td>
-            <td>@order.Customer</td>
-            <td >
+                        <div id="@order.OrderId">
 
-                <div id="@order.OrderId">
+                            <select>
+                                <option selected value="@order.OrderStatus">@order.OrderStatus</option>
+                                @if (order.OrderStatus != OrderStatus.Completed)
+                                {
 
-                <select  id="orderStatus" >
-                    <option selected value="@order.OrderStatus">@order.OrderStatus</option>
-                    @if (order.OrderStatus != OrderStatus.Completed)
-                    {
+                                    <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
+                                }
 
-                        <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
-                    }
+                                @if (order.OrderStatus != OrderStatus.InProgress)
+                                {
+                                    <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
 
-                    @if (order.OrderStatus != OrderStatus.InProgress)
-                    {
-                        <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
+                                }
 
-                    }
+                                @if (order.OrderStatus != OrderStatus.Shipped)
+                                {
+                                    <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
 
-                    @if (order.OrderStatus != OrderStatus.Shipped)
-                    {
-                        <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
+                                }
 
-                    }
+                                @if (order.OrderStatus != OrderStatus.Uncompleted)
+                                {
+                                    <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
 
-                    @if (order.OrderStatus != OrderStatus.Uncompleted)
-                    {
-                        <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
-
-                    }
-                </select>
-                </div>
-            </td>
+                                }
+                            </select>
+                        </div>
+                    </td>
                 </tr>
 
 
             }
 
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
 
-        <div class="pagination-container">
-            <nav>
-                <ul class="pagination">
-                </ul>
-            </nav>
-        </div>
+    <div class="pagination-container">
+        <nav>
+            <ul class="pagination">
+            </ul>
+        </nav>
+    </div>
 
-        <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders" >Save changes</a>
- 
-    }
+    <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders">Save changes</a>
 
-        @section JavaScript{
-            <script>
-                var table = '#orderCustomer'
+}
 
-                $('.pagination').html('')
-                var trnum = 0
+@section JavaScript{
+    <script>
+        var table = '#orderCustomer'
 
-
-                var maxRows = 5
-
-                var totalRows = $(table + ' tbody tr').length
-               
-                $(table + ' tr:gt(0)').each(function () {
-                    trnum++
-
-                    if (trnum > maxRows) {
-                        $(this).hide()
-                    }
-                    if (trnum <= maxRows) {
-                        $(this).show()
-                    }
-
-                })
-
-                if (totalRows > maxRows) {
-                    var pagenum = Math.ceil(totalRows / maxRows)
-
-                    alert(pagenum)
-                    for (var i = 1; i <= pagenum;) {
-
-                        $('.pagination').append('<li data-page="' + i + '"><span class="page-link">' + i++ + '</span></li>').show()
-
-                    }
+        $('.pagination').html('')
+        var trnum = 0
 
 
+        var maxRows = 5
+
+        var totalRows = $(table + ' tbody tr').length
+
+        $(table + ' tr:gt(0)').each(function () {
+            trnum++
+
+            if (trnum > maxRows) {
+                $(this).hide()
+            }
+            if (trnum <= maxRows) {
+                $(this).show()
+            }
+
+        })
+
+        if (totalRows > maxRows) {
+            var pagenum = Math.ceil(totalRows / maxRows)
+
+            alert(pagenum)
+            for (var i = 1; i <= pagenum;) {
+
+                $('.pagination').append('<li data-page="' + i + '"><span class="page-link">' + i++ + '</span></li>').show()
+
+            }
+
+
+        }
+
+        $('.pagination li:first-child').addClass('active')
+        $('.pagination li').on('click', function () {
+            var pageNum = $(this).attr('data-page')
+            console.log("data page" + pageNum)
+            var trIndex = 0;
+            $('.pagination li').removeClass('active')
+            $(this).addClass('active')
+            $(table + ' tr:gt(0)').each(function () {
+                trIndex++
+                if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
+                    $(this).hide()
                 }
-
-                $('.pagination li:first-child').addClass('active')
-                $('.pagination li').on('click', function () {
-                    var pageNum = $(this).attr('data-page')
-                    console.log("data page" + pageNum)
-                    var trIndex = 0;
-                    $('.pagination li').removeClass('active')
-                    $(this).addClass('active')
-                    $(table + ' tr:gt(0)').each(function () {
-                        trIndex++
-                        if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-                            $(this).hide()
-                        }
-                        else {
-                            $(this).show()
-                        }
-                    })
-                })
+                else {
+                    $(this).show()
+                }
+            })
+        })
 
 
 
 
-            </script>
+    </script>
 
-            <script>
+    <script>
 
-              
+
 
                 $('select').on('change', function () {
 
@@ -160,7 +164,7 @@ else
                         $.ajax({
                             url: '@Url.ActionLink("OrderStatusChanged", "Admin")',
                             data: { orderId:id,status:status},
-                           
+
                             success: function () {
 
                             },
@@ -171,9 +175,9 @@ else
 
                 })
 
-               
-            </script>
 
-        }
+    </script>
+
+}
 
 

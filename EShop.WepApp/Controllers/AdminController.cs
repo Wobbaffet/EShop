@@ -54,7 +54,6 @@ namespace EShop.WepApp.Controllers
 
             orders = JsonSerializer.Deserialize<List<Order>>(orderByte);
 
-
             var exist = orders.Find(o => o.OrderId == orderId);
             if (exist is null)
             {
