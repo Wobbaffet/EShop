@@ -15,8 +15,14 @@ $(document).ready(function () {
             event.preventDefault();
         }
     });
+    var path = window.location.pathname;
+    if (path == "/") {
+        $("nav ul li:nth-child(1)").addClass("active");
+    }
+    else if (path.toLowerCase().includes("book")) {
+        $("nav ul li:nth-child(2)").addClass("active");
+    }
 });
-
 
 
 $(document).ready(function () {

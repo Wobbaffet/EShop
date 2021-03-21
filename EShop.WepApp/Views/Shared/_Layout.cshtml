@@ -22,21 +22,21 @@
             <!-- 1 -->
             <div class="col-lg-1 col-md-1 col-sm-3 hidden-xs"></div>
             <!-- 5 -->
-            <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
+            <div class="col-lg-5 col-md-10 col-sm-10 col-xs-12 ">
                 <div class="input-group mb-3">
                     <form asp-controller="Book" asp-action="PassBook">
                         <input onkeyup="FindBooksByTitle()" class="form-control" list="datalistOptions" name="book" id="exampleDataList" placeholder="Type to search...">
                         <datalist id="datalistOptions">
                         </datalist>
                         @*<input type="text" class="form-control" placeholder="Recipient's username"
-        aria-label="Recipient's username" aria-describedby="button-addon2">*@
+                    aria-label="Recipient's username" aria-describedby="button-addon2">*@
 
-                        <button class="btn btn-outline-secondary">Button</button>
+                        <button class="btn btn-outline-secondary">Search</button>
                     </form>
                 </div>
             </div>
             <!-- 1 -->
-            <div class="col-lg-1 hidden-md col-sm-3 hidden-xs"></div>
+            <div class="col-lg-1 hidden-md hidden-sm hidden-xs"></div>
             <!-- 1 -->
             @if (ViewBag.IsLogged)
             {
@@ -76,8 +76,8 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Book" asp-action="Index">Books</a>

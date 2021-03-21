@@ -30,9 +30,6 @@
             <!-- 1 -->
             <div class="col-lg-1 hidden-md col-sm-3 hidden-xs"></div>
             <!-- 1 -->
-            @*@if (TempData["logged"] != null && (bool)TempData["logged"])
-                {
-                    TempData.Keep("logged");*@
             <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
                 <a><i class="fas fa-users-cog"></i></a> @*not need for admin to change his data*@
                 @*<a asp-controller="Customer" asp-action="Update">Admin</a>*@
@@ -79,7 +76,15 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/ComboBox.js"></script>
+    <script>
+        var path = window.location.pathname;
+        if (path == "/Admin") {
+            $("nav ul li:nth-child(1)").addClass("active");
+        }
+        else if (path.includes("ViewOrders")) {
+            $("nav ul li:nth-child(2)").addClass("active");
+        }
+    </script>
     @RenderSection("Scripts", required: false)
     @RenderSection("JavaScript", required: false)
 </body>
