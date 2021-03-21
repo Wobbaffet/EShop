@@ -24,12 +24,15 @@
             <!-- 5 -->
             <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
                 <div class="input-group mb-3">
-                    <input onkeyup="FindBooksByTitle()" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
-                    <datalist id="datalistOptions">
-                    </datalist>
-                    @*<input type="text" class="form-control" placeholder="Recipient's username"
-                               aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>*@
+                    <form asp-controller="Book" asp-action="PassBook">
+                        <input onkeyup="FindBooksByTitle()" class="form-control" list="datalistOptions" name="book" id="exampleDataList" placeholder="Type to search...">
+                        <datalist id="datalistOptions">
+                        </datalist>
+                        @*<input type="text" class="form-control" placeholder="Recipient's username"
+        aria-label="Recipient's username" aria-describedby="button-addon2">*@
+
+                        <button class="btn btn-outline-secondary">Button</button>
+                    </form>
                 </div>
             </div>
             <!-- 1 -->
@@ -109,16 +112,29 @@
                     success: function (data) {
                         $("#datalistOptions").html("");
                         for (var i = 0; i < data.length; i++) {
-                            _option = `<option>${data[i].title} (${data[i].price}RSD)</option>`;
+                            var _option = `<option>${data[i].title} (${data[i].price}RSD)</option>`;
                             $("#datalistOptions").append(_option);
                         }
-                        
+
                     },
                     error: function () {
                         alert("Error!");
                     }
                 });
             }
+        }
+
+        function ShowItemFromSearch() {
+            $.ajax({
+                url: '@Url.ActionLink("PassBook", "Book")',
+                data: { book: $("#exampleDataList").val()},
+                success: function () {
+
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
         }
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

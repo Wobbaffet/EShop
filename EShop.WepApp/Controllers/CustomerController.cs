@@ -274,7 +274,8 @@ namespace EShop.WepApp.Controllers
        
         public ActionResult Verification(long code, string email)
         {
-
+            if (code == 0 || email == null)
+                return NotFound();
             Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
 
             if (c.VerificationCode == code)
@@ -288,7 +289,7 @@ namespace EShop.WepApp.Controllers
             else
             {
 
-                return View("RegistrationVerification", email);
+                return Json(new { redirectUrl = Url.Action("Create", "Customer", new { email = email }) });
             }
         }
 
