@@ -84,6 +84,9 @@ namespace EShop.WepApp.Controllers
                 model.Add(item.Book);
             }
 
+            if (model is null || model.Count < 15)
+                model = uow.RepositoryBook.GetAll();
+
             return View(model);
         }
 

@@ -50,9 +50,10 @@ namespace EShop.WepApp.Controllers
         //}
 
 
-        public ActionResult AddBookToCart(int bookId)
+        public bool AddBookToCart(int bookId)
         {
-            AddBookToCart(uow.RepositoryBook.FindWithoutInclude(b => b.BookId == bookId));
+            bool addToChart = false;
+            AddBookToCart(uow.RepositoryBook.FindWithoutInclude(b => b.BookId == bookId), ref addToChart);
 
             int? cartItems = HttpContext.Session.GetInt32("cartItems");
             if (cartItems is null)
@@ -60,15 +61,18 @@ namespace EShop.WepApp.Controllers
                 cartItems = 0;
             }
             else
+            {
+                if(addToChart)
                 cartItems++;
+            }
 
             HttpContext.Session.SetInt32("cartItems", (int)cartItems);
 
 
-            return Index();
+            return addToChart ;
         }
 
-        private void AddBookToCart(Book book)
+        private void AddBookToCart(Book book,ref bool addToCart)
         {
             byte[] orderByte = HttpContext.Session.Get("order");
 
@@ -86,11 +90,13 @@ namespace EShop.WepApp.Controllers
             OrderItem oi = order.OrderItems.Find(oi => oi.Book.BookId == book.BookId);
             if (oi != null)
             {
+                if(oi.Book.Supplies>oi.Quantity)
                 oi.Quantity++;
+                addToCart = false;
             }
             else
             {
-
+                addToCart = true;
                 order.OrderItems.Add(new OrderItem { Book = book, Quantity = 1 });
             }
 

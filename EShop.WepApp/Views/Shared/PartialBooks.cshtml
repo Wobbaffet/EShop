@@ -339,9 +339,12 @@
                     url: '@Url.ActionLink("AddBookToCart", "Book")',
                     data: { bookId: id },
                     method: "post",
-                    success: function () {
+                    success: function (bool) {
+                        if (bool == true) {
+
                         var x = parseInt($("#cartI").text()) + 1
                         $("#cartI").text(x);
+                        }
                     },
                     error: function () {
                         alert("Error!");
