@@ -51,7 +51,8 @@ namespace EShop.WepApp.Controllers
 
             for (int i = latest.Count - 1; i > latest.Count - 11; i--)
             {
-                model.Add(latest[i]);
+                if (i >= 0)
+                    model.Add(latest[i]);
             }
 
 

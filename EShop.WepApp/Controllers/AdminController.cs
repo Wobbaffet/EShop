@@ -118,7 +118,7 @@ namespace EShop.WepApp.Controllers
 
             if (books.Any(b => b.Title == book.Title && b.Description == book.Description))
                 return books.Count;
-          
+
             int? numberOfBooks = HttpContext.Session.GetInt32("numberOfSelectedBooks");
             if (numberOfBooks is null)
             {
@@ -142,22 +142,30 @@ namespace EShop.WepApp.Controllers
             books = JsonSerializer.Deserialize<List<Book>>(booksByte);
             foreach (var item in books)
             {
-                for (int i = 0; i < item.Genres.Count; i++)
+                Book b = uow.RepositoryBook.FindWithoutInclude(b => b.Title == item.Title && b.Description == item.Description);
+                if (b == null)
                 {
-                    item.Genres[i] = uow.RepositoryGenre.FindWithoutInclude(g => g.Name == item.Genres[i].Name);
-                }
-                for (int i = 0; i < item.Autors.Count; i++)
-                {
-                    Autor a = uow.RepositoryAutor.FindWithoutInclude(a => a.FirstName == item.Autors[i].FirstName && a.LastName == item.Autors[i].LastName);
-                    if(a != null)
+                    for (int i = 0; i < item.Genres.Count; i++)
                     {
-                        item.Autors[i] = a;
+                        item.Genres[i] = uow.RepositoryGenre.FindWithoutInclude(g => g.Name == item.Genres[i].Name);
                     }
+                    for (int i = 0; i < item.Autors.Count; i++)
+                    {
+                        Autor a = uow.RepositoryAutor.FindWithoutInclude(a => a.FirstName == item.Autors[i].FirstName && a.LastName == item.Autors[i].LastName);
+                        if (a != null)
+                        {
+                            item.Autors[i] = a;
+                        }
+                    }
+                    uow.RepositoryBook.Add(item);
                 }
-                uow.RepositoryBook.Add(item);
+                else
+                {
+                    b.Supplies += item.Supplies;
+                }
                 uow.Commit();
             }
-            
+
             books = new List<Book>();
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
 
@@ -178,7 +186,7 @@ namespace EShop.WepApp.Controllers
         }
         private List<Genre> GetGenres(string genres)
         {
-            string[] genresArr = genres.Split(", ");
+            string[] genresArr = genres.Split("\n");
             List<Genre> genresList = new List<Genre>();
             foreach (string item in genresArr)
             {
@@ -187,7 +195,7 @@ namespace EShop.WepApp.Controllers
                     var genre = new Genre() { Name = item };
                     genresList.Add(genre);
                 }
-                    
+
             }
             return genresList;
         }
@@ -198,7 +206,7 @@ namespace EShop.WepApp.Controllers
             foreach (string item in authorsArr)
             {
                 string author = item.Trim();
-                if (author != "")
+                if (author != "" && author != null)
                 {
                     string[] name = author.Split(" ");
                     if (name.Length == 1)

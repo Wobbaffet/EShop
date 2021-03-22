@@ -4,15 +4,15 @@
 }
 
 @*<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
-    <div class="input-group mb-3">
-        <form asp-controller="Admin" asp-action="Index">
-            <input name="name" type="text" class="form-control" placeholder="Recipient's username"
-                   aria-label="Book search" aria-describedby="button-addon2">
-            <button class="btn btn-outline-secondary" id="button-addon2">Search</button>
-        </form>
+        <div class="input-group mb-3">
+            <form asp-controller="Admin" asp-action="Index">
+                <input name="name" type="text" class="form-control" placeholder="Recipient's username"
+                       aria-label="Book search" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" id="button-addon2">Search</button>
+            </form>
 
-    </div>
-</div>*@
+        </div>
+    </div>*@
 @if (Model.items != null)
 {
     <table class="table-bordered table-striped" style="border:1px solid black" id="order">
@@ -55,9 +55,9 @@
                                     id = $"genres-{i}"
                                 }
                             )
-                            <p></p>
+                            <div></div>
                         </td>
-                        <td><span onclick="AddBook(this.id, `@Model.items[i].volumeInfo.description`)" id="icon-@i"><i class="fas fa-plus-circle"></i></span></td>
+                        <td><span class="btn btn-link" onclick="AddBook(this.id, `@Model.items[i].volumeInfo.description`)" id="icon-@i"><i class="fas fa-plus-circle"></i></span></td>
                     </tr>
                 }
             }
@@ -87,7 +87,8 @@ else
     input {
         width: 70%
     }
-    p{
+
+    p {
         max-width: 100%
     }
 </style>
@@ -99,7 +100,7 @@ else
         var price = row.find('td:eq(2)').children('input').val();
         var supplies = row.find('td:eq(3)').children('input').val();
         var authors = row.find('td:eq(4)').text();
-        var genres = row.find('td:eq(5)').children('p').text();
+        var genres = row.find('td:eq(5)').children('div').text();
         if (price > 0 && supplies > 0 && genres != "") {
             $.ajax({
                 url: '@Url.ActionLink("PickedBooks", "Admin")',
@@ -121,18 +122,21 @@ else
                 }
             });
         } else {
-            row.css({ "background-color": "red" });
+            alert('All inputs must be valid!');
         }
 
     }
 
     function SaveGenre(id) {
         var text = $(`#${id} option:selected`).text();
-        var cmb = $(`#${id}`).parent().children('p').text();
-        if (text != "Select authors" && !cmb.includes(text))
-            $(`#${id}`).parent().children('p').append(text + ", ")
+        var cmb = $(`#${id}`).parent().children('div').text();
+        if (text != "Select genres" && !cmb.includes(text)) {
+            var p = `<p>${text}\n</p>`;
+            $(`#${id}`).parent().children('div').append(p);
+        }
     }
 
-    
+
+
 
 </script>

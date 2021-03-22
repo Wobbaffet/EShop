@@ -45,7 +45,7 @@
                             }
                         }
                     </td>
-                    <td><span id="book-@i" onclick="removeItemFromList(this.id, `@Model[i].Title`, `@Model[i].Description`)"><i class="fas fa-times-circle"></i></span></td>
+                    <td><span class="btn btn-link" id="book-@i" onclick="removeItemFromList(this.id, `@Model[i].Title`, `@Model[i].Description`)"><i class="fas fa-times-circle"></i></span></td>
                 </tr>
 
             }
@@ -118,7 +118,7 @@ else
 <style>
     td {
         border: 1px solid black;
-        width: 14%;
+        width: 11%;
     }
 
     th {

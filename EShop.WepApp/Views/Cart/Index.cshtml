@@ -47,7 +47,7 @@ else
                         </select>
                     </td>
                     <td id="totalItemPrice-@item.Book.BookId">@(item.Book.Price * @item.Quantity)</td>
-                    <td><span id="@item.Book.BookId" onclick="removeItemFromCart(this.id)"><i class="fas fa-times-circle"></i></span></td>
+                    <td><span class="btn btn-link" id="@item.Book.BookId" onclick="removeItemFromCart(this.id)"><i class="fas fa-times-circle"></i></span></td>
                 </tr>
             }
         </tbody>
