@@ -37,7 +37,14 @@ namespace EShop.Data.Implementation.RepositoryClasses
         public List<Book> GetAll()
         {
             List<Book> books = context.Book.Include(a => a.Autors).Include(a => a.Genres).ToList();
-            return books;
+
+            List<Book> booksWithSupplies=new List<Book>();
+            books.ForEach(b =>
+            {
+                if (b.Supplies != 0)
+                    booksWithSupplies.Add(b);
+            });
+            return booksWithSupplies;
         }
 
         public void Dispose()
