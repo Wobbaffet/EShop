@@ -64,7 +64,10 @@ namespace EShop.WepApp.Controllers
 
             order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
 
-
+            foreach (var item in order.OrderItems)
+            {
+                item.Book.Supplies -= item.Quantity;
+            }
             uow.RepositoryOrder.Add(order);
             uow.Commit();
 
