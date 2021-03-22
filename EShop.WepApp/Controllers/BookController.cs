@@ -31,28 +31,29 @@ namespace EShop.WepApp.Controllers
             return View("PartialBooks", model);
         }
 
-        public List<Autor> GetAllAutors()
+        //public List<Autor> GetAllAutors()
+        //{
+        //    List<Autor> autors = new List<Autor>();
+
+        //    foreach (var book in uow.RepositoryBook.GetAll())
+        //    {
+        //        foreach (var a in book.Autors)
+        //        {
+        //            if (!autors.Contains(a))
+        //            {
+        //                a.Books.Clear();
+        //                autors.Add(a);
+        //            }
+        //        }
+        //    }
+        //    return autors;
+        //}
+
+
+        public bool AddBookToCart(int bookId)
         {
-            List<Autor> autors = new List<Autor>();
-
-            foreach (var book in uow.RepositoryBook.GetAll())
-            {
-                foreach (var a in book.Autors)
-                {
-                    if (!autors.Contains(a))
-                    {
-                        a.Books.Clear();
-                        autors.Add(a);
-                    }
-                }
-            }
-            return autors;
-        }
-
-
-        public ActionResult AddBookToCart(int bookId)
-        {
-            AddBookToCart(uow.RepositoryBook.FindWithoutInclude(b => b.BookId == bookId));
+            bool addToChart = false;
+            AddBookToCart(uow.RepositoryBook.FindWithoutInclude(b => b.BookId == bookId), ref addToChart);
 
             int? cartItems = HttpContext.Session.GetInt32("cartItems");
             if (cartItems is null)
@@ -60,15 +61,18 @@ namespace EShop.WepApp.Controllers
                 cartItems = 0;
             }
             else
+            {
+                if(addToChart)
                 cartItems++;
+            }
 
             HttpContext.Session.SetInt32("cartItems", (int)cartItems);
 
 
-            return Index();
+            return addToChart ;
         }
 
-        private void AddBookToCart(Book book)
+        private void AddBookToCart(Book book,ref bool addToCart)
         {
             byte[] orderByte = HttpContext.Session.Get("order");
 
@@ -86,11 +90,13 @@ namespace EShop.WepApp.Controllers
             OrderItem oi = order.OrderItems.Find(oi => oi.Book.BookId == book.BookId);
             if (oi != null)
             {
+                if(oi.Book.Supplies>oi.Quantity)
                 oi.Quantity++;
+                addToCart = false;
             }
             else
             {
-
+                addToCart = true;
                 order.OrderItems.Add(new OrderItem { Book = book, Quantity = 1 });
             }
 
@@ -125,10 +131,28 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpGet]
-        public int NubmerOfBooksByAutorGenre(string autor, List<string> genres)
+        public int NubmerOfBooksByPriceGenre(string price, List<string> genres)
         {
+            int firstPrice = 0;
+            int secondPrice = 0;
+            if (price== null || price == "No filters") { }
+            else if (price.Contains("Less"))
+            {
+                secondPrice = 500;
+            }
+            else if (price.Contains("More"))
+            {
+                firstPrice = 5000;
+                secondPrice = int.MaxValue;
+            }
+            else
+            {
+                string[] prices = price.Split(" - ");
+                firstPrice = int.Parse(prices[0]);
+                secondPrice = int.Parse(prices[1]);
+            }
             List<Book> appropriate = new List<Book>();
-            if (autor == "All")
+            if (price == "No filters")
             {
                 if (genres.Count > 0)
                 {
@@ -153,7 +177,7 @@ namespace EShop.WepApp.Controllers
             {
                 if (genres.Count > 0)
                 {
-                    List<Book> books = uow.RepositoryBook.Search(autor);
+                    List<Book> books = uow.RepositoryBook.GetAll().FindAll(b => b.Price >= firstPrice && b.Price <= secondPrice);
                     foreach (var book in books)
                     {
                         int i = 0;
@@ -168,14 +192,32 @@ namespace EShop.WepApp.Controllers
                     return appropriate.Count;
                 }
                 else
-                    return uow.RepositoryBook.Search(autor).Count;
+                    return uow.RepositoryBook.GetAll().FindAll(b => b.Price >= firstPrice && b.Price <= secondPrice).Count;
             }
         }
 
-        private List<Book> AllBooksByAutorGenre(string autor, List<string> genres)
+        private List<Book> AllBooksByPriceGenre(string price, List<string> genres)
         {
+            int firstPrice = 0;
+            int secondPrice = 0;
+            if (price == null || price == "No filters") { }
+            else if (price.Contains("Less"))
+            {
+                secondPrice = 500;
+            }
+            else if (price.Contains("More"))
+            {
+                firstPrice = 5000;
+                secondPrice = int.MaxValue;
+            }
+            else
+            {
+                string[] prices = price.Split(" - ");
+                firstPrice = int.Parse(prices[0]);
+                secondPrice = int.Parse(prices[1]);
+            }
             List<Book> appropriate = new List<Book>();
-            if (autor == "All")
+            if (price == "No filters")
             {
                 if (genres.Count > 0)
                 {
@@ -200,7 +242,7 @@ namespace EShop.WepApp.Controllers
             {
                 if (genres.Count > 0)
                 {
-                    List<Book> books = uow.RepositoryBook.Search(autor);
+                    List<Book> books = uow.RepositoryBook.GetAll().FindAll(b => b.Price >= firstPrice && b.Price <= secondPrice);
                     foreach (var book in books)
                     {
                         int i = 0;
@@ -215,27 +257,27 @@ namespace EShop.WepApp.Controllers
                     return appropriate;
                 }
                 else
-                    return uow.RepositoryBook.Search(autor);
+                    return uow.RepositoryBook.GetAll().FindAll(b => b.Price >= firstPrice && b.Price <= secondPrice);
             }
         }
 
         [HttpGet]
-        public List<Book> ReturnSixBooks(int pagiNumber, string autor, List<string> genres)
+        public List<Book> ReturnSixBooks(int pagiNumber, string price, List<string> genres)
         {
             int max;
-            if (autor == "all" || autor == "All")
+            if (price == "No filters")
                 max = NubmerOfBooks(genres);
             else
-                max = NubmerOfBooksByAutorGenre(autor, genres);
+                max = NubmerOfBooksByPriceGenre(price, genres);
 
             List<Book> books = new List<Book>();
             if (pagiNumber * 6 > max)
             {
-                books = AllBooksByAutorGenre(autor, genres).GetRange(pagiNumber * 6 - 6, 6 - pagiNumber * 6 + max);
+                books = AllBooksByPriceGenre(price, genres).GetRange(pagiNumber * 6 - 6, 6 - pagiNumber * 6 + max);
             }
             else
             {
-                books = AllBooksByAutorGenre(autor, genres).GetRange(pagiNumber * 6 - 6, 6);
+                books = AllBooksByPriceGenre(price, genres).GetRange(pagiNumber * 6 - 6, 6);
             }
             foreach (var book in books)
             {

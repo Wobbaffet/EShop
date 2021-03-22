@@ -64,6 +64,10 @@ else
     <script>
         
         function removeItemFromList(id, title, description) {
+
+            console.log("Id=" + id)
+            console.log("title=" + title)
+           
             $.ajax({
                 url: '@Url.ActionLink("RemoveItemFromList", "Admin")',
                 data: {

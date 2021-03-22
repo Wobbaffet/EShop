@@ -106,6 +106,19 @@ namespace EShop.WepApp.Controllers
                 Genres = GetGenres(genres),
                 Description = description
             };
+
+            byte[] booksByte = HttpContext.Session.Get("book");
+            List<Book> books = null;
+            if (!(booksByte is null))
+                books = JsonSerializer.Deserialize<List<Book>>(booksByte);
+            else
+            {
+                books = new List<Book>();
+            }
+
+            if (books.Any(b => b.Title == book.Title && b.Description == book.Description))
+                return books.Count;
+          
             int? numberOfBooks = HttpContext.Session.GetInt32("numberOfSelectedBooks");
             if (numberOfBooks is null)
             {
@@ -117,14 +130,6 @@ namespace EShop.WepApp.Controllers
             }
             HttpContext.Session.SetInt32("numberOfSelectedBooks", (int)numberOfBooks);
 
-            byte[] booksByte = HttpContext.Session.Get("book");
-            List<Book> books = null;
-            if (!(booksByte is null))
-                books = JsonSerializer.Deserialize<List<Book>>(booksByte);
-            else
-            {
-                books = new List<Book>();
-            }
             books.Add(book);
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
             return books.Count;

@@ -60,6 +60,9 @@ else
 
 @section JavaScript{
     <script>
+
+        
+
         function changeBookQuantity(id, value, price) {
             $.ajax({
                 url: '@Url.ActionLink("ChangeSupplisForThisItem", "Cart")',
@@ -73,7 +76,6 @@ else
             });
 
             var yourSelect = document.getElementById(id);
-            alert(yourSelect.options[yourSelect.selectedIndex].value)
             var selectedOption =parseInt( yourSelect.options[yourSelect.selectedIndex].value);
 
 

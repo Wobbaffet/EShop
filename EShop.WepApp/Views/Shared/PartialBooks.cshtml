@@ -24,9 +24,16 @@
         </div>
         <div class="col-lg-2 col-md-12">
             <div id="myDropdown" class="dropdown-content">
-                <select id="autors" onchange="filterFunction()">
-                    <option id="all">All</option>
-
+                <select id="prices" onchange="filterFunction()">
+                    <option>No filters</option>
+                    <option>Less than 500</option>
+                    <option>500 - 1000</option>
+                    <option>1000 - 1500</option>
+                    <option>1500 - 2000</option>
+                    <option>2000 - 3000</option>
+                    <option>3000 - 4000</option>
+                    <option>4000 - 5000</option>
+                    <option>More than 5000</option>
                 </select>
             </div>
             <div id="myCheckboxes" class="dropdown-content">
@@ -66,35 +73,19 @@
             }
         }
 
-        function GetAllAutors(nameLastName) {
-            $.ajax({
-                url: '@Url.ActionLink("GetAllAutors", "Book")',
-                data: {},
-                method: "get",
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++)
-                    {
-                        $option = `<option id="${data[i].firstName.toLowerCase() + " " + data[i].lastName.toLowerCase()}" value="${data[i].firstName.toLowerCase() + " " + data[i].lastName.toLowerCase()}">${data[i].firstName + " " + data[i].lastName}</option>`;
-                        $("#autors").append($option);
+        function GetSelectedOption(selectedPrice) {
+            if (selectedPrice != null) {
+                var options = $("#prices option");
+                for (var i = 0; i < options.length; i++) {
+                    if (options[i].value == selectedPrice) {
+                        options[i].selected = 'selected';
+                        return;
                     }
-                    if (nameLastName != null) {
-                        var options = $("#autors option");
-                        for (var i = 0; i < options.length; i++) {
-                            if (options[i].id == nameLastName) {
-                                options[i].selected = 'selected';
-                                return;
-                            }
-                            else
-                                options[i].selected = '';
-                        }
-                    }
-                },
-                error: function () {
-                    alert("Error!");
+                    else
+                        options[i].selected = '';
                 }
-            });
+            }
         }
-        GetAllAutors(null);
 
         function GetNumberOfBooks() {
             var checkedBoxes = $("input:checked");
@@ -107,7 +98,7 @@
                 data: {},
                 method: "get",
                 success: function (totalNumberOfBooks) {
-                    partialLoad(totalNumberOfBooks, "all", array);
+                    partialLoad(totalNumberOfBooks, "No filters", array);
                 },
                 error: function () {
                     alert("Error!");
@@ -157,9 +148,16 @@
                                 </div>
                                 <div class="col-lg-2 col-md-12">
                                     <div id="myDropdown" class="dropdown-content">
-                                        <select id="autors" onchange="filterFunction()">
-                                            <option id="all">All</option>
-
+                                        <select id="prices" onchange="filterFunction()">
+                                            <option>No filters</option>
+                                            <option>Less than 500</option>
+                                            <option>500 - 1000</option>
+                                            <option>1000 - 1500</option>
+                                            <option>1500 - 2000</option>
+                                            <option>2000 - 3000</option>
+                                            <option>3000 - 4000</option>
+                                            <option>4000 - 5000</option>
+                                            <option>More than 5000</option>
                                         </select>
                                     </div>
                                 <div id="myCheckboxes" class="dropdown-content">
@@ -174,7 +172,7 @@
                         </div>`;
         }
 
-        function partialLoad(numberOfBooks, autorName, genres) {
+        function partialLoad(numberOfBooks, price, genres) {
             totalPages = Math.ceil(numberOfBooks / limitPerPage);
             //inserted first item
             $('.pagination').append(`<li class="page-item active"><a name="pagiNum" class="page-link" href="javascript:void(0)">1</a></li>`);
@@ -184,7 +182,7 @@
             }
             //insert right arrow
             $('.pagination').append(`<li id='next-page' class="page-item-arrow"><a class="page-link" href="javascript:void(0)" aria-label="Next">    <span aria-hidden="true">&raquo;</span></a></li>`);
-            GetSixBooks(1, autorName, genres);
+            GetSixBooks(1, price, genres);
         }
 
 
@@ -223,11 +221,11 @@
 
 
 
-        function GetSixBooks(pageNumber, autorName, genres) {
+        function GetSixBooks(pageNumber, price, genres) {
             jQuery.ajaxSettings.traditional = true;
             $.ajax({
                 url: '@Url.ActionLink("ReturnSixBooks", "Book")',
-                data: { pagiNumber: pageNumber, autor: autorName, genres: genres },
+                data: { pagiNumber: pageNumber, price: price, genres: genres },
                 method: "get",
                 success: function (data) {
                     $("#loop").html("");
@@ -249,17 +247,19 @@
                     for (let i = 0; i < checkedBoxes.length; i++) {
                         array.push(checkedBoxes[i].value);
                     }
-                    var nameLastName = $("#autors").val();
+                    //var nameLastName = $("#autors").val(); put prices
+                    var price = $("#prices").val(); //done
                     var currentPage = $(this).index();
                     $('.pagination li').removeClass("active");
                     $(this).addClass("active");
-                    GetSixBooks(currentPage, nameLastName, array);
+                    GetSixBooks(currentPage, price, array);
                 }
             });
         }
 
         function filterFunction() {
-            var nameLastName = $("#autors").val();
+            //var nameLastName = $("#autors").val(); put price
+            var price = $("#prices").val();//done
             var checkedBoxes = $("input:checked");
             var array = new Array();
             for (let i = 0; i < checkedBoxes.length; i++) {
@@ -267,14 +267,15 @@
             }
             jQuery.ajaxSettings.traditional = true;
             $.ajax({
-                url: '@Url.ActionLink("NubmerOfBooksByAutorGenre", "Book")',
-                data: { autor: nameLastName, genres: array },
+                url: '@Url.ActionLink("NubmerOfBooksByPriceGenre", "Book")',
+                data: { price: price, genres: array },
                 method: "get",
                 success: function (data) {
                     document.getElementById("main").innerHTML = "";
                     $("#main").append(mainPart());
-                    partialLoad(data, nameLastName, array);
-                    GetAllAutors(nameLastName);
+                    partialLoad(data, price, array);
+                    //GetAllAutors(nameLastName);
+                    GetSelectedOption(price)//done
                     SelectChosenCBs(array);
                 },
                 error: function () {
@@ -304,10 +305,11 @@
                     for (let i = 0; i < checkedBoxes.length; i++) {
                         array.push(checkedBoxes[i].value);
                     }
-                    var nameLastName = $("#autors").val();
+                    //var nameLastName = $("#autors").val(); put price
+                    var price = $("#prices").val(); //done
                     currentPage++;
                     $('.pagination li').removeClass("active");
-                    GetSixBooks(currentPage, nameLastName, array);
+                    GetSixBooks(currentPage, price, array);
                     $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
                 }
             });
@@ -322,10 +324,11 @@
                     for (let i = 0; i < checkedBoxes.length; i++) {
                         array.push(checkedBoxes[i].value);
                     }
-                    var nameLastName = $("#autors").val();
+                    //var nameLastName = $("#autors").val(); put price
+                    var price = $("#prices").val(); //done
                     currentPage--;
                     $('.pagination li').removeClass("active");
-                    GetSixBooks(currentPage, nameLastName, array);
+                    GetSixBooks(currentPage, price, array);
                     $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
                 }
             });
@@ -336,9 +339,12 @@
                     url: '@Url.ActionLink("AddBookToCart", "Book")',
                     data: { bookId: id },
                     method: "post",
-                    success: function () {
+                    success: function (bool) {
+                        if (bool == true) {
+
                         var x = parseInt($("#cartI").text()) + 1
                         $("#cartI").text(x);
+                        }
                     },
                     error: function () {
                         alert("Error!");

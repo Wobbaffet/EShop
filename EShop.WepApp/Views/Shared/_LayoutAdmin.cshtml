@@ -22,17 +22,17 @@
             <!-- 5 -->
             <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Find book by name"
-                           aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+                    <form asp-controller="Admin" asp-action="Index">
+                        <input name="name" type="text" class="form-control" placeholder="Enter book name"
+                               aria-label="Book search" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" id="button-addon2">Search</button>
+                    </form>
+
                 </div>
             </div>
             <!-- 1 -->
             <div class="col-lg-1 hidden-md col-sm-3 hidden-xs"></div>
             <!-- 1 -->
-            @*@if (TempData["logged"] != null && (bool)TempData["logged"])
-                {
-                    TempData.Keep("logged");*@
             <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
                 <a><i class="fas fa-users-cog"></i></a> @*not need for admin to change his data*@
                 @*<a asp-controller="Customer" asp-action="Update">Admin</a>*@
@@ -47,7 +47,7 @@
                 </div>
             </div>
         </header>
-
+        
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
@@ -79,7 +79,15 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/ComboBox.js"></script>
+    <script>
+        var path = window.location.pathname;
+        if (path == "/Admin") {
+            $("nav ul li:nth-child(1)").addClass("active");
+        }
+        else if (path.includes("ViewOrders")) {
+            $("nav ul li:nth-child(2)").addClass("active");
+        }
+    </script>
     @RenderSection("Scripts", required: false)
     @RenderSection("JavaScript", required: false)
 </body>
