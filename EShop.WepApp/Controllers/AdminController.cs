@@ -155,8 +155,9 @@ namespace EShop.WepApp.Controllers
                     }
                 }
                 uow.RepositoryBook.Add(item);
+                uow.Commit();
             }
-            uow.Commit();
+            
             books = new List<Book>();
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
 
