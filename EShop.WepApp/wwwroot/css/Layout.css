@@ -9,6 +9,12 @@ body {
     margin-top: 1.8rem;
 }
 /* HEADER */
+
+.logo img {
+    margin: 0 auto;
+    display: block;
+}
+
 #wish-cart {
     display: flex;
     justify-content: flex-end;
@@ -18,10 +24,14 @@ body {
     margin-left: 10px;
 }
 
-.logo {
-    text-align: center;
-    font-size: 30px;
+.logo img {
+    width: 100%;
 }
+
+header > div {
+    margin: auto;
+}
+
 
 @media only screen and (max-width: 768px) {
     body {
@@ -42,19 +52,22 @@ body {
         margin-top: 1.8rem;
     }
 
-    .logo {
-        padding-bottom: 1.5rem;
+    header div div form {
+        width: 80%;
+        margin: auto;
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .logo img {
+        width: 30%;
     }
 }
 
-/* NAVBAR */
+    /* NAVBAR */
 
 
 
-header form {
-    display: flex;
-    width: 100%;
-}
-
-
-
+    header form {
+        display: flex;
+        width: 100%;
+    }
