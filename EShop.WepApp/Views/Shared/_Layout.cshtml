@@ -17,12 +17,8 @@
 <body>
     <div class="container">
         <header id="header" class="row">
-            <!-- 2 -->
             <div class="logo col-lg-2 col-md-12 col-sm-12 col-xs-24 "><img src="~/img/ABA LOGO.png" alt="Alternate Text" /></div>
-            <!-- 1 -->
-            <div class="col-lg-1 col-md-1 col-sm-3 hidden-xs"></div>
-            <!-- 5 -->
-            <div class="col-lg-5 col-md-10 col-sm-10 col-xs-12 ">
+            <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 ">
                 <div class="input-group mb-3">
                     <form asp-controller="Book" asp-action="PassBook">
                         <input onkeyup="FindBooksByTitle()" class="form-control" list="datalistOptions" name="book" id="exampleDataList" placeholder="Type to search...">
@@ -32,9 +28,6 @@
                     </form>
                 </div>
             </div>
-            <!-- 1 -->
-            <div class="col-lg-1 hidden-md hidden-sm hidden-xs"></div>
-            <!-- 1 -->
             @if (ViewBag.IsLogged)
             {
                 <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
@@ -50,7 +43,6 @@
                     <a asp-controller="Customer" asp-action="SignUp">Sign up</a>
                 </div>
             }
-            <!-- 2 -->
             <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
                 <div id="cart">
                     <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
@@ -58,8 +50,6 @@
                 <div>
                     <a id="cart_number" asp-controller="Order" asp-action="Index"> Orders</a>
                 </div>
-
-
             </div>
         </header>
 
@@ -91,7 +81,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - EShop.WepApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <span>&copy; 2021 - ABA BOOKS</span>
+            <span>For more information contact us on email dragojlo406@gmail.com</span>
         </div>
     </footer>
     <script>

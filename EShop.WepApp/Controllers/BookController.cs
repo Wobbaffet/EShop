@@ -262,7 +262,7 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpGet]
-        public List<Book> ReturnSixBooks(int pagiNumber, string price, List<string> genres)
+        public List<Book> ReturnTwelveBooks(int pagiNumber, string price, List<string> genres)
         {
             int max;
             if (price == "No filters")
@@ -271,13 +271,13 @@ namespace EShop.WepApp.Controllers
                 max = NubmerOfBooksByPriceGenre(price, genres);
 
             List<Book> books = new List<Book>();
-            if (pagiNumber * 6 > max)
+            if (pagiNumber * 12 > max)
             {
-                books = AllBooksByPriceGenre(price, genres).GetRange(pagiNumber * 6 - 6, 6 - pagiNumber * 6 + max);
+                books = AllBooksByPriceGenre(price, genres).GetRange(pagiNumber * 12 - 12, 12 - pagiNumber * 12 + max);
             }
             else
             {
-                books = AllBooksByPriceGenre(price, genres).GetRange(pagiNumber * 6 - 6, 6);
+                books = AllBooksByPriceGenre(price, genres).GetRange(pagiNumber * 12 - 12, 12);
             }
             foreach (var book in books)
             {

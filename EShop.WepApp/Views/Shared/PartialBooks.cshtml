@@ -58,7 +58,7 @@
         //    $('.pagination').parent().parent().parent().removeClass("row");
 
 
-        var limitPerPage = 6;
+        var limitPerPage = 12;
         var totalPages;
 
         function SelectChosenCBs(array) {
@@ -182,7 +182,7 @@
             }
             //insert right arrow
             $('.pagination').append(`<li id='next-page' class="page-item-arrow"><a class="page-link" href="javascript:void(0)" aria-label="Next">    <span aria-hidden="true">&raquo;</span></a></li>`);
-            GetSixBooks(1, price, genres);
+            GetTwelveBooks(1, price, genres);
         }
 
 
@@ -205,7 +205,7 @@
         function PasteThisBooks(data) {
             for (var i = 0; i < limitPerPage; i++) {
                 var $div = $("<div>", { "class": "row" });
-                for (var j = 0; j < 3; j++) {
+                for (var j = 0; j < 4; j++) {
                     if (i < data.length) {
                         $div.append(pastePicture(data[i].image, data[i].title, data[i].price, data[i].bookId));
                     }
@@ -221,10 +221,10 @@
 
 
 
-        function GetSixBooks(pageNumber, price, genres) {
+        function GetTwelveBooks(pageNumber, price, genres) {
             jQuery.ajaxSettings.traditional = true;
             $.ajax({
-                url: '@Url.ActionLink("ReturnSixBooks", "Book")',
+                url: '@Url.ActionLink("ReturnTwelveBooks", "Book")',
                 data: { pagiNumber: pageNumber, price: price, genres: genres },
                 method: "get",
                 success: function (data) {
@@ -252,7 +252,7 @@
                     var currentPage = $(this).index();
                     $('.pagination li').removeClass("active");
                     $(this).addClass("active");
-                    GetSixBooks(currentPage, price, array);
+                    GetTwelveBooks(currentPage, price, array);
                 }
             });
         }
@@ -309,7 +309,7 @@
                     var price = $("#prices").val(); //done
                     currentPage++;
                     $('.pagination li').removeClass("active");
-                    GetSixBooks(currentPage, price, array);
+                    GetTwelveBooks(currentPage, price, array);
                     $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
                 }
             });
@@ -328,7 +328,7 @@
                     var price = $("#prices").val(); //done
                     currentPage--;
                     $('.pagination li').removeClass("active");
-                    GetSixBooks(currentPage, price, array);
+                    GetTwelveBooks(currentPage, price, array);
                     $(`.pagination li.page-item:eq(${currentPage - 1})`).addClass("active");
                 }
             });

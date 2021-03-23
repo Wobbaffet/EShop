@@ -1,9 +1,4 @@
-﻿img {
-    width: 180px;
-    height: 270px;
-}
-
-.list-group {
+﻿.list-group {
     padding: 15px;
     overflow: hidden;
     margin: 0 auto;
@@ -19,6 +14,7 @@
 }
 
     .list-group-item img {
+        height: 270px;
         width: 100%;
         object-fit: cover;
     }
@@ -70,9 +66,10 @@
 
 @media only screen and (min-width: 768px) {
 
-    .list-group-item, .content{
+    .list-group-item, .content {
         height: 415px;
     }
+
     .list-group {
         width: 50%;
     }
