@@ -1,13 +1,8 @@
-﻿
-
-@model List<Order>
+﻿@model List<Order>
 @{
     ViewData["Title"] = "Customer orders";
     Layout = "_LayoutAdmin";
 }
-
-
-
 @section Style{
     <link href="~/css/Cart.css" rel="stylesheet" />
 }
@@ -18,11 +13,9 @@
 }
 else
 {
-
     <table style="border:1px solid black" id="orderCustomer" class="table table-bordered table-striped">
         <thead>
             <tr>
-              
                 <th>OrderNumber</th>
                 <th>Purchase date</th>
                 <th>Total</th>
@@ -31,11 +24,9 @@ else
             </tr>
         </thead>
         <tbody>
-
             @foreach (var order in Model)
             {
                 <tr>
-                    
                     <td>@order.OrderId</td>
                     <td>@order.Date</td>
                     <td>@order.Total</td>
@@ -73,63 +64,41 @@ else
                         </div>
                     </td>
                 </tr>
-
-
             }
-
-
         </tbody>
     </table>
-
-
     <div class="pagination-container">
         <nav>
             <ul class="pagination">
             </ul>
         </nav>
     </div>
-
     <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders">Save changes</a>
-
 }
 
 @section JavaScript{
     <script>
         var table = '#orderCustomer'
-
         $('.pagination').html('')
         var trnum = 0
-
-
         var maxRows = 5
-
         var totalRows = $(table + ' tbody tr').length
-
         $(table + ' tr:gt(0)').each(function () {
-            trnum++
-
+            trnum++;
             if (trnum > maxRows) {
                 $(this).hide()
             }
             if (trnum <= maxRows) {
                 $(this).show()
             }
-
         })
-
         if (totalRows > maxRows) {
             var pagenum = Math.ceil(totalRows / maxRows)
-
             for (var i = 1; i <= pagenum;) {
-
                 $('.pagination').append('<li data-page="' + i + '"><span class="page-link">' + i++ + '</span></li>').show()
-
             }
-
-
         }
-
-        $('.pagination li:first-child').addClass('active')
+        $('.pagination li:first-child').addClass('active');
         $('.pagination li').on('click', function () {
             var pageNum = $(this).attr('data-page')
             console.log("data page" + pageNum)
@@ -146,35 +115,24 @@ else
                 }
             })
         })
-
-
-
-
     </script>
 
     <script>
+        $('select').on('change', function () {
+            var id = this.parentElement.id;
+            var status = this.value;
+                $.ajax({
+                    url: '@Url.ActionLink("OrderStatusChanged", "Admin")',
+                    data: { orderId:id,status:status},
 
+                    success: function () {
 
-
-                $('select').on('change', function () {
-
-                    var id = this.parentElement.id;
-                    var status = this.value;
-                        $.ajax({
-                            url: '@Url.ActionLink("OrderStatusChanged", "Admin")',
-                            data: { orderId:id,status:status},
-
-                            success: function () {
-
-                            },
-                            error: function () {
-                                alert("error")
-                            }
-                        });
-
-                })
-
-
+                    },
+                    error: function () {
+                        alert("error")
+                    }
+                });
+        })
     </script>
 
 }
