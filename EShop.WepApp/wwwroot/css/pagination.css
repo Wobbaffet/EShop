@@ -45,11 +45,18 @@
     height: 100%;
     left: 0;
     background: rgba(191,191,191,.8);
+    display: flex;
+    align-items: center;
 }
 
     .description .d-text {
         padding: 15px;
     }
+
+        .description .d-text > button {
+            width: 100%;
+            margin: 10px 0px;
+        }
 
 .d-text h3 {
     font-size: 24px;

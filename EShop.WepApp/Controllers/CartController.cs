@@ -56,8 +56,8 @@ namespace EShop.WepApp.Controllers
             byte[] orderByte = HttpContext.Session.Get("order");
 
             Order order = JsonSerializer.Deserialize<Order>(orderByte);
-            
-            order.OrderItems.ForEach(oi=>oi.Book=uow.RepositoryBook.FindWithoutInclude(b=>b.BookId==oi.Book.BookId));
+
+            order.OrderItems.ForEach(oi => oi.Book = uow.RepositoryBook.FindWithoutInclude(b => b.BookId == oi.Book.BookId));
 
             order.Date = DateTime.Now;
 

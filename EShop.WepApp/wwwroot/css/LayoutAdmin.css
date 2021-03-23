@@ -1,1 +1,43 @@
-﻿
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 90%;
+    margin: auto;
+    margin-top: 1.8rem;
+}
+/* HEADER */
+
+.logo img {
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+}
+
+header > div {
+    margin: auto;
+}
+
+header form {
+    display: flex;
+    width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+    header {
+        display: flex;
+    }
+
+    header div div form {
+        width: 80%;
+        margin: auto;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .logo img {
+        width: 30%;
+    }
+}

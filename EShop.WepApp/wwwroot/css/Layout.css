@@ -13,6 +13,7 @@ body {
 .logo img {
     margin: 0 auto;
     display: block;
+    width: 100%;
 }
 
 #wish-cart {
@@ -24,20 +25,19 @@ body {
     margin-left: 10px;
 }
 
-.logo img {
-    width: 100%;
-}
+/* NAVBAR */
 
 header > div {
     margin: auto;
 }
 
+header form {
+    display: flex;
+    width: 100%;
+}
+
 
 @media only screen and (max-width: 768px) {
-    body {
-        width: 90%;
-    }
-
     header {
         display: flex;
     }
@@ -58,15 +58,8 @@ header > div {
     }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1023px) {
     .logo img {
         width: 30%;
     }
-}
-
-/* NAVBAR */
-
-header form {
-    display: flex;
-    width: 100%;
 }

@@ -120,7 +120,6 @@ else
         if (totalRows > maxRows) {
             var pagenum = Math.ceil(totalRows / maxRows)
 
-            alert(pagenum)
             for (var i = 1; i <= pagenum;) {
 
                 $('.pagination').append('<li data-page="' + i + '"><span class="page-link">' + i++ + '</span></li>').show()
