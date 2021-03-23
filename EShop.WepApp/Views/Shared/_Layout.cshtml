@@ -69,6 +69,12 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Book" asp-action="Index">Books</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="AboutUs">About us</a>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="ContactUs">Contact us</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -79,11 +85,34 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            <span>&copy; 2021 - ABA BOOKS</span>
-            <span>For more information contact us on email dragojlo406@gmail.com</span>
+    <footer id="footer" class="border-top footer text-muted">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div><p class="font-weight-bold">Book store ABA D.O.O.</p></div>
+                <div><i class="fas fa-phone"></i> 06123456789</div>
+                <div><i class="fas fa-map-marker-alt"></i> Belgrade Knez Mihailova 51</div>
+                <div><i class="fas fa-envelope"></i> dragojlo406@gmail.com</div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <div><p class="font-weight-bold">INFORMATION</p></div>
+                <ul>
+                    <li><a asp-controller="Home" asp-action="AboutUs">About us</a></li>
+                    <li><a asp-controller="Home" asp-action="ContactUs">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <span style="font-size: 24px; color: Dodgerblue;">
+                    <i class="fab fa-facebook"></i>
+                </span>
+                <span style="font-size: 24px; color: Dodgerblue;">
+                    <i class="fab fa-instagram"></i>
+                </span>
+                <span style="font-size: 24px; color: Dodgerblue;">
+                    <i class="fab fa-twitter"></i>
+                </span>
+            </div>
         </div>
+        <span>&copy; 2021 - ABA BOOKS</span>
     </footer>
     <script>
         function FindBooksByTitle() {
@@ -131,8 +160,5 @@
     <script src="~/js/Functions.js"></script>
     @RenderSection("Scripts", required: false)
     @RenderSection("JavaScript", required: false)
-
-
-
 </body>
 </html>

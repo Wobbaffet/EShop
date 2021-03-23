@@ -24,13 +24,6 @@ namespace EShop.WepApp.Controllers
         {
             this.uow = uow;
         }
-        // private readonly ILogger<HomeController> _logger;
-
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
         private int TotalNumberOfThisBook(List<Order> list, int id)
         {
             int number = 0;
@@ -104,10 +97,13 @@ namespace EShop.WepApp.Controllers
                 this.Book = book;
             }
         }
-        public IActionResult Privacy()
+        public ActionResult AboutUs()
         {
-
-            return View();
+            return View("AboutUs");
+        }
+        public ActionResult ContactUs()
+        {
+            return View("ContactUs");
         }
     }
 }
