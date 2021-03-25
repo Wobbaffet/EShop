@@ -306,9 +306,17 @@ namespace EShop.WepApp.Controllers
 
         public ActionResult PassBook(string book)
         {
-            string[] s = book.Split(" (");
-            Book b = uow.RepositoryBook.FindWithInclude(b => b.Title == s[0]);
-            return RedirectToAction("ShowItem", "Book", new { bookId = b.BookId });
+            try
+            {
+                string[] s = book.Split(" (");
+                Book b = uow.RepositoryBook.FindWithInclude(b => b.Title == s[0]);
+                return RedirectToAction("ShowItem", "Book", new { bookId = b.BookId });
+            }
+            catch (NullReferenceException )
+            {
+
+                return Index();
+            }
         }
         public ActionResult ShowItem(int bookId)
         {

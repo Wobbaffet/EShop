@@ -14,7 +14,7 @@ namespace EShop.ConsoleApp.Domain
     {
         static void Main(string[] args)
         {
-           
+         
         }
     }
 }
