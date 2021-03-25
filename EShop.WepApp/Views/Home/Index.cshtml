@@ -184,29 +184,24 @@
                 crossorigin="anonymous"></script>*@
     <script>
         function FindBooksByTitle() {
-            if (event.keyCode === 13) {
-                console.log("enter")
-            }
-            else {
-                var selectedValue = $("#exampleDataList").val();
-                jQuery.ajaxSettings.traditional = true;
-                $.ajax({
-                    url: '@Url.Action("FindBooksByTitle", "Book")',
-                    data: { title: selectedValue },
-                    method: "post",
-                    success: function (data) {
-                        $("#datalistOptions").html("");
-                        for (var i = 0; i < data.length; i++) {
-                            _option = `<option>${data[i].title} (${data[i].price}RSD)</option>`;
-                            $("#datalistOptions").append(_option);
-                        }
-
-                    },
-                    error: function () {
-                        alert("Error!");
+            var selectedValue = $("#exampleDataList").val();
+            jQuery.ajaxSettings.traditional = true;
+            $.ajax({
+                url: '@Url.Action("FindBooksByTitle", "Book")',
+                data: { title: selectedValue },
+                method: "post",
+                success: function (data) {
+                    $("#datalistOptions").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        _option = `<option>${data[i].title} (${data[i].price}RSD)</option>`;
+                        $("#datalistOptions").append(_option);
                     }
-                });
-            }
+
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
         }
     </script>
     <script src="~/lib/jquery/dist/jquery-3.3.1.slim.min.js"></script>

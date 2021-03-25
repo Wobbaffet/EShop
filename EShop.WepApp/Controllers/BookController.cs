@@ -331,7 +331,7 @@ namespace EShop.WepApp.Controllers
                 return books;
             foreach (var item in uow.RepositoryBook.GetAll())
             {
-                if (item.Title.ToLower().StartsWith(title))
+                if (item.Title.ToLower().StartsWith(title.ToLower()))
                 {
                     item.Autors = null;
                     item.Genres = null;
