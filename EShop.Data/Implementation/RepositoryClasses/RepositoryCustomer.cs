@@ -39,7 +39,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public Customer FindWithoutInclude(Predicate<Customer> condition)
         {
-            return   shopContext.Customer.ToList().Find(condition);
+            return shopContext.Customer.ToList().Find(condition);
         }
 
         public List<Customer> GetAll()
