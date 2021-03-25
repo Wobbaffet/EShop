@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EShop.Model.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20210317204641_Init")]
+    [Migration("20210324115845_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,7 +259,7 @@ namespace EShop.Model.Migrations
 
             modelBuilder.Entity("EShop.Model.Domain.Order", b =>
                 {
-                    b.HasOne("EShop.Model.Domain.Customer", null)
+                    b.HasOne("EShop.Model.Domain.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,6 +296,8 @@ namespace EShop.Model.Migrations
 
                             b1.Navigation("Book");
                         });
+
+                    b.Navigation("Customer");
 
                     b.Navigation("OrderItems");
                 });
