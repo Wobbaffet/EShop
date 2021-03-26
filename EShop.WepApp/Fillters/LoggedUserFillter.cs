@@ -14,7 +14,11 @@ namespace EShop.WepApp.Fillters
         {
             Controller controller = context.Controller as Controller;
             if (context.HttpContext.Session.GetInt32("customerId") != null)
+            {
                 controller.ViewBag.IsLogged = true;
+                controller.ViewBag.User = context.HttpContext.Session.GetString("customerName");
+                controller.ViewBag.CompanyName = context.HttpContext.Session.GetString("companyName");
+            }
             else
                 controller.ViewBag.IsLogged = false;
         }

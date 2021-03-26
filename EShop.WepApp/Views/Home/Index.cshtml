@@ -11,8 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/Layout.css">
-    <link rel="stylesheet" href="~/css/Code.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous" />
@@ -30,9 +28,10 @@
         crossorigin="anonymous" />*@
     <!-- JQuery -->
     <link rel="stylesheet" href="https://code.jquery.com/jquery-3.5.1.js">
-    <link href="~/css/signUp.css" rel="stylesheet" />
     <link href="~/lib/cdnjs/css/slick-theme.min.css" rel="stylesheet" />
     <link href="~/lib/cdnjs/css/slick.min.css" rel="stylesheet" />
+    <link href="~/css/signUp.css" rel="stylesheet" />
+    <link href="~/css/Code.css" rel="stylesheet" />
     <link href="~/css/home.css" rel="stylesheet" />
     <link href="~/css/Layout.css" rel="stylesheet" />
 
@@ -55,11 +54,22 @@
             </div>
             @if (ViewBag.IsLogged)
             {
-                <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
-                    <a asp-controller="Customer" asp-action="Update"><i class="fas fa-user"></i>User</a>
-                    <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+            <a asp-controller="Customer" asp-action="Update" style="margin-right: 5px;">
+                @if (ViewBag.User != null)
+                {
+                    <i class="fas fa-user"></i>
+                    @ViewBag.User
+                }
+                else
+                {
+                    <i class="fas fa-building"></i>
+                    @ViewBag.CompanyName
+                }
+            </a>
+            <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
 
-                </div>
+        </div>
             }
             else
             {
@@ -184,29 +194,24 @@
                 crossorigin="anonymous"></script>*@
     <script>
         function FindBooksByTitle() {
-            if (event.keyCode === 13) {
-                console.log("enter")
-            }
-            else {
-                var selectedValue = $("#exampleDataList").val();
-                jQuery.ajaxSettings.traditional = true;
-                $.ajax({
-                    url: '@Url.Action("FindBooksByTitle", "Book")',
-                    data: { title: selectedValue },
-                    method: "post",
-                    success: function (data) {
-                        $("#datalistOptions").html("");
-                        for (var i = 0; i < data.length; i++) {
-                            _option = `<option>${data[i].title} (${data[i].price}RSD)</option>`;
-                            $("#datalistOptions").append(_option);
-                        }
-
-                    },
-                    error: function () {
-                        alert("Error!");
+            var selectedValue = $("#exampleDataList").val();
+            jQuery.ajaxSettings.traditional = true;
+            $.ajax({
+                url: '@Url.Action("FindBooksByTitle", "Book")',
+                data: { title: selectedValue },
+                method: "post",
+                success: function (data) {
+                    $("#datalistOptions").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        _option = `<option>${data[i].title} (${data[i].price}RSD)</option>`;
+                        $("#datalistOptions").append(_option);
                     }
-                });
-            }
+
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
         }
     </script>
     <script src="~/lib/jquery/dist/jquery-3.3.1.slim.min.js"></script>

@@ -257,7 +257,7 @@ namespace EShop.Model.Migrations
 
             modelBuilder.Entity("EShop.Model.Domain.Order", b =>
                 {
-                    b.HasOne("EShop.Model.Domain.Customer", null)
+                    b.HasOne("EShop.Model.Domain.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -294,6 +294,8 @@ namespace EShop.Model.Migrations
 
                             b1.Navigation("Book");
                         });
+
+                    b.Navigation("Customer");
 
                     b.Navigation("OrderItems");
                 });

@@ -55,11 +55,13 @@ namespace EShop.WepApp.Controllers
             }
             else
             {
-                //TempData["logged"] = true;
-                //TempData.Keep("logged");
                 if (!customer.IsAdmin)
                 {
                     HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+                    if (customer is LegalEntity)
+                        HttpContext.Session.SetString("companyName", ((LegalEntity)customer).CompanyName);
+                    else if (customer is NaturalPerson)
+                        HttpContext.Session.SetString("customerName", ((NaturalPerson)customer).FirstName);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -271,7 +273,7 @@ namespace EShop.WepApp.Controllers
         }
 
 
-       
+
         public ActionResult Verification(long code, string email)
         {
             if (code == 0 || email == null)
