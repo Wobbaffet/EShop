@@ -2,7 +2,6 @@ using EShop.Data.UnitOfWork;
 using EShop.Data.UnitOfWorkFolder;
 using EShop.Model;
 using EShop.WepApp.Fillters;
-using EShop.WepApp.Middleware;
 using EShop.WepApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
