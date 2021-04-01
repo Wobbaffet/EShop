@@ -13,7 +13,7 @@
         <div class="title"><h1><span>Contact</span></h1></div>
 
     </div>
-    <form role="form" id="contact_form" class="contact-forma contact-form-2" method="POST" action="" novalidate="">
+    <form role="form" id="contact_form" class="contact-forma contact-form-2" method="POST" asp-controller="Home" asp-action="SendComment">
         <div class="row">
 
             <div class="col-xs-12 col-md-6">
@@ -40,42 +40,11 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-md-6">
-                <div class="form-group phone">
-                    <label for="postcode">Post code:</label>
-                    <input type="number" name="postcode" id="postcode" class="form-control" value="" required="" data-parsley-id="1572">
-                    <ul class="validation-errors-list list-unstyled" id="parsley-id-1572"></ul>
-                </div>
-            </div>
-
-
-            <div class="col-xs-12 col-md-6">
-                <div class="form-group subject-mail">
-                    <label for="subject">Reason:</label>
-                    <div class="clearfix"></div>
-                    <div class="styled-select">
-                        <select name="subject" id="subjectMail" data-parsley-id="2886">
-                            <option value="">Choose...</option>
-
-                            <!-- <option value="Moja porudžbina">Moja porudžbina</option>
-                            <option value="Izmena porudžbine">Izmena porudžbine</option>
-                            <option value="Otkazivanje porudžbine">Otkazivanje porudžbine</option>
-                            <option value="Reklamacije i oštećenja">Reklamacije i oštećenja</option>
-                            <option value="Plaćanje">Plaćanje</option>
-                            <option value="Moj nalog">Moj nalog</option>
-                            <option value="Ostalo">Ostalo</option> -->
-
-                        </select>
-                        <ul class="validation-errors-list list-unstyled" id="parsley-id-2886"></ul>
-                    </div>
-                </div>
-            </div>
-
 
             <div class="col-xs-12 col-md-6">
                 <div class="form-group phone">
                     <label for="orderNumber">Text title:</label>
-                    <input type="text" name="numberOrder" id="numberOrder" class="form-control" value="" data-parsley-id="8795">
+                    <input type="text" name="title" id="numberOrder" class="form-control" value="" data-parsley-id="8795">
                     <ul class="validation-errors-list list-unstyled" id="parsley-id-8795"></ul>
                 </div>
             </div>
@@ -83,14 +52,10 @@
             <div class="col-xs-12 col-md-12">
                 <div class="form-group textarea-group">
                     <label for="message">Comment:</label>
-                    <textarea class="form-control" rows="4" id="message" name="message" data-parsley-id="5055"></textarea>
+                    <textarea class="form-control" rows="4" id="message" name="text" data-parsley-id="5055"></textarea>
                     <ul class="validation-errors-list list-unstyled" id="parsley-id-5055"></ul>
                 </div>
             </div>
-
-
-
-
 
             <div class="col-xs-12 col-md-12">
                 <div class="form-group button">

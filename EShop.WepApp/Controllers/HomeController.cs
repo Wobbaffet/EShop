@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace EShop.WepApp.Controllers
@@ -104,6 +106,44 @@ namespace EShop.WepApp.Controllers
         public ActionResult ContactUs()
         {
             return View("ContactUs");
+        }
+
+        public ActionResult SendComment(string name, string email, string phone, string title, string text)
+        {
+            SendEmail(name, email, phone, title, text);
+            return View("ContactUs");
+        }
+
+        private void SendEmail(string name, string email, string phone, string title, string text)
+        {
+
+            SmtpClient smtp = new SmtpClient();
+
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.EnableSsl = true;
+
+            smtp.UseDefaultCredentials = false;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com", "pitajbabu406.");
+
+            MailMessage message = new MailMessage();
+
+            message.Subject = title;
+            message.Body = $"{name} {email} {phone}\n\n{text}";
+
+
+            message.To.Add("dragojlo406@gmail.com");
+            message.From = new MailAddress("dragojlo406@gmail.com");
+
+            try
+            {
+                smtp.Send(message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
