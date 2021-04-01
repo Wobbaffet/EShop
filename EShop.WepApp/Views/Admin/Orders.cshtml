@@ -26,46 +26,46 @@ else
         <tbody>
             @foreach (var order in Model)
             {
-            <tr>
-                <td>@order.OrderId</td>
-                <td>@order.Date</td>
-                <td>@order.Total</td>
-                <td>@order.Customer</td>
-                <td>
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.Date</td>
+                    <td>@order.Total</td>
+                    <td>@order.Customer</td>
+                    <td>
 
-                    <div id="@order.OrderId">
+                        <div id="@order.OrderId">
 
-                        <select>
-                            <option selected value="@order.OrderStatus">@order.OrderStatus</option>
-                            @if (order.OrderStatus != OrderStatus.Completed)
-                            {
+                            <select>
+                                <option selected value="@order.OrderStatus">@order.OrderStatus</option>
+                                @if (order.OrderStatus != OrderStatus.Completed)
+                                {
 
-                                <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
-                            }
+                                    <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
+                                }
 
-                            @if (order.OrderStatus != OrderStatus.InProgress)
-                            {
-                                <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
+                                @if (order.OrderStatus != OrderStatus.InProgress)
+                                {
+                                    <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
 
-                            }
+                                }
 
-                            @if (order.OrderStatus != OrderStatus.Shipped)
-                            {
-                                <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
+                                @if (order.OrderStatus != OrderStatus.Shipped)
+                                {
+                                    <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
 
-                            }
+                                }
 
-                            @if (order.OrderStatus != OrderStatus.Uncompleted)
-                            {
-                                <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
+                                @if (order.OrderStatus != OrderStatus.Uncompleted)
+                                {
+                                    <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
 
-                            }
-                        </select>
-                    </div>
-                </td>
-                <td><a href="@Url.Action("ShowOrderItems","Admin",new { orderId = order.OrderId })" class="btn btn-link" id="@order.OrderId">Show order items</a></td>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td><a href="@Url.Action("ShowOrderItems","Admin",new { orderId = order.OrderId })" class="btn btn-link" id="@order.OrderId">Show order items</a></td>
 
-            </tr>
+                </tr>
             }
         </tbody>
     </table>
@@ -75,6 +75,14 @@ else
             </ul>
         </nav>
     </div>
+
+    <select id="sort" onchange="Sort()" class="form-select">
+
+        <option>Sort by</option>
+        <option>Date</option>
+        <option>Status</option>
+
+    </select>
     <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders">Save changes</a>
 }
 
@@ -137,6 +145,30 @@ else
         })
     </script>
 
+    <script>
+       function Sort() {
+           var status = $("#sort").val();
+
+           if (status == "Sort by")
+               return;
+             $.ajax({
+            url: '@Url.ActionLink("SortByStatus", "Admin")',
+            data: {sortStatus:status},
+
+                    success: function (result) {
+                        window.location.replace(result.redirectUrl);
+
+                    },
+                    error: function () {
+                        alert("error")
+                    }
+                });
+
+
+        }
+
+        
+    </script>
 
 
 }

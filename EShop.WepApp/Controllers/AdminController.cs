@@ -24,9 +24,13 @@ namespace EShop.WepApp.Controllers
             this.uow = uow;
             Services = services;
         }
-        public ActionResult ViewOrders()
+        public ActionResult ViewOrders(bool sortStatus)
         {
-            var orders = uow.RepositoryOrder.GetAll();
+            List<Order> orders;
+            if (sortStatus)
+                orders = uow.RepositoryOrder.GetAll().OrderBy(o=>o.OrderStatus).ToList();
+            else
+             orders = uow.RepositoryOrder.GetAll();
             return View("Orders", orders);
         }
 
@@ -36,6 +40,16 @@ namespace EShop.WepApp.Controllers
             Order order = uow.RepositoryOrder.FindWithInclude(o => o.OrderId == orderId);
             return View("OrderItems", order);
         }
+
+        public ActionResult SortByStatus(string sortStatus)
+        {
+            if(sortStatus=="Status")
+            return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin",new { sortStatus=true}) });
+            else
+            return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin",new { sortStatus=false}) });
+        }
+
+
 
         public void OrderStatusChanged(int orderId, OrderStatus status)
         {
@@ -72,7 +86,7 @@ namespace EShop.WepApp.Controllers
         {
             byte[] orderByte = HttpContext.Session.Get("orderStatusChanged");
             if (orderByte is null)
-                return ViewOrders();
+                return ViewOrders(false);
             List<Order> orders = JsonSerializer.Deserialize<List<Order>>(orderByte);
             orders.ForEach(o =>
             {
@@ -81,7 +95,7 @@ namespace EShop.WepApp.Controllers
                 uow.Commit();
             });
             HttpContext.Session.Remove("orderStatusChanged");
-            return ViewOrders();
+            return ViewOrders(false);
         }
         public async Task<IActionResult> Index(string name)
         {
