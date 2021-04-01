@@ -63,7 +63,7 @@ else
                         </select>
                     </div>
                 </td>
-                <td><span class="btn btn-link" id="@order.OrderId" onclick="ShowOrderItems(this.id)">Show order items</span></td>
+                <td><a href="@Url.Action("ShowOrderItems","Admin",new { orderId = order.OrderId })" class="btn btn-link" id="@order.OrderId">Show order items</a></td>
 
             </tr>
             }
@@ -137,22 +137,7 @@ else
         })
     </script>
 
-<script>
-    function ShowOrderItems(orderId) {
 
-        $.ajax({
-            url: '@Url.ActionLink("ShowOrderItems","Admin")',
-            data: { orderId:orderId },
-            success: function (result) {
-                window.location.replace(result.redirectUrl);
-            },
-            error: function () {
-                alert("error")
-            }
-
-        });
-    }
-</script>
 
 }
 

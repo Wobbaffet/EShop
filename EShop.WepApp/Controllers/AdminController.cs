@@ -33,15 +33,10 @@ namespace EShop.WepApp.Controllers
 
         public ActionResult ShowOrderItems(int orderId)
         {
-            return Json(new { redirectUrl = Url.Action("ShowOrderItems2", "Admin",new { orderId=orderId}) });
-
-        }
-
-        public ActionResult ShowOrderItems2(int orderId)
-        {
             Order order = uow.RepositoryOrder.FindWithInclude(o => o.OrderId == orderId);
-            return View("OrderItems",order);
+            return View("OrderItems", order);
         }
+
         public void OrderStatusChanged(int orderId, OrderStatus status)
         {
             byte[] orderByte = HttpContext.Session.Get("orderStatusChanged");
