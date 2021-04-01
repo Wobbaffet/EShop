@@ -94,6 +94,8 @@ namespace EShop.WepApp.Controllers
         {
             Random r = new Random();
             Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+            if (c is null)
+                return ForgotPassword();
             string token = r.Next(10000, 100000).ToString();
             var passwordResetLink = Url.Action("ResetPassword", "Customer", new { Email = c.Email, Token = token }, Request.Scheme);
             SendEmail2(c, passwordResetLink);
