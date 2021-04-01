@@ -48,7 +48,7 @@ namespace EShop.WepApp.Controllers
                     model.Add(latest[i]);
             }
 
-
+            //<3 Drago volimo te 
             List<NewestBooks> newest = new List<NewestBooks>();
 
             List<Order> orders = uow.RepositoryOrder.GetAll();

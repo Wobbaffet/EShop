@@ -26,44 +26,46 @@ else
         <tbody>
             @foreach (var order in Model)
             {
-                <tr>
-                    <td>@order.OrderId</td>
-                    <td>@order.Date</td>
-                    <td>@order.Total</td>
-                    <td>@order.Customer</td>
-                    <td>
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.Date</td>
+                <td>@order.Total</td>
+                <td>@order.Customer</td>
+                <td>
 
-                        <div id="@order.OrderId">
+                    <div id="@order.OrderId">
 
-                            <select>
-                                <option selected value="@order.OrderStatus">@order.OrderStatus</option>
-                                @if (order.OrderStatus != OrderStatus.Completed)
-                                {
+                        <select>
+                            <option selected value="@order.OrderStatus">@order.OrderStatus</option>
+                            @if (order.OrderStatus != OrderStatus.Completed)
+                            {
 
-                                    <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
-                                }
+                                <option value="@OrderStatus.Completed">@OrderStatus.Completed</option>
+                            }
 
-                                @if (order.OrderStatus != OrderStatus.InProgress)
-                                {
-                                    <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
+                            @if (order.OrderStatus != OrderStatus.InProgress)
+                            {
+                                <option value="@OrderStatus.InProgress">@OrderStatus.InProgress</option>
 
-                                }
+                            }
 
-                                @if (order.OrderStatus != OrderStatus.Shipped)
-                                {
-                                    <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
+                            @if (order.OrderStatus != OrderStatus.Shipped)
+                            {
+                                <option value="@OrderStatus.Shipped">@OrderStatus.Shipped</option>
 
-                                }
+                            }
 
-                                @if (order.OrderStatus != OrderStatus.Uncompleted)
-                                {
-                                    <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
+                            @if (order.OrderStatus != OrderStatus.Uncompleted)
+                            {
+                                <option value="@OrderStatus.Uncompleted">@OrderStatus.Uncompleted</option>
 
-                                }
-                            </select>
-                        </div>
-                    </td>
-                </tr>
+                            }
+                        </select>
+                    </div>
+                </td>
+                <td><span class="btn btn-link" id="@order.OrderId" onclick="ShowOrderItems(this.id)">Show order items</span></td>
+
+            </tr>
             }
         </tbody>
     </table>
@@ -134,6 +136,23 @@ else
                 });
         })
     </script>
+
+<script>
+    function ShowOrderItems(orderId) {
+
+        $.ajax({
+            url: '@Url.ActionLink("ShowOrderItems","Admin")',
+            data: { orderId:orderId },
+            success: function (result) {
+                window.location.replace(result.redirectUrl);
+            },
+            error: function () {
+                alert("error")
+            }
+
+        });
+    }
+</script>
 
 }
 

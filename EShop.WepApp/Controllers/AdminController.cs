@@ -29,6 +29,19 @@ namespace EShop.WepApp.Controllers
             var orders = uow.RepositoryOrder.GetAll();
             return View("Orders", orders);
         }
+
+
+        public ActionResult ShowOrderItems(int orderId)
+        {
+            return Json(new { redirectUrl = Url.Action("ShowOrderItems2", "Admin",new { orderId=orderId}) });
+
+        }
+
+        public ActionResult ShowOrderItems2(int orderId)
+        {
+            Order order = uow.RepositoryOrder.FindWithInclude(o => o.OrderId == orderId);
+            return View("OrderItems",order);
+        }
         public void OrderStatusChanged(int orderId, OrderStatus status)
         {
             byte[] orderByte = HttpContext.Session.Get("orderStatusChanged");

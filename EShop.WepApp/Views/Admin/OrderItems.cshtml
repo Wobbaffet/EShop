@@ -1,0 +1,32 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Order items";
+    Layout = "_LayoutAdmin";
+}
+<table style="border:1px solid black" id="orderCustomer" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total for this product</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderItems in Model.OrderItems)
+        {
+        <tr>
+            <td> <img src="@orderItems.Book.Image" alt="Alternate Text" /></td>
+            <td>@orderItems.Book.Title</td>
+            <td>@orderItems.Book.Price</td>
+            <td>@orderItems.Quantity</td>
+            <td>@(orderItems.Quantity*orderItems.Book.Price)</td>
+            
+
+        </tr>
+        }
+    </tbody>
+  
+</table>
+    <p id="totalPrice">Total price <span id="totalFinalPrice">@Model.Total</span> RSD</p>
