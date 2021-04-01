@@ -21,13 +21,7 @@ namespace EShop.WepApp.Services
             Client = client;
         }
 
-        public async Task<string> GetView()
-        {
-            var response = await Client.GetAsync("");
-            response.EnsureSuccessStatusCode();
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<string>(responseStream);
-        }
+      
 
         public async Task<MainClass> GetBooksFromAPI(string name)
         {

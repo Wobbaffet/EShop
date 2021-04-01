@@ -2,7 +2,7 @@
 
 @model List<Order>
 @{
-    ViewData["Title"] = "Cart";
+    ViewData["Title"] = "Orders";
 }
 @section Style{
     <link href="~/css/Cart.css" rel="stylesheet" />
@@ -14,37 +14,26 @@
 }
 else
 {
-    <table style="border:1px solid black" id="order" class="table-bordered table-striped">
+    <table style="border:1px solid black" id="order" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th></th>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total for the product</th>
-                <th>Purchase Date</th>
+                <th>OrderNumber</th>
+                <th>Purchase date</th>
+                <th>Total</th>
                 <th>Order status</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var order in Model)
             {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.Date</td>
+                <td>@order.Total</td>
+                <th>@order.OrderStatus</th>
+                <td><a href="@Url.Action("ShowOrderItems","Order",new { orderId = order.OrderId })"class="btn btn-link" id="@order.OrderId">Show order items</a></td>
 
-                @foreach (var orderItem in order.OrderItems)
-                {
-                    <tr>
-                        <td><img src="@orderItem.Book.Image" asp-append-version="true" alt="Alternate Text" /> </td>
-                        <td>@orderItem.Book.Title</td>
-                        <td>@orderItem.Book.Price</td>
-                        <td>
-                            @orderItem.Quantity
-                        </td>
-                        <td id="totalItemPrice-@orderItem.Book.BookId">@(orderItem.Book.Price * @orderItem.Quantity)</td>
-                        <td>@order.Date</td>
-                        <td>@order.OrderStatus</td>
-
-                    </tr>
-                }
+            </tr>
             }
         </tbody>
     </table>
@@ -58,63 +47,63 @@ else
     </div>
 
 
-    @section JavaScript{ 
+    @section JavaScript{
         <script>
             var table = '#order'
 
-           
 
-                $('.pagination').html('')
-                var trnum = 0
 
-               // var maxRows = parseInt($(this).val())
-                var maxRows = 5
+            $('.pagination').html('')
+            var trnum = 0
+
+            // var maxRows = parseInt($(this).val())
+            var maxRows = 5
 
             var totalRows = $(table + ' tbody tr').length
-            
-                $(table + ' tr:gt(0)').each(function () {
-                    trnum++
 
-                    if (trnum > maxRows) {
-                        $(this).hide()
-                    }
-                    if (trnum <= maxRows) {
-                        $(this).show()
-                    }
+            $(table + ' tr:gt(0)').each(function () {
+                trnum++
 
-                })
+                if (trnum > maxRows) {
+                    $(this).hide()
+                }
+                if (trnum <= maxRows) {
+                    $(this).show()
+                }
 
-                if (totalRows > maxRows) {
-                    var pagenum = Math.ceil(totalRows / maxRows)
+            })
 
-                    for (var i = 1; i <= pagenum;) {
+            if (totalRows > maxRows) {
+                var pagenum = Math.ceil(totalRows / maxRows)
 
-                        $('.pagination').append('<li data-page="' + i + '"><span class="page-link">' + i++ + '</span></li>').show()
+                for (var i = 1; i <= pagenum;) {
 
-                    }
-
+                    $('.pagination').append('<li data-page="' + i + '"><span class="page-link">' + i++ + '</span></li>').show()
 
                 }
 
-                $('.pagination li:first-child').addClass('active')
-                $('.pagination li').on('click', function () {
-                    var pageNum = $(this).attr('data-page')
-                    console.log("data page" + pageNum)
-                    var trIndex = 0;
-                    $('.pagination li').removeClass('active')
-                    $(this).addClass('active')
-                    $(table + ' tr:gt(0)').each(function () {
-                        trIndex++
-                        if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-                            $(this).hide()
-                        }
-                        else {
-                            $(this).show()
-                        }
-                    })
-                })
 
-            
+            }
+
+            $('.pagination li:first-child').addClass('active')
+            $('.pagination li').on('click', function () {
+                var pageNum = $(this).attr('data-page')
+                console.log("data page" + pageNum)
+                var trIndex = 0;
+                $('.pagination li').removeClass('active')
+                $(this).addClass('active')
+                $(table + ' tr:gt(0)').each(function () {
+                    trIndex++
+                    if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
+                        $(this).hide()
+                    }
+                    else {
+                        $(this).show()
+                    }
+                })
+            })
+
+
 
 
         </script>

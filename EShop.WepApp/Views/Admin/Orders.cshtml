@@ -63,6 +63,8 @@ else
                             </select>
                         </div>
                     </td>
+                    <td><a href="@Url.Action("ShowOrderItems","Admin",new { orderId = order.OrderId })" class="btn btn-link" id="@order.OrderId">Show order items</a></td>
+
                 </tr>
             }
         </tbody>
@@ -73,6 +75,14 @@ else
             </ul>
         </nav>
     </div>
+
+    <select id="sort" onchange="Sort()" class="form-select">
+
+        <option>Sort by</option>
+        <option>Date</option>
+        <option>Status</option>
+
+    </select>
     <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders">Save changes</a>
 }
 
@@ -134,6 +144,32 @@ else
                 });
         })
     </script>
+
+    <script>
+       function Sort() {
+           var status = $("#sort").val();
+
+           if (status == "Sort by")
+               return;
+             $.ajax({
+            url: '@Url.ActionLink("SortByStatus", "Admin")',
+            data: {sortStatus:status},
+
+                    success: function (result) {
+                        window.location.replace(result.redirectUrl);
+
+                    },
+                    error: function () {
+                        alert("error")
+                    }
+                });
+
+
+        }
+
+        
+    </script>
+
 
 }
 
