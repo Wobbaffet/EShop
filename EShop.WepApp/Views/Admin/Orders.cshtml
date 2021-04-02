@@ -13,6 +13,12 @@
 }
 else
 {
+    <select id="sort" onchange="Sort()" class="form-select">
+        <option>Sort by</option>
+        <option>Date</option>
+        <option>Status</option>
+    </select>
+
     <table style="border:1px solid black" id="orderCustomer" class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -76,13 +82,7 @@ else
         </nav>
     </div>
 
-    <select id="sort" onchange="Sort()" class="form-select">
 
-        <option>Sort by</option>
-        <option>Date</option>
-        <option>Status</option>
-
-    </select>
     <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders">Save changes</a>
 }
 
@@ -167,7 +167,7 @@ else
 
         }
 
-        
+
     </script>
 
 
