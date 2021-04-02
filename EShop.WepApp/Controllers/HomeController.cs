@@ -116,9 +116,7 @@ namespace EShop.WepApp.Controllers
 
         private void SendEmail(string name, string email, string phone, string title, string text)
         {
-
             SmtpClient smtp = new SmtpClient();
-
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.EnableSsl = true;
@@ -131,7 +129,6 @@ namespace EShop.WepApp.Controllers
 
             message.Subject = title;
             message.Body = $"{name} {email} {phone}\n\n{text}";
-
 
             message.To.Add("dragojlo406@gmail.com");
             message.From = new MailAddress("dragojlo406@gmail.com");

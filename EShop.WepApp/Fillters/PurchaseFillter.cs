@@ -12,9 +12,6 @@ namespace EShop.WepApp.Fillters
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            /*if (context.Filters.OfType<ForbiddenForAdminFillter>().Any())
-                return;*/
-
             if (context.HttpContext.Session.GetInt32("customerId") == null)
             {
                 context.HttpContext.Response.Redirect("/Customer/SignIn");

@@ -24,31 +24,11 @@ namespace EShop.WepApp.Controllers
             this.uow = uow;
         }
 
-        // GET: BooksController
         public ActionResult Index()
         {
             List<Genre> model = uow.RepositoryGenre.GetAll();
             return View("PartialBooks", model);
         }
-
-        //public List<Autor> GetAllAutors()
-        //{
-        //    List<Autor> autors = new List<Autor>();
-
-        //    foreach (var book in uow.RepositoryBook.GetAll())
-        //    {
-        //        foreach (var a in book.Autors)
-        //        {
-        //            if (!autors.Contains(a))
-        //            {
-        //                a.Books.Clear();
-        //                autors.Add(a);
-        //            }
-        //        }
-        //    }
-        //    return autors;
-        //}
-
 
         public bool AddBookToCart(int bookId)
         {

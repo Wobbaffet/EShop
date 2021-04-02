@@ -20,9 +20,6 @@ namespace EShop.WepApp.Services
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             Client = client;
         }
-
-      
-
         public async Task<MainClass> GetBooksFromAPI(string name)
         {
             if (name == null)

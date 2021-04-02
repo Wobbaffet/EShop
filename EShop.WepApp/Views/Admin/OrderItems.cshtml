@@ -16,17 +16,14 @@
     <tbody>
         @foreach (var orderItems in Model.OrderItems)
         {
-        <tr>
-            <td> <img src="@orderItems.Book.Image" alt="Alternate Text" /></td>
-            <td>@orderItems.Book.Title</td>
-            <td>@orderItems.Book.Price</td>
-            <td>@orderItems.Quantity</td>
-            <td>@(orderItems.Quantity*orderItems.Book.Price)</td>
-
-
-        </tr>
+            <tr>
+                <td> <img src="@orderItems.Book.Image" alt="Alternate Text" /></td>
+                <td>@orderItems.Book.Title</td>
+                <td>@orderItems.Book.Price</td>
+                <td>@orderItems.Quantity</td>
+                <td>@(orderItems.Quantity*orderItems.Book.Price)</td>
+            </tr>
         }
     </tbody>
-  
 </table>
-    <p id="totalPrice">Total price <span id="totalFinalPrice">@Model.Total</span> RSD</p>
+<p id="totalPrice">Total price <span id="totalFinalPrice">@Model.Total</span> RSD</p>

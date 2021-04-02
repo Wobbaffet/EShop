@@ -1,17 +1,9 @@
-﻿
-@model SignUpViewModel
-
+﻿@model SignUpViewModel
 <form style="width: 70%; margin: auto; margin-top: 1%" class="needs-validation" asp-action="Create" asp-controller="Customer" id="signUp">
-
-
-
    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
     <div class="form-row">
-
         <div class="form-group col-md-6 col-xs-12">
             <label for="customerType"> Customer type</label>
-
             <select onchange="ChangeComboBox()"
                     name="customerType"
                     id="customerType"
@@ -20,18 +12,9 @@
                 <option value="Legal entity">Legal entity</option>
             </select>
         </div>
-
-
-
         <div class="row">
-
-
         </div>
-
     </div>
-
-
-
     <div class="form-row" id="naturalPerson">
         <div class="form-group col-md-6 col-xs-12">
             <label for="FirstName">First name</label>
@@ -44,8 +27,6 @@
             <small class="invalid-feedback"> This field must not be empty</small>
         </div>
     </div>
-
-
     <div class="form-row" id="legalEntity" style="display: none;">
         <div class="form-group col-md-6 col-xs-12">
             <label for="CompanyName">Company name</label>
@@ -58,10 +39,6 @@
             <small class="invalid-feedback"> This field must not be empty</small>
         </div>
     </div>
-
-
-
-
     <div class="form-row">
         <div class="form-group col-md-6 col-xs-12">
             <label for="Email">Email</label>
@@ -75,7 +52,6 @@
             <small class="invalid-feedback"> This field must not be empty</small>
         </div>
     </div>
-
     <div class="form-row">
         <div class="form-group col-md-6 col-xs-12">
             <label for="City">City</label>
@@ -88,7 +64,6 @@
             <small class="invalid-feedback"> This field must not be empty</small>
         </div>
     </div>
-
     <div class="form-row">
         <div class="form-group col-md-6 col-xs-12">
             <label for="StreetName">Street name</label>
@@ -101,7 +76,6 @@
             <small class="invalid-feedback"> This field must not be empty</small>
         </div>
     </div>
-
     <div class="form-row">
         <div class="form-group col-md-6 col-xs-12">
             <label for="Password">Password</label>
@@ -116,18 +90,9 @@
             <small class="invalid-feedback" id="confirmPassword"> Passwords don't match</small>
         </div>
     </div>
-
-
     <div class="form-row">
-
-
-
         <div class="form-group col-md-12" style="margin-top: 5%;">
-
             <button type="submit" class="btn btn-primary form-control"id="createMyAccount">Sign up</button>
         </div>
-
-
     </div>
 </form>
-

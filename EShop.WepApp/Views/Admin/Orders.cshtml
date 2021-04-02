@@ -38,9 +38,7 @@ else
                     <td>@order.Total</td>
                     <td>@order.Customer</td>
                     <td>
-
                         <div id="@order.OrderId">
-
                             <select>
                                 <option selected value="@order.OrderStatus">@order.OrderStatus</option>
                                 @if (order.OrderStatus != OrderStatus.Completed)
@@ -70,7 +68,6 @@ else
                         </div>
                     </td>
                     <td><a href="@Url.Action("ShowOrderItems","Admin",new { orderId = order.OrderId })" class="btn btn-link" id="@order.OrderId">Show order items</a></td>
-
                 </tr>
             }
         </tbody>
@@ -81,8 +78,6 @@ else
             </ul>
         </nav>
     </div>
-
-
     <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders">Save changes</a>
 }
 
@@ -151,26 +146,18 @@ else
 
            if (status == "Sort by")
                return;
-             $.ajax({
-            url: '@Url.ActionLink("SortByStatus", "Admin")',
-            data: {sortStatus:status},
-
-                    success: function (result) {
-                        window.location.replace(result.redirectUrl);
-
-                    },
-                    error: function () {
-                        alert("error")
-                    }
-                });
-
-
+           $.ajax({
+                url: '@Url.ActionLink("SortByStatus", "Admin")',
+                data: {sortStatus:status},
+                success: function (result) {
+                    window.location.replace(result.redirectUrl);
+                },
+                error: function () {
+                    alert("error")
+                }
+           });
         }
-
-
     </script>
-
-
 }
 
 

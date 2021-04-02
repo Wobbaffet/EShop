@@ -1,0 +1,45 @@
+﻿.wrapper {
+    margin: 2%;
+}
+
+.topblock, .bottomblock {
+    display: flex;
+}
+
+.bottomblock {
+    margin: 2%;
+}
+
+    .bottomblock button {
+        min-width: 22%;
+        margin-right: 5%;
+    }
+
+.leftblock {
+    min-width: 25%;
+}
+
+#bookimg {
+    width: 100%;
+}
+
+.rightblock {
+    display: flex;
+    margin: 2%;
+}
+
+.book {
+    width: 80%;
+}
+
+.autors p {
+    margin-bottom: 2%;
+}
+
+.genres {
+    align-items: flex-end;
+}
+
+    .genres p {
+        display: inline;
+    }

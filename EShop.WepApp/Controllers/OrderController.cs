@@ -21,7 +21,7 @@ namespace EShop.WepApp.Controllers
         {
             this.uow = uow;
         }
-        // GET: OrderController
+
         [PurchaseFillter]
         public ActionResult Index()
         {
@@ -29,13 +29,10 @@ namespace EShop.WepApp.Controllers
             return View(orders);
         }
 
-
         public ActionResult ShowOrderItems(int orderId)
         {
             Order order = uow.RepositoryOrder.FindWithInclude(o => o.OrderId == orderId);
             return View("OrderItems",order);
-        }
-
-      
+        }      
     }
 }

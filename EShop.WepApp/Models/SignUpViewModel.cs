@@ -9,8 +9,6 @@ namespace EShop.WepApp.Models
 {
     public class SignUpViewModel
     {
-
-
         public Address Address { get; set; }
         public long VerificationCode { get; set; }
         public string Password { get; set; }
@@ -22,7 +20,5 @@ namespace EShop.WepApp.Models
         public string LastName { get; set; }
         public string CompanyName { get; set; }
         public int TIN { get; set; }
-
-
     }
 }

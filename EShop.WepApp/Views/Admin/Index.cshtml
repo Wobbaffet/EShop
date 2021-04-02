@@ -2,17 +2,10 @@
 @{
     Layout = "_LayoutAdmin";
 }
+@section Style{
+    <link href="~/css/AdminIndexCss.css" rel="stylesheet" />
+}
 
-@*<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 ">
-        <div class="input-group mb-3">
-            <form asp-controller="Admin" asp-action="Index">
-                <input name="name" type="text" class="form-control" placeholder="Recipient's username"
-                       aria-label="Book search" aria-describedby="button-addon2">
-                <button class="btn btn-outline-secondary" id="button-addon2">Search</button>
-            </form>
-
-        </div>
-    </div>*@
 @if (Model.items != null)
 {
     <table class="table-bordered table-striped" style="border:1px solid black" id="order">
@@ -69,29 +62,6 @@ else
     <h1>Invalid search!</h1>
 }
 
-
-<style>
-    td {
-        border: 1px solid black;
-        width: 14%;
-    }
-
-    th {
-        border: 1px solid black;
-    }
-
-    table {
-        text-align: center;
-    }
-
-    input {
-        width: 70%
-    }
-
-    p {
-        max-width: 100%
-    }
-</style>
 <script>
     function AddBook(id, description = "") {
         var row = $(`#${id}`).closest('tr');
@@ -124,7 +94,6 @@ else
         } else {
             alert('All inputs must be valid!');
         }
-
     }
 
     function SaveGenre(id) {
@@ -135,8 +104,4 @@ else
             $(`#${id}`).parent().children('div').append(p);
         }
     }
-
-
-
-
 </script>

@@ -1,0 +1,20 @@
+﻿td {
+    border: 1px solid black;
+    width: 11%;
+}
+
+th {
+    border: 1px solid black;
+}
+
+table {
+    text-align: center;
+}
+
+input {
+    width: 70%
+}
+
+p {
+    max-width: 100%
+}

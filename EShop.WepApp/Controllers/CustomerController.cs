@@ -27,14 +27,12 @@ namespace EShop.WepApp.Controllers
             Services = services;
         }
 
-
         [ForbiddenForLoggedUserFillter]
         [HttpGet]
         public ActionResult SignUp()
         {
             return View("SignUp2");
         }
-
 
         [ForbiddenForLoggedUserFillter]
         [HttpGet]
@@ -76,8 +74,6 @@ namespace EShop.WepApp.Controllers
         public ActionResult SignOut()
         {
             HttpContext.Session.Clear();
-            //TempData["logged"] = false;
-            //TempData.Keep("logged");
             return RedirectToAction("Index", "Home");
         }
 
@@ -86,8 +82,6 @@ namespace EShop.WepApp.Controllers
         {
             return View("ForgotPassword");
         }
-
-
 
         [HttpPost]
         public ActionResult ForgotPassword(string email)
@@ -126,7 +120,6 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpPost]
-
         public ActionResult Create([FromForm] SignUpViewModel model)
         {
 
@@ -195,7 +188,6 @@ namespace EShop.WepApp.Controllers
             return Redirect(redirectUrl);
         }
 
-
         public ActionResult Update()
         {
             int? id = HttpContext.Session.GetInt32("customerId");
@@ -216,9 +208,7 @@ namespace EShop.WepApp.Controllers
                     StreetName = np.Address.StreetName,
                     StreetNumber = np.Address.StreetNumber,
                     Type = CustomerType.NaturalPerson,
-                    CustomerId = np.CustomerId,
-                    /*                    AddressId = np.AddressId,
-                    */
+                    CustomerId = np.CustomerId
                 };
             }
             else
@@ -234,8 +224,7 @@ namespace EShop.WepApp.Controllers
                     StreetName = np.Address.StreetName,
                     StreetNumber = np.Address.StreetNumber,
                     Type = CustomerType.LegalEntity,
-                    CustomerId = np.CustomerId,
-                    /*AddressId = np.AddressId*/
+                    CustomerId = np.CustomerId
                 };
             }
 
@@ -274,8 +263,6 @@ namespace EShop.WepApp.Controllers
             return RedirectToAction("Index", "Book");
         }
 
-
-
         public ActionResult Verification(long code, string email)
         {
             if (code == 0 || email == null)
@@ -302,25 +289,17 @@ namespace EShop.WepApp.Controllers
             return View("RegistrationVerification2", email);
         }
 
-
-
         [HttpPost]
         public void SendCodeAgain(string email)
         {
             Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
-
             SendEmail(customer);
-
             uow.Commit();
-
         }
-
 
         private void SendEmail(Customer customer)
         {
-
             Random generateCode = new Random();
-
             customer.VerificationCode = generateCode.Next(1000, 10000);
 
             SmtpClient smtp = new SmtpClient();

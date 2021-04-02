@@ -24,7 +24,6 @@ namespace EShop.WepApp.Controllers
         {
             this.uow = uow;
         }
-        // GET: CartController
         public ActionResult Index()
         {
             byte[] orderByte = HttpContext.Session.Get("order");
@@ -84,11 +83,7 @@ namespace EShop.WepApp.Controllers
             Order order = JsonSerializer.Deserialize<Order>(orderByte);
             order.OrderItems.RemoveAll(o => o.Book.BookId == id);
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));//template method pattern
-
-
             int? items = HttpContext.Session.GetInt32("cartItems");
-
-
             HttpContext.Session.SetInt32("cartItems", (int)--items);
         }
     }

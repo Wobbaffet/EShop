@@ -1,7 +1,10 @@
 ﻿@model List<Book>
 @{
     Layout = "_LayoutAdmin";
- 
+
+}
+@section Style{
+    <link href="~/css/AdminSelectedBooks.css" rel="stylesheet" />
 }
 @if (Model != null && Model.Count > 0)
 {
@@ -62,12 +65,12 @@ else
 
 @section JavaScript{
     <script>
-        
+
         function removeItemFromList(id, title, description) {
 
             console.log("Id=" + id)
             console.log("title=" + title)
-           
+
             $.ajax({
                 url: '@Url.ActionLink("RemoveItemFromList", "Admin")',
                 data: {
@@ -101,7 +104,7 @@ else
             $.ajax({
             url: '@Url.ActionLink("SaveBooks", "Admin")',
             data: {
-                
+
             },
             method: "post",
             success: function () {
@@ -112,28 +115,5 @@ else
             }
             });
         }
-
     </script>
 }
-<style>
-    td {
-        border: 1px solid black;
-        width: 11%;
-    }
-
-    th {
-        border: 1px solid black;
-    }
-
-    table {
-        text-align: center;
-    }
-
-    input {
-        width: 70%
-    }
-
-    p {
-        max-width: 100%
-    }
-</style>

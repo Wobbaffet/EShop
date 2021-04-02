@@ -1,5 +1,7 @@
 ﻿@model Book
-
+@section Style{
+    <link href="~/css/BookShowItemCSS.css" rel="stylesheet" />
+}
 <div class="wrapper">
     <div class="topblock">
         <div class="col-lg-3 col-md-3 col-sm-12 leftblock">
@@ -39,13 +41,10 @@
             data: { bookId: id },
             method: "post",
             success: function (bool) {
-
                 if (bool == true) {
-
                     var x = parseInt($("#cartI").text()) + 1
                     $("#cartI").text(x);
                 }
-
             },
             error: function () {
                 alert("Error!");
@@ -53,52 +52,3 @@
         });
     }
 </script>
-
-
-<style>
-    .wrapper {
-        margin: 2%;
-    }
-
-    .topblock, .bottomblock {
-        display: flex;
-    }
-
-    .bottomblock {
-        margin: 2%;
-    }
-
-        .bottomblock button {
-            min-width: 22%;
-            margin-right: 5%;
-        }
-
-    .leftblock {
-        min-width: 25%;
-    }
-
-    #bookimg {
-        width: 100%;
-    }
-
-    .rightblock {
-        display: flex;
-        margin: 2%;
-    }
-
-    .book {
-        width: 80%;
-    }
-
-    .autors p {
-        margin-bottom: 2%;
-    }
-
-    .genres{
-        align-items: flex-end;
-    }
-
-    .genres p {
-        display: inline;
-    }
-</style>

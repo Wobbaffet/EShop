@@ -34,7 +34,6 @@ namespace EShop.WepApp.Controllers
             return View("Orders", orders);
         }
 
-
         public ActionResult ShowOrderItems(int orderId)
         {
             Order order = uow.RepositoryOrder.FindWithInclude(o => o.OrderId == orderId);
@@ -48,8 +47,6 @@ namespace EShop.WepApp.Controllers
             else
             return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin",new { sortStatus=false}) });
         }
-
-
 
         public void OrderStatusChanged(int orderId, OrderStatus status)
         {
@@ -68,10 +65,7 @@ namespace EShop.WepApp.Controllers
             }
             else
             {
-
                 orders = JsonSerializer.Deserialize<List<Order>>(orderByte);
-
-
                 var exist = orders.Find(o => o.OrderId == orderId);
                 if (exist is null)
                 {
@@ -128,7 +122,6 @@ namespace EShop.WepApp.Controllers
                 Genres = GetGenres(genres),
                 Description = description
             };
-
             byte[] booksByte = HttpContext.Session.Get("book");
             List<Book> books = null;
             if (!(booksByte is null))
@@ -160,7 +153,6 @@ namespace EShop.WepApp.Controllers
         {
             byte[] booksByte = HttpContext.Session.Get("book");
             List<Book> books = null;
-            //if (!(booksByte is null))
             books = JsonSerializer.Deserialize<List<Book>>(booksByte);
             foreach (var item in books)
             {
