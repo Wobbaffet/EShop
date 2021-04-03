@@ -25,9 +25,6 @@ namespace EShop.WepApp.Controllers
             Services = services;
         }
         
-
-       
-      
         public async Task<IActionResult> Index(string name)
         {
             MainClass model = await Services.GetBooksFromAPI(name);
@@ -86,7 +83,7 @@ namespace EShop.WepApp.Controllers
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
             return books.Count;
         }
-        public void SaveBooks()
+        public void AddBooks()
         {
             byte[] booksByte = HttpContext.Session.Get("book");
             List<Book> books = null;

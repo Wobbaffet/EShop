@@ -7,5 +7,6 @@ namespace EShop.Data.Implementation.Interfaces
 {
     public interface IRepositoryAutor : IRepository<Autor>
     {
+        public List<Autor> GetAutorsByNames(string autors);
     }
 }
