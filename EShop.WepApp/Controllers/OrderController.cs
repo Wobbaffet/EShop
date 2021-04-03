@@ -39,9 +39,9 @@ namespace EShop.WepApp.Controllers
         public ActionResult Sort(string condition)
         {
             if (condition == "Status")
-                return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin", new { sortStatus = true }) });
+                return Json(new { redirectUrl = Url.Action("ViewOrders", "Order", new { sortStatus = true }) });
             else
-                return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin", new { sortStatus = false }) });
+                return Json(new { redirectUrl = Url.Action("ViewOrders", "Order", new { sortStatus = false }) });
         }
 
 
