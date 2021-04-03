@@ -9,7 +9,6 @@ namespace EShop.Data.Implementation
         void Add(T entity);
         List<T> GetAll();
         T FindWithoutInclude(Predicate<T> condition);
-        public void Dispose();
         T FindWithInclude(Predicate<T> condition);
     }
 }

@@ -47,11 +47,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
             return booksWithSupplies;
         }
 
-        public void Dispose()
-        {
-            context.Dispose();
-        }
-
+       
         public List<Book> Search(string autor)
         {
             List<Book> books = GetAll();

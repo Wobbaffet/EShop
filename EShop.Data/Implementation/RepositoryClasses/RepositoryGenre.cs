@@ -21,10 +21,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
             throw new NotImplementedException();
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public Genre FindWithInclude(Predicate<Genre> condition)
         {

@@ -31,10 +31,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
         {
             return context.Order.Include(o => o.Customer).ToList();
         }
-        public void Dispose()
-        {
-            context.Dispose();
-        }
+      
 
         public List<Order> GetAllOrders(Predicate<Order> condition)
         {

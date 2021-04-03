@@ -27,11 +27,6 @@ namespace EShop.Data.Implementation.RepositoryClasses
             shopContext.Customer.Remove(customer);
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public Customer FindWithInclude(Predicate<Customer> condition)
         {
             throw new NotImplementedException();

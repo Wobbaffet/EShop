@@ -23,11 +23,6 @@ namespace EShop.Data.Implementation.RepositoryClasses
             throw new NotImplementedException();
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public Autor FindWithInclude(Predicate<Autor> condition)
         {
             throw new NotImplementedException();
