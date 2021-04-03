@@ -24,73 +24,10 @@ namespace EShop.WepApp.Controllers
             this.uow = uow;
             Services = services;
         }
-        public ActionResult ViewOrders(bool sortStatus)
-        {
-            List<Order> orders;
-            if (sortStatus)
-                orders = uow.RepositoryOrder.Sort();
-            else
-                orders = uow.RepositoryOrder.GetAll();
-            return View("Orders", orders);
-        }
+        
 
-        public ActionResult ShowOrderItems(int orderId)
-        {
-            Order order = uow.RepositoryOrder.FindWithInclude(o => o.OrderId == orderId);
-            return View("OrderItems", order);
-        }
-
-        public ActionResult Sort(string condition)
-        {
-            if(condition=="Status")
-            return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin",new { sortStatus=true}) });
-            else
-            return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin",new { sortStatus=false}) });
-        }
-
-        public void OrderStatusChanged(int orderId, OrderStatus status)
-        {
-            byte[] orderByte = HttpContext.Session.Get("orderStatusChanged");
-            List<Order> orders;
-            if (orderByte is null)
-            {
-                orders = new List<Order>()
-                {
-                    new Order()
-                    {
-                   OrderId = orderId,
-                   OrderStatus=status
-                    }
-                 };
-            }
-            else
-            {
-                orders = JsonSerializer.Deserialize<List<Order>>(orderByte);
-                var exist = orders.Find(o => o.OrderId == orderId);
-                if (exist is null)
-                {
-                    orders.Add(new Order() { OrderId = orderId, OrderStatus = status });
-                }
-                else
-                    exist.OrderStatus = status;
-            }
-            HttpContext.Session.Set("orderStatusChanged", JsonSerializer.SerializeToUtf8Bytes(orders));
-        }
-        public ActionResult UpdateOrder()
-        {
-            byte[] orderByte = HttpContext.Session.Get("orderStatusChanged");
-            if (orderByte is null)
-                return ViewOrders(false);
-            List<Order> orders = JsonSerializer.Deserialize<List<Order>>(orderByte);
-            orders.ForEach(o =>
-            {
-                Order order = uow.RepositoryOrder.FindWithoutInclude(or => or.OrderId == o.OrderId);
-                order.OrderStatus = o.OrderStatus;
-                uow.Commit();
-            });
-            HttpContext.Session.Remove("orderStatusChanged");
-            return ViewOrders(false);
-        }
+       
+      
         public async Task<IActionResult> Index(string name)
         {
             MainClass model = await Services.GetBooksFromAPI(name);

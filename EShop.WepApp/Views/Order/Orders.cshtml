@@ -67,7 +67,7 @@ else
                             </select>
                         </div>
                     </td>
-                    <td><a href="@Url.Action("ShowOrderItems","Admin",new { orderId = order.OrderId })" class="btn btn-link" id="@order.OrderId">Show order items</a></td>
+                    <td><a href="@Url.Action("ShowOrderItems","Order",new { orderId = order.OrderId })" class="btn btn-link" id="@order.OrderId">Show order items</a></td>
                 </tr>
             }
         </tbody>
@@ -78,7 +78,7 @@ else
             </ul>
         </nav>
     </div>
-    <a href="@Url.Action("UpdateOrder","Admin")" class="btn btn-primary" id="submitOrders">Save changes</a>
+    <a href="@Url.Action("UpdateOrder","Order")" class="btn btn-primary" id="submitOrders">Save changes</a>
 }
 
 @section JavaScript{
@@ -127,7 +127,7 @@ else
             var id = this.parentElement.id;
             var status = this.value;
                 $.ajax({
-                    url: '@Url.ActionLink("OrderStatusChanged", "Admin")',
+                    url: '@Url.ActionLink("OrderStatusChanged", "Order")',
                     data: { orderId:id,status:status},
 
                     success: function () {
@@ -147,7 +147,7 @@ else
            if (status == "Sort by")
                return;
            $.ajax({
-                url: '@Url.ActionLink("Sort", "Admin")',
+                url: '@Url.ActionLink("Sort", "Order")',
                 data: {condition:status},
                 success: function (result) {
                     window.location.replace(result.redirectUrl);

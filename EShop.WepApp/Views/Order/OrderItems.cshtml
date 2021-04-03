@@ -1,6 +1,12 @@
 ﻿@model Order
 @{
     ViewData["Title"] = "Order items";
+
+       if( ViewBag.IsLogged==null || !ViewBag.IsLogged)
+            {
+
+           Layout = "_LayoutAdmin";
+            }
    
 }
 <table style="border:1px solid black" id="orderCustomer" class="table table-bordered table-striped">
@@ -25,7 +31,5 @@
         </tr>
         }
     </tbody>
-
 </table>
-<p>Total price <span >@Model.Total</span> RSD</p>
-
+<p id="totalPrice">Total price <span id="totalFinalPrice">@Model.Total</span> RSD</p>
