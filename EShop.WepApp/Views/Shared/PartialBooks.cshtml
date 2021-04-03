@@ -52,7 +52,7 @@
         var limitPerPage = 12;
         var totalPages;
 
-        function SelectChosenCBs(array) {
+        function SelectGenresCheckBoxes(array) {
             var allCBs = $("#myCheckboxes").children('input')
 
             for (var i = 0; i < allCBs.length; i++) {
@@ -210,8 +210,6 @@
             }
         }
 
-
-
         function GetTwelveBooks(pageNumber, price, genres) {
             jQuery.ajaxSettings.traditional = true;
             $.ajax({
@@ -267,7 +265,7 @@
                     partialLoad(data, price, array);
                     //GetAllAutors(nameLastName);
                     GetSelectedOption(price)//done
-                    SelectChosenCBs(array);
+                    SelectGenresCheckBoxes(array);
                 },
                 error: function () {
                     alert("Error!");
