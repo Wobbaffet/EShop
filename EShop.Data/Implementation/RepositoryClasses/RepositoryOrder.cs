@@ -44,9 +44,9 @@ namespace EShop.Data.Implementation.RepositoryClasses
             return context.Order.Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList().Find(condition);
         }
 
-        public List<Order> Sort(Func<Order,object> condition)
+        public List<Order> Sort()
         {
-            return context.Order.Include(order => order.Customer).OrderBy(condition).ToList();
+            return context.Order.Include(order => order.Customer).OrderBy(o=>o.OrderStatus).ToList();
         }
 
     }

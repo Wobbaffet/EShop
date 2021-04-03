@@ -28,9 +28,9 @@ namespace EShop.WepApp.Controllers
         {
             List<Order> orders;
             if (sortStatus)
-                orders = uow.RepositoryOrder.GetAll().OrderBy(o=>o.OrderStatus).ToList();
+                orders = uow.RepositoryOrder.Sort();
             else
-             orders = uow.RepositoryOrder.GetAll();
+                orders = uow.RepositoryOrder.GetAll();
             return View("Orders", orders);
         }
 
@@ -40,9 +40,9 @@ namespace EShop.WepApp.Controllers
             return View("OrderItems", order);
         }
 
-        public ActionResult SortByStatus(string sortStatus)
+        public ActionResult Sort(string condition)
         {
-            if(sortStatus=="Status")
+            if(condition=="Status")
             return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin",new { sortStatus=true}) });
             else
             return Json(new { redirectUrl = Url.Action("ViewOrders", "Admin",new { sortStatus=false}) });

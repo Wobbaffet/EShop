@@ -147,8 +147,8 @@ else
            if (status == "Sort by")
                return;
            $.ajax({
-                url: '@Url.ActionLink("SortByStatus", "Admin")',
-                data: {sortStatus:status},
+                url: '@Url.ActionLink("Sort", "Admin")',
+                data: {condition:status},
                 success: function (result) {
                     window.location.replace(result.redirectUrl);
                 },

@@ -9,6 +9,6 @@ namespace EShop.Data.Implementation.Interfaces
     {
         List<Order> GetAllOrders(Predicate<Order> condition);
 
-        List<Order> Sort(Predicate<Order> condition);
+        List<Order> Sort();
     }
 }
