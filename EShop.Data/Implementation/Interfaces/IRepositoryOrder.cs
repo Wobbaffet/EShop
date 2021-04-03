@@ -8,5 +8,7 @@ namespace EShop.Data.Implementation.Interfaces
     public interface IRepositoryOrder : IRepository<Order>
     {
         List<Order> GetAllOrders(Predicate<Order> condition);
+
+        List<Order> Sort(Predicate<Order> condition);
     }
 }
