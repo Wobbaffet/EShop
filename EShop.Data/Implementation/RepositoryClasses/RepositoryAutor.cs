@@ -8,6 +8,8 @@ using System.Text;
 
 namespace EShop.Data.Implementation.RepositoryClasses
 {
+
+
     public class RepositoryAutor : IRepositoryAutor
     {
 
@@ -34,6 +36,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
         }
 
         public List<Autor> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Autor> GetAutorsByNames(string autors)
         {
             throw new NotImplementedException();
         }

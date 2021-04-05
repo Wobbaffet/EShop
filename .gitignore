@@ -338,3 +338,10 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/EShop/api
+/EShop/docfx.json
+/EShop/toc.yml
+/EShop/log.txt
+/EShop/index.md
+/EShop/.gitignore
+/EShop/articles
