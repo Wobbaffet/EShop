@@ -24,6 +24,6 @@ namespace EShop.Model.Domain
         public List<OrderItem> OrderItems { get; set; }
         /// <value>Represent reference to <c>Customer</c></value>
         public Customer Customer { get; set; }
-        public int CustomerId { get; set; }
+       
     }
 }

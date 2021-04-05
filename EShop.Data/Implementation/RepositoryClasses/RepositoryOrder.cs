@@ -36,7 +36,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
         public List<Order> GetAllOrders(Predicate<Order> condition)
         {
           
-            return context.Order.Include(o=>o.OrderItems).ThenInclude(oi=>oi.Book).ToList().FindAll(condition);
+            return context.Order.Include(o => o.Customer).Include(o=>o.OrderItems).ThenInclude(oi=>oi.Book).ToList().FindAll(condition);
         }
 
         public Order FindWithInclude(Predicate<Order> condition)

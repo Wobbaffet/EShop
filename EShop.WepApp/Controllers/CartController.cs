@@ -60,8 +60,9 @@ namespace EShop.WepApp.Controllers
 
             order.Date = DateTime.Now;
 
-
-            order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
+            int customerId = HttpContext.Session.GetInt32("customerId").Value;
+            order.Customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == customerId);
+         //   order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
 
             foreach (var item in order.OrderItems)
             {
