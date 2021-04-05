@@ -14,5 +14,11 @@ namespace BusinessLogic.Interfaces
         Customer Find(SignInViewModel model);
 
         void Add(SignUpViewModel model);
+
+        UpdateCustomerViewModel Get(int ?customerId);
+
+        void Update(UpdateCustomerViewModel model);
+
+        void ChangePassword(ForgotPasswordViewModel model);
     }
 }

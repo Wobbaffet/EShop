@@ -20,16 +20,16 @@ namespace BusinessLogic.Classes
     public class CustomerService : ICustomer
     {
 
-       
+
         public CustomerService()
         {
 
             uow = new EShopUnitOfWork(new ShopContext());
         }
 
-        public IUnitOfWork uow { get ; set ; }
+        public IUnitOfWork uow { get; set; }
 
-        public void  Add(SignUpViewModel model)
+        public void Add(SignUpViewModel model)
         {
 
             Customer exist = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Status == false);
@@ -82,11 +82,13 @@ namespace BusinessLogic.Classes
                 };
             }
 
-            SendEmail(customer);
+            Random generateCode = new Random();
+            customer.VerificationCode = generateCode.Next(1000, 10000);
+            SendEmail(customer.Email, "Activation code", $"Dear user, Your Activation Code is {customer.VerificationCode}");
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
-        
-            
+
+
         }
 
         public Customer Find(SignInViewModel model)
@@ -94,7 +96,7 @@ namespace BusinessLogic.Classes
             Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Password == model.Password);
 
             if (customer is null)
-                throw new SignInException("Wrong credentials");
+                throw new CustomerNullException("Wrong credentials");
 
             return customer;
         }
@@ -104,14 +106,30 @@ namespace BusinessLogic.Classes
         public void SendCodeAgain(string email)
         {
             Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
-            SendEmail(customer);
+            SendEmail(customer.Email, "Activation code", $"Dear user, Your Activation Code is {customer.VerificationCode}");
             uow.Commit();
         }
-        private void SendEmail(Customer customer)
-        {
-            Random generateCode = new Random();
-            customer.VerificationCode = generateCode.Next(1000, 10000);
 
+        public void ResetPasswordLinkSend(string email,string url)
+        {
+            Random r = new Random();
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+            if (c is null)
+                throw new CustomerNullException("Customer doesn't exist");
+           
+            SendEmail(email, "Reset password link", $"Reset password link: {url}");
+        }
+
+        public void ChangePassword(ForgotPasswordViewModel model)
+        {
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email);
+            c.Password = model.Password;
+            uow.Commit();
+        }
+        
+        
+        private void SendEmail(string email,string messageSubject,string messageBody)
+        {
             SmtpClient smtp = new SmtpClient();
 
             smtp.Host = "smtp.gmail.com";
@@ -124,16 +142,17 @@ namespace BusinessLogic.Classes
 
             MailMessage message = new MailMessage();
 
-            message.Subject = "Activation code to Verify Email Address";
-            message.Body = $"Dear user, Your Activation Code is {customer.VerificationCode}";
+            message.Subject = messageSubject;
+            message.Body = messageBody;
 
 
-            message.To.Add(customer.Email);
+            message.To.Add(email);
             message.From = new MailAddress("dragojlo406@gmail.com");
 
             try
             {
                 smtp.Send(message);
+
             }
             catch (Exception)
             {
@@ -141,7 +160,94 @@ namespace BusinessLogic.Classes
             }
         }
 
+        public UpdateCustomerViewModel Get(int? customerId)
+        {
+            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == customerId);
 
+            UpdateCustomerViewModel model;
+            if (customer is NaturalPerson)
+            {
+                NaturalPerson np = customer as NaturalPerson;
+                model = new UpdateCustomerViewModel()
+                {
+                    FirstName = np.FirstName,
+                    LastName = np.LastName,
+                    PhoneNumber = np.PhoneNumber,
+                    CityName = np.Address.CityName,
+                    PTT = np.Address.PTT,
+                    StreetName = np.Address.StreetName,
+                    StreetNumber = np.Address.StreetNumber,
+                    Type = CustomerType.NaturalPerson,
+                    CustomerId = np.CustomerId
+                };
+            }
+            else
+            {
+                LegalEntity np = customer as LegalEntity;
+                model = new UpdateCustomerViewModel()
+                {
+                    CompanyName = np.CompanyName,
+                    TIN = np.TIN,
+                    PhoneNumber = np.PhoneNumber,
+                    CityName = np.Address.CityName,
+                    PTT = np.Address.PTT,
+                    StreetName = np.Address.StreetName,
+                    StreetNumber = np.Address.StreetNumber,
+                    Type = CustomerType.LegalEntity,
+                    CustomerId = np.CustomerId
+                };
+            }
+            return model;
+
+        }
+
+        public void Update(UpdateCustomerViewModel model)
+        {
+            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == model.CustomerId);
+            if (model.Type == CustomerType.NaturalPerson)
+            {
+                NaturalPerson np = customer as NaturalPerson;
+                np.FirstName = model.FirstName;
+                np.LastName = model.LastName;
+                np.PhoneNumber = model.PhoneNumber;
+                np.Address.CityName = model.CityName;
+                np.Address.StreetName = model.StreetName;
+                np.Address.PTT = model.PTT;
+                np.Address.StreetNumber = model.StreetNumber;
+            }
+            else
+            {
+                LegalEntity lg = customer as LegalEntity;
+                lg.CompanyName = model.CompanyName;
+                lg.TIN = model.TIN;
+                lg.PhoneNumber = model.PhoneNumber;
+                lg.Address.CityName = model.CityName;
+                lg.Address.StreetName = model.StreetName;
+                lg.Address.PTT = model.PTT;
+                lg.Address.StreetNumber = model.StreetNumber;
+            }
+
+            uow.Commit();
+        }
+
+
+
+        public bool CheckCode(long code,string email)
+        {
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+
+            if (c.VerificationCode == code)
+            {
+                c.Status = true;
+                c.VerificationCode = 1;
+                uow.Commit();
+                return true;
+
+
+            }
+            else
+                return false;
+        }
     }
 }
 

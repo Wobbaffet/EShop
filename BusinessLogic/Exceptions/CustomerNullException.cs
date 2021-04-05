@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Exceptions
 {
-    public class SignInException : Exception
+    public class CustomerNullException : Exception
     {
-        public SignInException(string message) : base(message)
+        public CustomerNullException(string message) : base(message)
         {
 
         }

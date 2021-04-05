@@ -43,7 +43,7 @@
                     brojac++;
                 });
                  $.ajax({
-                    url: '@Url.ActionLink("Verification", "Customer")',
+                    url: '@Url.ActionLink("CheckCode", "Customer")',
                     data: { code: code, email:$("#verify").attr("value")},
                     success: function (result) {
                         window.location.replace(result.redirectUrl);
