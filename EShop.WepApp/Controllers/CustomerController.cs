@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
 using System.Net.Mail;
-
+using BusinessLogic.Exceptions;
 namespace EShop.WepApp.Controllers
 {
     [LoggedUserFillter]
@@ -44,32 +44,40 @@ namespace EShop.WepApp.Controllers
         [HttpPost]
         public ActionResult SignIn(SignInViewModel model)
         {
-            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Password == model.Password);
+            
+            //try
+            //{
+            //    CustomerService
+            //   Customer customer= 
 
-            if (customer is null)
-            {
-                ModelState.AddModelError(string.Empty, "Wrong credentials");
-                return View();
-            }
-            else
-            {
-                if (!customer.IsAdmin)
-                {
-                    HttpContext.Session.SetInt32("customerId", customer.CustomerId);
-                    if (customer is LegalEntity)
-                        HttpContext.Session.SetString("companyName", ((LegalEntity)customer).CompanyName);
-                    else if (customer is NaturalPerson)
-                        HttpContext.Session.SetString("customerName", ((NaturalPerson)customer).FirstName);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    HttpContext.Session.Clear();
-                    HttpContext.Session.SetInt32("adminId", customer.CustomerId);
-                    return RedirectToAction("Index", "Admin");
-                }
-            }
+
+            //    if (!customer.IsAdmin)
+            //    {
+            //        HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+            //        if (customer is LegalEntity)
+            //            HttpContext.Session.SetString("companyName", ((LegalEntity)customer).CompanyName);
+            //        else if (customer is NaturalPerson)
+            //            HttpContext.Session.SetString("customerName", ((NaturalPerson)customer).FirstName);
+            //        return RedirectToAction("Index", "Home");
+            //    }
+            //    else
+            //    {
+            //        HttpContext.Session.Clear();
+            //        HttpContext.Session.SetInt32("adminId", customer.CustomerId);
+            //        return RedirectToAction("Index", "Admin");
+            //    }
+
+            //}
+            //catch (SignInException s)
+            //{
+
+            //    ModelState.AddModelError(string.Empty, "Wrong credentials");
+            //    return View();
+            //}
+
+
         }
+
 
         public ActionResult SignOut()
         {
