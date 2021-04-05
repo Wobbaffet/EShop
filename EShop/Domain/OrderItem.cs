@@ -14,7 +14,8 @@ namespace EShop.Model.Domain
         public int OrderItemId { get; set; }
         /// <value>Represent quantity of book</value>
         public int Quantity { get; set; }
-        /// <value>Reference to Book class</value>
+        /// <value>Reference to <c>Book</c> class</value>
+        /// <see cref="Book.class"/>
         public Book Book { get; set; }
       
 

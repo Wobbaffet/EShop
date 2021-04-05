@@ -6,6 +6,7 @@ namespace EShop.Model.Domain
 {
     /// <summary>
     /// Represent enum for Order status
+    ///  </summary>
     /// <remarks>
     /// Contains status:
     /// 
@@ -26,9 +27,11 @@ namespace EShop.Model.Domain
     /// </list>
     /// 
     /// </remarks>
-    /// </summary>
+
     public enum OrderStatus
     {
+       
+        
         Uncompleted,
         InProgress,
         Shipped,
