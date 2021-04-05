@@ -20,6 +20,7 @@ namespace EShop.WepApp.Controllers
     {
 
         private IUnitOfWork uow;
+        private CustomerService service;
 
         public EShopServices Services { get; }
 
@@ -27,13 +28,14 @@ namespace EShop.WepApp.Controllers
         {
             this.uow = uow;
             Services = services;
+            service = new CustomerService();
         }
 
         [ForbiddenForLoggedUserFillter]
         [HttpGet]
         public ActionResult SignUp()
         {
-            return View("SignUp2");
+            return View("SignUp");
         }
 
         [ForbiddenForLoggedUserFillter]
@@ -43,14 +45,16 @@ namespace EShop.WepApp.Controllers
             return View("SignIn");
         }
 
+        #region AddedBuisnessLogic
+
         [HttpPost]
         public ActionResult SignIn(SignInViewModel model)
         {
 
             try
             {
-                CustomerService customerService = new CustomerService();
-                Customer customer = customerService.Find(model);
+              
+                Customer customer = service.Find(model);
 
 
                 if (!customer.IsAdmin)
@@ -70,16 +74,33 @@ namespace EShop.WepApp.Controllers
                 }
 
             }
-            catch (SignInException s)
+            catch (SignInException se)
             {
 
-                ModelState.AddModelError(string.Empty, "Wrong credentials");
+                ModelState.AddModelError(string.Empty,se.Message);
                 return View();
             }
 
 
         }
 
+
+        [HttpPost]
+        public ActionResult SignUp([FromForm] SignUpViewModel model)
+        {
+
+            if (ModelState.ErrorCount > 1 || (ModelState.ErrorCount == 1 && model.TIN != 0))
+            {
+
+                ModelState.AddModelError(string.Empty, "Email already exist");
+                return SignUp();
+            }
+            service.Add(model);
+
+            var redirectUrl = Url.Action("Create", "Customer", new { email = model.Email }, Request.Scheme);
+            return Redirect(redirectUrl);
+        }
+        #endregion
 
         public ActionResult SignOut()
         {
@@ -129,74 +150,7 @@ namespace EShop.WepApp.Controllers
             return View("SignIn");
         }
 
-        [HttpPost]
-        public ActionResult Create([FromForm] SignUpViewModel model)
-        {
-
-            if (ModelState.ErrorCount > 1 || (ModelState.ErrorCount == 1 && model.TIN != 0))
-            {
-
-                ModelState.AddModelError(string.Empty, "Email already exist");
-                return SignUp();
-            }
-
-            Customer exist = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Status == false);
-
-            if (!(exist is null))
-            {
-                uow.RepostiryCustomer.Delete(exist);
-            }
-
-            Customer customer;
-            if (model.CompanyName == null)
-            {
-                customer = new NaturalPerson()
-                {
-                    Email = model.Email,
-                    Password = model.Password,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    PhoneNumber = model.PhoneNumber,
-
-                    Address = new Address()
-                    {
-
-                        PTT = model.Address.PTT,
-                        CityName = model.Address.CityName,
-                        StreetName = model.Address.StreetName,
-                        StreetNumber = model.Address.StreetNumber
-
-                    }
-                };
-            }
-            else
-            {
-                customer = new LegalEntity
-                {
-                    Email = model.Email,
-                    Password = model.Password,
-                    CompanyName = model.CompanyName,
-                    TIN = model.TIN,
-                    PhoneNumber = model.PhoneNumber,
-
-                    Address = new Address()
-                    {
-
-                        PTT = model.Address.PTT,
-                        CityName = model.Address.CityName,
-                        StreetName = model.Address.StreetName,
-                        StreetNumber = model.Address.StreetNumber
-                    }
-                };
-            }
-
-            SendEmail(customer);
-            uow.RepostiryCustomer.Add(customer);
-            uow.Commit();
-            model.VerificationCode = customer.VerificationCode;
-            var redirectUrl = Url.Action("Create", "Customer", new { email = model.Email }, Request.Scheme);
-            return Redirect(redirectUrl);
-        }
+     
 
         public ActionResult Update()
         {
@@ -302,44 +256,12 @@ namespace EShop.WepApp.Controllers
         [HttpPost]
         public void SendCodeAgain(string email)
         {
-            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
-            SendEmail(customer);
-            uow.Commit();
+
+            service.SendCodeAgain(email);
+           
         }
 
-        private void SendEmail(Customer customer)
-        {
-            Random generateCode = new Random();
-            customer.VerificationCode = generateCode.Next(1000, 10000);
-
-            SmtpClient smtp = new SmtpClient();
-
-            smtp.Host = "smtp.gmail.com";
-            smtp.Port = 587;
-            smtp.EnableSsl = true;
-
-            smtp.UseDefaultCredentials = false;
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com", "pitajbabu406.");
-
-            MailMessage message = new MailMessage();
-
-            message.Subject = "Activation code to Verify Email Address";
-            message.Body = $"Dear user, Your Activation Code is {customer.VerificationCode}";
-
-
-            message.To.Add(customer.Email);
-            message.From = new MailAddress("dragojlo406@gmail.com");
-
-            try
-            {
-                smtp.Send(message);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        
 
         private void SendEmail2(Customer customer, string url)
         {

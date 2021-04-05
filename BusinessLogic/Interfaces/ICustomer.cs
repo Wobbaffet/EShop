@@ -12,5 +12,7 @@ namespace BusinessLogic.Interfaces
     {
 
         Customer Find(SignInViewModel model);
+
+        void Add(SignUpViewModel model);
     }
 }
