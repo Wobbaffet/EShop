@@ -148,7 +148,8 @@ else
                return;
            $.ajax({
                 url: '@Url.ActionLink("Sort", "Order")',
-                data: {condition:status},
+               data: { condition: status },
+               method: "get",
                 success: function (result) {
                     window.location.replace(result.redirectUrl);
                 },

@@ -1,4 +1,5 @@
-﻿using EShop.Data.UnitOfWork;
+﻿using BusinessLogic.Classes;
+using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
 using EShop.WepApp.Fillters;
 using Microsoft.AspNetCore.Http;
@@ -17,42 +18,28 @@ namespace EShop.WepApp.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork uow;
+        private OrderService service;
 
         public OrderController(IUnitOfWork uow)
         {
             this.uow = uow;
+            service = new OrderService();
         }
         [ForbiddenForAdminFillter]
         [PurchaseFillter]
-        public ActionResult Index()
-        {
-            List<Order> orders = uow.RepositoryOrder.GetAllOrders(o => o.Customer.CustomerId == (int)HttpContext.Session.GetInt32("customerId"));
-            return View(orders);
-        }
 
+        #region AddedBusinessLogic
+        public ActionResult GetAllOrders()
+        {
+            int? id = (int)HttpContext.Session.GetInt32("customerId");
+
+            return View(service.GetAll(id));
+        }
         public ActionResult ShowOrderItems(int orderId)
         {
-            Order order = uow.RepositoryOrder.FindWithInclude(o => o.OrderId == orderId);
-            return View("OrderItems",order);
-        }
 
-        public ActionResult Sort(string condition)
-        {
-            if (condition == "Status")
-                return Json(new { redirectUrl = Url.Action("ViewOrders", "Order", new { sortStatus = true }) });
-            else
-                return Json(new { redirectUrl = Url.Action("ViewOrders", "Order", new { sortStatus = false }) });
-        }
-
-
-        public ActionResult ViewOrders(bool sortStatus)
-        {
-            List<Order> orders;
-            if (sortStatus)
-                orders = uow.RepositoryOrder.Sort();
-            else
-                orders = uow.RepositoryOrder.GetAll();
-            return View("Orders", orders);
+            
+            return View("OrderItems",service.GetOrderItems(orderId));
         }
 
         public ActionResult UpdateOrder()
@@ -61,15 +48,35 @@ namespace EShop.WepApp.Controllers
             if (orderByte is null)
                 return ViewOrders(false);
             List<Order> orders = JsonSerializer.Deserialize<List<Order>>(orderByte);
-            orders.ForEach(o =>
-            {
-                Order order = uow.RepositoryOrder.FindWithoutInclude(or => or.OrderId == o.OrderId);
-                order.OrderStatus = o.OrderStatus;
-                uow.Commit();
-            });
+
+            service.UpdateOrders(orders);
+
             HttpContext.Session.Remove("orderStatusChanged");
             return ViewOrders(false);
+
+
         }
+
+        
+        public ActionResult ViewOrders(bool sortStatus)
+        {
+
+            var orders = service.SortOrders(sortStatus);
+
+            return View("Orders", orders);
+        }
+
+        #endregion
+
+   
+        public ActionResult Sort(string condition)
+        {
+            if (condition == "Status")
+                return Json(new { redirectUrl = Url.Action("ViewOrders", "Order", new { sortStatus = true }) });
+            else
+                return Json(new { redirectUrl = Url.Action("ViewOrders", "Order", new { sortStatus = false }) });
+        }
+
 
 
         public void OrderStatusChanged(int orderId, OrderStatus status)
