@@ -15,5 +15,7 @@ namespace BusinessLogic.Interfaces
         void UpdateOrders(List<Order> orders);
 
         List<Order> SortOrders(bool condition);
+
+        void PurchaseBooks(Order order, int? customerId);
     }
 }

@@ -24,14 +24,7 @@ namespace EShop.WepApp.Controllers
         {
             this.uow = uow;
         }
-        public ActionResult Index()
-        {
-            byte[] orderByte = HttpContext.Session.Get("order");
-            Order model = null;
-            if (!(orderByte is null))
-                model = JsonSerializer.Deserialize<Order>(orderByte);
-            return View(model);
-        }
+      
 
         public void ChangeSupplisForThisItem(int id, int value)
         {
@@ -46,46 +39,15 @@ namespace EShop.WepApp.Controllers
         [HttpDelete]
         public void RemoveItemFromCart(int bookid)
         {
-            RemoveFromCart(bookid);
-        }
-
-        [PurchaseFillter]
-        public ActionResult Purchase()
-        {
             byte[] orderByte = HttpContext.Session.Get("order");
 
             Order order = JsonSerializer.Deserialize<Order>(orderByte);
-
-            order.OrderItems.ForEach(oi => oi.Book = uow.RepositoryBook.FindWithoutInclude(b => b.BookId == oi.Book.BookId));
-
-            order.Date = DateTime.Now;
-
-            int customerId = HttpContext.Session.GetInt32("customerId").Value;
-            order.Customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == customerId);
-         //   order.CustomerId = HttpContext.Session.GetInt32("customerId").Value;
-
-            foreach (var item in order.OrderItems)
-            {
-                item.Book.Supplies -= item.Quantity;
-            }
-            uow.RepositoryOrder.Add(order);
-            uow.Commit();
-
-            HttpContext.Session.Remove("order");
-            HttpContext.Session.Remove("cartItems");
-
-            return RedirectToAction("Index", "Book");
-        }
-
-        private void RemoveFromCart(int id)
-        {
-            byte[] orderByte = HttpContext.Session.Get("order");
-
-            Order order = JsonSerializer.Deserialize<Order>(orderByte);
-            order.OrderItems.RemoveAll(o => o.Book.BookId == id);
-            HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));//template method pattern
+            order.OrderItems.RemoveAll(o => o.Book.BookId == bookid);
+            HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
             int? items = HttpContext.Session.GetInt32("cartItems");
             HttpContext.Session.SetInt32("cartItems", (int)--items);
         }
+
+
     }
 }

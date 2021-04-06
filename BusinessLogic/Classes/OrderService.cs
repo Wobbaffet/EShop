@@ -20,6 +20,7 @@ namespace BusinessLogic.Classes
 
         public List<Order> GetAll(int? customerId)
         {
+
           return uow.RepositoryOrder.GetAllOrders(o => o.Customer.CustomerId == customerId);
 
         }
@@ -48,6 +49,22 @@ namespace BusinessLogic.Classes
                 orders = uow.RepositoryOrder.GetAll();
 
             return orders;
+        }
+
+        public void PurchaseBooks(Order order, int? customerId)
+        {
+            order.OrderItems.ForEach(oi => oi.Book = uow.RepositoryBook.FindWithoutInclude(b => b.BookId == oi.Book.BookId));
+
+            order.Date = DateTime.Now;
+
+            order.Customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == customerId);
+
+            foreach (var item in order.OrderItems)
+            {
+                item.Book.Supplies -= item.Quantity;
+            }
+            uow.RepositoryOrder.Add(order);
+            uow.Commit();
         }
     }
 }

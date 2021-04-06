@@ -13,4 +13,8 @@
     <ProjectReference Include="..\EShop.Data\EShop.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Cart\" />
+  </ItemGroup>
+
 </Project>

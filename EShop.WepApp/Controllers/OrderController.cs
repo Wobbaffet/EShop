@@ -25,15 +25,16 @@ namespace EShop.WepApp.Controllers
             this.uow = uow;
             service = new OrderService();
         }
-        [ForbiddenForAdminFillter]
-        [PurchaseFillter]
 
-        #region AddedBusinessLogic
-        public ActionResult GetAllOrders()
+       
+
+        [ForbiddenForAdminFillter]
+
+        public ActionResult GetCustomerOrders()
         {
             int? id = (int)HttpContext.Session.GetInt32("customerId");
 
-            return View(service.GetAll(id));
+            return View("CustomerOrders",service.GetAll(id));
         }
         public ActionResult ShowOrderItems(int orderId)
         {
@@ -66,8 +67,6 @@ namespace EShop.WepApp.Controllers
             return View("Orders", orders);
         }
 
-        #endregion
-
    
         public ActionResult Sort(string condition)
         {
@@ -75,6 +74,34 @@ namespace EShop.WepApp.Controllers
                 return Json(new { redirectUrl = Url.Action("ViewOrders", "Order", new { sortStatus = true }) });
             else
                 return Json(new { redirectUrl = Url.Action("ViewOrders", "Order", new { sortStatus = false }) });
+        }
+
+
+        [PurchaseFillter]
+        public ActionResult Purchase()
+        {
+            byte[] orderByte = HttpContext.Session.Get("order");
+
+            Order order = JsonSerializer.Deserialize<Order>(orderByte);
+            int? customerId = HttpContext.Session.GetInt32("customerId").Value;
+
+            service.PurchaseBooks(order, customerId);
+
+
+            HttpContext.Session.Remove("order");
+            HttpContext.Session.Remove("cartItems");
+
+            return RedirectToAction("Index", "Book");
+        }
+        [ForbiddenForAdminFillter]
+
+        public ActionResult PurchaseBooksView()
+        {
+            byte[] orderByte = HttpContext.Session.Get("order");
+            Order model = null;
+            if (!(orderByte is null))
+                model = JsonSerializer.Deserialize<Order>(orderByte);
+            return View("PurchaseBooks",model);
         }
 
 
