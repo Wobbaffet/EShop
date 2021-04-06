@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BusinessLogic.Classes;
 using EShop.Data.UnitOfWork;
 using EShop.Model.Domain;
 using EShop.WepApp.Fillters;
@@ -18,11 +19,21 @@ namespace EShop.WepApp.Controllers
     public class BookController : Controller
     {
         private readonly IUnitOfWork uow;
-
+        private BookService service; 
         public BookController(IUnitOfWork uow)
         {
             this.uow = uow;
+            service = new BookService();
         }
+
+        #region
+        public ActionResult ShowItem(int bookId)
+        {
+
+            return View("ShowItem", service.Find(bookId));
+        }
+
+        #endregion
 
         public ActionResult Index()
         {
@@ -136,11 +147,7 @@ namespace EShop.WepApp.Controllers
                 return Index();
             }
         }
-        public ActionResult ShowItem(int bookId)
-        {
-            Book model = uow.RepositoryBook.FindWithInclude(b => b.BookId == bookId);
-            return View("ShowItem", model);
-        }
+      
 
         public List<Book> FindBooksByTitle(string title)
         {
