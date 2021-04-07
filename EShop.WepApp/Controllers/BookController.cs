@@ -26,14 +26,14 @@ namespace EShop.WepApp.Controllers
             service = new BookService();
         }
 
-        #region
+     
         public ActionResult ShowItem(int bookId)
         {
 
             return View("ShowItem", service.Find(bookId));
         }
 
-        #endregion
+      
 
         public ActionResult Index()
         {
@@ -121,7 +121,7 @@ namespace EShop.WepApp.Controllers
 
         public List<Book> SearchBooks(string autor)
         {
-            List<Book> books = uow.RepositoryBook.Search(autor);
+            List<Book> books = uow.RepositoryBook.SearchByAutor(autor);
             foreach (var item in books)
             {
                 item.Autors.Clear();
@@ -147,23 +147,30 @@ namespace EShop.WepApp.Controllers
                 return Index();
             }
         }
-      
-
         public List<Book> FindBooksByTitle(string title)
         {
-            List<Book> books = new List<Book>();
-            if (title == null)
-                return books;
-            foreach (var item in uow.RepositoryBook.GetAll())
+            try
             {
-                if (item.Title.ToLower().StartsWith(title.ToLower()))
-                {
-                    item.Autors = null;
-                    item.Genres = null;
-                    books.Add(item);
-                }
+                return service.Search(title);
             }
-            return books;
+            catch (Exception)
+            {
+
+                return null;
+            }
+        }
+        public void AddBooks()
+        {
+            byte[] booksByte = HttpContext.Session.Get("book");
+            List<Book> books = null;
+            books = JsonSerializer.Deserialize<List<Book>>(booksByte);
+            service.Add(books);
+            
+
+            books = new List<Book>();
+            HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
+
+            HttpContext.Session.Remove("numberOfSelectedBooks");
         }
     }
 }

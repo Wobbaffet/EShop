@@ -26,9 +26,8 @@ namespace EShop.WepApp.Controllers
             service = new OrderService();
         }
 
-       
-
         [ForbiddenForAdminFillter]
+        [ForbiddenForNotLoggedUserFillter]
 
         public ActionResult GetCustomerOrders()
         {
@@ -103,8 +102,6 @@ namespace EShop.WepApp.Controllers
                 model = JsonSerializer.Deserialize<Order>(orderByte);
             return View("PurchaseBooks",model);
         }
-
-
 
         public void OrderStatusChanged(int orderId, OrderStatus status)
         {

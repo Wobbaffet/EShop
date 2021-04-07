@@ -12,6 +12,7 @@ namespace EShop.Data.Implementation.Interfaces
         public int GetNumberOfBooksByGenreAndPrice(string price, List<string> genres);
         public List<Book> GetTwelveBooksByGenre(int totalNumberOfBooksByGenreAndPrice, int pagiNumber, List<string> genres);
         public List<Book> GetTwelveBooksByGenreAndPrice(int totalNumberOfBooksByGenreAndPrice, int pagiNumber, string price, List<string> genres);
-        public List<Book> Search(string autor);
-    }
+        public List<Book> SearchByAutor(string autor);
+        public List<Book> SearchByTitle(string title);
+     }
 }

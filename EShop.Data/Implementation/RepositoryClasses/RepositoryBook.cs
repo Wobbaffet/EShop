@@ -46,7 +46,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
             });
             return booksWithSupplies;
         }
-        public List<Book> Search(string autor)
+        public List<Book> SearchByAutor(string autor)
         {
             List<Book> books = GetAll();
             if (autor == "all")
@@ -58,6 +58,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
                     booksWithThatAutor.Add(item);
             }
             return booksWithThatAutor;
+        }
+
+        public List<Book> SearchByTitle(string title)
+        {
+          return context.Book.Where(b => b.Title.ToLower().Contains(title.ToLower())).ToList();
         }
 
         public int GetNumberOfBooksByGenre(List<string> genres)

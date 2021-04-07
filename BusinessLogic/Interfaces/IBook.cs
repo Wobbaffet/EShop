@@ -9,5 +9,9 @@ namespace BusinessLogic.Interfaces
     {
 
         Book Find(int? bookId);
+
+        void Add(List<Book> books);
+
+        List<Book> Search(string title);
     }
 }

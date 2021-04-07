@@ -54,22 +54,22 @@
             </div>
             @if (ViewBag.IsLogged)
             {
-        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
-            <a asp-controller="Customer" asp-action="Update" style="margin-right: 5px;">
-                @if (ViewBag.User != null)
-                {
-                    <i class="fas fa-user"></i>
-                    @ViewBag.User
-                }
-                else
-                {
-                    <i class="fas fa-building"></i>
-                    @ViewBag.CompanyName
-                }
-            </a>
-            <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
+                <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                    <a asp-controller="Customer" asp-action="Update" style="margin-right: 5px;">
+                        @if (ViewBag.User != null)
+                        {
+                            <i class="fas fa-user"></i>
+                            @ViewBag.User
+                        }
+                        else
+                        {
+                            <i class="fas fa-building"></i>
+                            @ViewBag.CompanyName
+                        }
+                    </a>
+                    <a asp-controller="Customer" asp-action="SignOut">Sign out</a>
 
-        </div>
+                </div>
             }
             else
             {
@@ -80,10 +80,10 @@
             }
             <div id="wish-cart" class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
                 <div id="cart">
-                    <a id="cart_number" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
+                    <a id="cart_number" asp-controller="Order" asp-action="PurchaseBooksView"><i class="fas fa-shopping-cart" id="cartI">@ViewBag.CartItems</i></a>
                 </div>
                 <div>
-                    <a id="cart_number" asp-controller="Order" asp-action="Index"> Orders</a>
+                    <a id="cart_number" asp-controller="Order" asp-action="GetCustomerOrders"> Orders</a>
                 </div>
             </div>
         </header>
