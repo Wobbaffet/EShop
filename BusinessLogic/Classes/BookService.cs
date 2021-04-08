@@ -38,11 +38,13 @@ namespace BusinessLogic.Classes
                 {
                     for (int i = 0; i < item.Genres.Count; i++)
                     {
-                        item.Genres[i] = uow.RepositoryGenre.FindWithoutInclude(g => g.Name == item.Genres[i].Name);
+                      //  item.Genres[i] = uow.RepositoryGenre.FindWithoutInclude(g => g.Name == item.Genres[i].Name);
+                        item.Genres[i] = uow.RepositoryGenre.Find(g => g.Name == item.Genres[i].Name);
                     }
                     for (int i = 0; i < item.Autors.Count; i++)
                     {
-                        Autor a = uow.RepositoryAutor.FindWithoutInclude(a => a.FirstName == item.Autors[i].FirstName && a.LastName == item.Autors[i].LastName);
+                       // Autor a = uow.RepositoryAutor.FindWithoutInclude(a => a.FirstName == item.Autors[i].FirstName && a.LastName == item.Autors[i].LastName);
+                        Autor a = uow.RepositoryAutor.Find(a => a.FirstName == item.Autors[i].FirstName && a.LastName == item.Autors[i].LastName);
                         if (a != null)
                         {
                             item.Autors[i] = a;
