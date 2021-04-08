@@ -9,6 +9,10 @@ using System.Text;
 
 namespace BusinessLogic.Classes
 {
+    /// <inheritdoc/>
+    /// <summary>
+    ///  Represent class for business logic with Orders
+    /// </summary>
     public class OrderService:IOrder
     {
         public IUnitOfWork uow { get; set ; }

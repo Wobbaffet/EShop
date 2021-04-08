@@ -9,9 +9,16 @@ using System.Text;
 
 namespace BusinessLogic.Classes
 {
+    /// <inheritdoc/>
+    /// <summary>
+    ///Represent class for business logic with Books
+
+    /// </summary>
     public class BookService : IBook
     {
-
+        /// <summary>
+        /// Constructor that initialize UnitOfWork
+        /// </summary>
         public BookService()
         {
 

@@ -16,19 +16,31 @@ using System.Net;
 namespace BusinessLogic.Classes
 {
 
-
+    /// <inheritdoc/>
+    /// <summary>
+    /// Represent class for business logic with Customers
+    /// </summary>
     public class CustomerService : ICustomer
     {
-
-
+        /// <summary>
+        /// Constructor that initialize UnitOfWork
+        /// </summary>
         public CustomerService()
         {
-
             uow = new EShopUnitOfWork(new ShopContext());
         }
 
         public IUnitOfWork uow { get; set; }
 
+        public Customer Find(SignInViewModel model)
+        {
+            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Password == model.Password);
+
+            if (customer is null)
+                throw new CustomerNullException("Wrong credentials");
+
+            return customer;
+        }
         public void Add(SignUpViewModel model)
         {
 
@@ -90,76 +102,6 @@ namespace BusinessLogic.Classes
 
 
         }
-
-        public Customer Find(SignInViewModel model)
-        {
-            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Password == model.Password);
-
-            if (customer is null)
-                throw new CustomerNullException("Wrong credentials");
-
-            return customer;
-        }
-
-
-
-        public void SendCodeAgain(string email)
-        {
-            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
-            SendEmail(customer.Email, "Activation code", $"Dear user, Your Activation Code is {customer.VerificationCode}");
-            uow.Commit();
-        }
-
-        public void ResetPasswordLinkSend(string email,string url)
-        {
-            Random r = new Random();
-            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
-            if (c is null)
-                throw new CustomerNullException("Customer doesn't exist");
-           
-            SendEmail(email, "Reset password link", $"Reset password link: {url}");
-        }
-
-        public void ChangePassword(ForgotPasswordViewModel model)
-        {
-            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email);
-            c.Password = model.Password;
-            uow.Commit();
-        }
-        
-        
-        private void SendEmail(string email,string messageSubject,string messageBody)
-        {
-            SmtpClient smtp = new SmtpClient();
-
-            smtp.Host = "smtp.gmail.com";
-            smtp.Port = 587;
-            smtp.EnableSsl = true;
-
-            smtp.UseDefaultCredentials = false;
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com", "pitajbabu406.");
-
-            MailMessage message = new MailMessage();
-
-            message.Subject = messageSubject;
-            message.Body = messageBody;
-
-
-            message.To.Add(email);
-            message.From = new MailAddress("dragojlo406@gmail.com");
-
-            try
-            {
-                smtp.Send(message);
-
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public UpdateCustomerViewModel Get(int? customerId)
         {
             Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == customerId);
@@ -200,7 +142,6 @@ namespace BusinessLogic.Classes
             return model;
 
         }
-
         public void Update(UpdateCustomerViewModel model)
         {
             Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == model.CustomerId);
@@ -229,9 +170,58 @@ namespace BusinessLogic.Classes
 
             uow.Commit();
         }
+        public void ChangePassword(ForgotPasswordViewModel model)
+        {
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email);
+            c.Password = model.Password;
+            uow.Commit();
+        }
+        public void ResetPasswordLinkSend(string email,string url)
+        {
+            Random r = new Random();
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+            if (c is null)
+                throw new CustomerNullException("Customer doesn't exist");
+           
+            SendEmail(email, "Reset password link", $"Reset password link: {url}");
+        }
+        public void SendCodeAgain(string email)
+        {
+            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+            SendEmail(customer.Email, "Activation code", $"Dear user, Your Activation Code is {customer.VerificationCode}");
+            uow.Commit();
+        }
+        private void SendEmail(string email,string messageSubject,string messageBody)
+        {
+            SmtpClient smtp = new SmtpClient();
+
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.EnableSsl = true;
+
+            smtp.UseDefaultCredentials = false;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.Credentials = new NetworkCredential("dragojlo406@gmail.com", "pitajbabu406.");
+
+            MailMessage message = new MailMessage();
+
+            message.Subject = messageSubject;
+            message.Body = messageBody;
 
 
+            message.To.Add(email);
+            message.From = new MailAddress("dragojlo406@gmail.com");
 
+            try
+            {
+                smtp.Send(message);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public bool CheckCode(long code,string email)
         {
             Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
