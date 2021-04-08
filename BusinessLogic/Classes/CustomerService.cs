@@ -191,6 +191,29 @@ namespace BusinessLogic.Classes
             SendEmail(customer.Email, "Activation code", $"Dear user, Your Activation Code is {customer.VerificationCode}");
             uow.Commit();
         }
+        public bool CheckCode(long code,string email)
+        {
+            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+
+            if (c.VerificationCode == code)
+            {
+                c.Status = true;
+                c.VerificationCode = 1;
+                uow.Commit();
+                return true;
+
+
+            }
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// Sending email to customer
+        /// </summary>
+        /// <param name="email">Represent customer email as string</param>
+        /// <param name="messageSubject">Represent email Subject as string</param>
+        /// <param name="messageBody">Represent message body for email as string</param>
         private void SendEmail(string email,string messageSubject,string messageBody)
         {
             SmtpClient smtp = new SmtpClient();
@@ -221,22 +244,6 @@ namespace BusinessLogic.Classes
             {
                 throw;
             }
-        }
-        public bool CheckCode(long code,string email)
-        {
-            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
-
-            if (c.VerificationCode == code)
-            {
-                c.Status = true;
-                c.VerificationCode = 1;
-                uow.Commit();
-                return true;
-
-
-            }
-            else
-                return false;
         }
     }
 }

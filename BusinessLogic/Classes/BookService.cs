@@ -5,6 +5,7 @@ using EShop.Model;
 using EShop.Model.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BusinessLogic.Classes
@@ -22,16 +23,17 @@ namespace BusinessLogic.Classes
         public BookService()
         {
 
-                uow = new EShopUnitOfWork(new ShopContext());
-            
+            uow = new EShopUnitOfWork(new ShopContext());
+
         }
-        public IUnitOfWork uow { get ; set; }
+        public IUnitOfWork uow { get; set; }
 
         public void Add(List<Book> books)
         {
             foreach (var item in books)
             {
-                Book b = uow.RepositoryBook.FindWithoutInclude(b => b.Title == item.Title && b.Description == item.Description);
+              //  Book b = uow.RepositoryBook.FindWithoutInclude(b => b.Title == item.Title && b.Description == item.Description);
+                Book b = uow.RepositoryBook.Find(b => b.Title == item.Title && b.Description == item.Description);
                 if (b == null)
                 {
                     for (int i = 0; i < item.Genres.Count; i++)
@@ -60,5 +62,71 @@ namespace BusinessLogic.Classes
 
         public List<Book> Search(string title) => uow.RepositoryBook.SearchByTitle(title);
 
+
+
+        public List<Book> GetBooksByCondition(int pageNumber, string price, List<string> genres)
+        {
+
+            Func<Book, bool> func;
+            var FirstSecondPrice = Price(price);
+            if (genres.Count > 0)
+            {
+                func = (b => b.Supplies != 0 &&
+                           b.Price >= FirstSecondPrice[0] && b.Price <= FirstSecondPrice[1] &&
+                           b.Genres.Any(g => genres.Any(genre => genre == g.Name)));
+            }
+            else
+            {
+                func = (b => b.Supplies != 0 && b.Price >= FirstSecondPrice[0] && b.Price <= FirstSecondPrice[1]);
+            }
+
+            return uow.RepositoryBook.GetBooksByCondition(func, pageNumber);
+
+
+        }
+
+        private List<int> Price(string price)
+        {
+            List<int> list = new List<int>();
+            int firstPrice = 0;
+            int secondPrice = 0;
+            if (price == null || price == "No filters")
+            {
+                secondPrice = int.MaxValue;
+            }
+            else if (price.Contains("Less"))
+            {
+                secondPrice = 500;
+            }
+            else if (price.Contains("More"))
+            {
+                firstPrice = 5000;
+                secondPrice = int.MaxValue;
+            }
+            else
+            {
+                string[] prices = price.Split(" - ");
+                firstPrice = int.Parse(prices[0]);
+                secondPrice = int.Parse(prices[1]);
+            }
+            list.Add(firstPrice);
+            list.Add(secondPrice);
+            return list;
+        }
+
+        public int GetBooksNumberByCondition(string price, List<string> genres)
+        {
+            var FirstSecondPrice = Price(price);
+            if (genres.Count == 0)
+                return uow.RepositoryBook.GetTotalNumberOfBooksByCondition(b => b.Supplies != 0 &&
+                b.Price >= FirstSecondPrice[0] && b.Price <= FirstSecondPrice[1]);
+            else
+            {
+                return uow.RepositoryBook.GetTotalNumberOfBooksByCondition(b => b.Supplies != 0 &&
+               b.Price >= FirstSecondPrice[0] && b.Price <= FirstSecondPrice[1]
+                && b.Genres.Any(g => genres.Any(genre => genre == g.Name)));
+            }
+
+        }
     }
 }

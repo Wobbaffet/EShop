@@ -19,22 +19,19 @@ namespace EShop.WepApp.Controllers
     public class BookController : Controller
     {
         private readonly IUnitOfWork uow;
-        private BookService service; 
+        private BookService service;
         public BookController(IUnitOfWork uow)
         {
             this.uow = uow;
             service = new BookService();
         }
 
-     
+
         public ActionResult ShowItem(int bookId)
         {
 
             return View("ShowItem", service.Find(bookId));
         }
-
-      
-
         public ActionResult Index()
         {
             List<Genre> model = uow.RepositoryGenre.GetAll();
@@ -94,46 +91,32 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpGet]
-        public int NubmerOfBooks(List<string> genres)
+        public int NubmerOfBooksByCondition(string price,List<string> genres)
         {
-            return uow.RepositoryBook.GetNumberOfBooksByGenre(genres);
-        }
 
-        [HttpGet]
-        public int NubmerOfBooksByPriceGenre(string price, List<string> genres)
-        {
-            return uow.RepositoryBook.GetNumberOfBooksByGenreAndPrice(price, genres);
+           return  service.GetBooksNumberByCondition(price,genres);
+           
         }
-
         [HttpGet]
         public List<Book> ReturnTwelveBooks(int pagiNumber, string price, List<string> genres)
         {
-            int max;
-            if (price == "No filters")
-                max = NubmerOfBooks(genres);
-            else
-                max = NubmerOfBooksByPriceGenre(price, genres);
-
-            List<Book> books = uow.RepositoryBook.GetTwelveBooksByGenreAndPrice(max, pagiNumber, price, genres);
-            books.ForEach(b => b.Genres.Clear());
-            return books;
-        }
-
-        public List<Book> SearchBooks(string autor)
-        {
-            List<Book> books = uow.RepositoryBook.SearchByAutor(autor);
-            foreach (var item in books)
+            try
             {
-                item.Autors.Clear();
+                return service.GetBooksByCondition(pagiNumber, price, genres);
+
             }
-            return books;
+            catch (Microsoft.Data.SqlClient.SqlException)
+            {
+                return new List<Book>();
+            }
         }
+
+
         [HttpPost]
         public ActionResult GenerateBookUrl(int bookId)
         {
             return Json(new { redirectUrl = Url.Action("ShowItem", "Book", new { bookId = bookId }, Request.Scheme) });
         }
-
         public ActionResult PassBook(string book)
         {
             try
@@ -162,11 +145,9 @@ namespace EShop.WepApp.Controllers
         public void AddBooks()
         {
             byte[] booksByte = HttpContext.Session.Get("book");
-            List<Book> books = null;
-            books = JsonSerializer.Deserialize<List<Book>>(booksByte);
-            service.Add(books);
-            
+            List<Book> books = JsonSerializer.Deserialize<List<Book>>(booksByte);
 
+            service.Add(books);
             books = new List<Book>();
             HttpContext.Session.Set("book", JsonSerializer.SerializeToUtf8Bytes(books));
 

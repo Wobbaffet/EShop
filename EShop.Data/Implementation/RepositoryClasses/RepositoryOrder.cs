@@ -49,5 +49,9 @@ namespace EShop.Data.Implementation.RepositoryClasses
             return context.Order.Include(order => order.Customer).OrderBy(o=>o.OrderStatus).ToList();
         }
 
+        public Order Find(Predicate<Order> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

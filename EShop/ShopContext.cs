@@ -48,8 +48,11 @@ namespace EShop.Model
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=EShop;");
-        }
 
+
+        }
+       
+       
        /// <summary>
        /// Used for bulding model in database
        /// </summary>

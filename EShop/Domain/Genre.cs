@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace EShop.Model.Domain
@@ -18,7 +19,7 @@ namespace EShop.Model.Domain
         /// <value>Represent all book genres
         /// <para>Between genre and book is association class  BookGenre</para>
         /// </value>
-
+        
         public List<Book> Books { get; set; }
 
         /// <summary>

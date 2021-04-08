@@ -25,6 +25,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
             throw new NotImplementedException();
         }
 
+        public Autor Find(Predicate<Autor> p)
+        {
+            return context.Autor.ToList().Find(p);
+        }
+
         public Autor FindWithInclude(Predicate<Autor> condition)
         {
             throw new NotImplementedException();
@@ -32,7 +37,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public Autor FindWithoutInclude(Predicate<Autor> condition)
         {
-            return context.Autor.ToList().Find(condition);
+          return context.Autor.ToList().Find(condition);  
         }
 
         public List<Autor> GetAll()

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace EShop.WepApp
 {
     public class Startup
@@ -34,7 +35,9 @@ namespace EShop.WepApp
                 option.IdleTimeout = TimeSpan.FromMinutes(10);
             });
 
-
+            services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+      );
 
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();

@@ -10,5 +10,6 @@ namespace EShop.Data.Implementation
         List<T> GetAll();
         T FindWithoutInclude(Predicate<T> condition);
         T FindWithInclude(Predicate<T> condition);
+        T Find(Predicate<T> p);
     }
 }

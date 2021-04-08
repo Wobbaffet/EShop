@@ -85,7 +85,7 @@
                 array.push(checkedBoxes[i].value);
             }
             $.ajax({
-                url: '@Url.ActionLink("NubmerOfBooks", "Book")',
+                url: '@Url.ActionLink("NubmerOfBooksByCondition", "Book")',
                 data: {},
                 method: "get",
                 success: function (totalNumberOfBooks) {
@@ -256,7 +256,7 @@
             }
             jQuery.ajaxSettings.traditional = true;
             $.ajax({
-                url: '@Url.ActionLink("NubmerOfBooksByPriceGenre", "Book")',
+                url: '@Url.ActionLink("NubmerOfBooksByCondition", "Book")',
                 data: { price: price, genres: array },
                 method: "get",
                 success: function (data) {
