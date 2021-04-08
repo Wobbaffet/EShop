@@ -42,9 +42,6 @@ namespace EShop.WepApp.Controllers
         {
             return View("SignIn");
         }
-
-        #region AddedBuisnessLogic
-
         [HttpPost]
         public ActionResult SignIn(SignInViewModel model)
         {
@@ -128,9 +125,6 @@ namespace EShop.WepApp.Controllers
             }
         }
 
-
-
-
         [HttpPost]
         public ActionResult Update(UpdateCustomerViewModel model)
         {
@@ -183,7 +177,6 @@ namespace EShop.WepApp.Controllers
             }
         }
 
-        #endregion
 
         public ActionResult SignOut()
         {

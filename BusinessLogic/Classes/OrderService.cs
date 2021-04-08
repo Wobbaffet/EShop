@@ -31,14 +31,14 @@ namespace BusinessLogic.Classes
 
         public Order GetOrderItems(int orderId)
         {
-            return  uow.RepositoryOrder.FindWithInclude(o => o.OrderId == orderId);
+            return  uow.RepositoryOrder.Find(o => o.OrderId == orderId);
         }
 
         public void UpdateOrders(List<Order> orders)
         {
             orders.ForEach(o =>
             {
-                Order order = uow.RepositoryOrder.FindWithoutInclude(or => or.OrderId == o.OrderId);
+                Order order = uow.RepositoryOrder.Find(or => or.OrderId == o.OrderId);
                 order.OrderStatus = o.OrderStatus;
                 uow.Commit();
             });
@@ -57,11 +57,11 @@ namespace BusinessLogic.Classes
 
         public void PurchaseBooks(Order order, int? customerId)
         {
-            order.OrderItems.ForEach(oi => oi.Book = uow.RepositoryBook.FindWithoutInclude(b => b.BookId == oi.Book.BookId));
+            order.OrderItems.ForEach(oi => oi.Book = uow.RepositoryBook.Find(b => b.BookId == oi.Book.BookId));
 
             order.Date = DateTime.Now;
 
-            order.Customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == customerId);
+            order.Customer = uow.RepostiryCustomer.Find(c => c.CustomerId == customerId);
 
             foreach (var item in order.OrderItems)
             {

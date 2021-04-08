@@ -34,7 +34,7 @@ namespace BusinessLogic.Classes
 
         public Customer Find(SignInViewModel model)
         {
-            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Password == model.Password);
+            Customer customer = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Password == model.Password);
 
             if (customer is null)
                 throw new CustomerNullException("Wrong credentials");
@@ -44,7 +44,7 @@ namespace BusinessLogic.Classes
         public void Add(SignUpViewModel model)
         {
 
-            Customer exist = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email && c.Status == false);
+            Customer exist = uow.RepostiryCustomer.Find(c => c.Email == model.Email && c.Status == false);
 
             if (!(exist is null))
             {
@@ -104,7 +104,7 @@ namespace BusinessLogic.Classes
         }
         public UpdateCustomerViewModel Get(int? customerId)
         {
-            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == customerId);
+            Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == customerId);
 
             UpdateCustomerViewModel model;
             if (customer is NaturalPerson)
@@ -144,7 +144,7 @@ namespace BusinessLogic.Classes
         }
         public void Update(UpdateCustomerViewModel model)
         {
-            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.CustomerId == model.CustomerId);
+            Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == model.CustomerId);
             if (model.Type == CustomerType.NaturalPerson)
             {
                 NaturalPerson np = customer as NaturalPerson;
@@ -172,14 +172,14 @@ namespace BusinessLogic.Classes
         }
         public void ChangePassword(ForgotPasswordViewModel model)
         {
-            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == model.Email);
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == model.Email);
             c.Password = model.Password;
             uow.Commit();
         }
         public void ResetPasswordLinkSend(string email,string url)
         {
             Random r = new Random();
-            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
             if (c is null)
                 throw new CustomerNullException("Customer doesn't exist");
            
@@ -187,13 +187,13 @@ namespace BusinessLogic.Classes
         }
         public void SendCodeAgain(string email)
         {
-            Customer customer = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+            Customer customer = uow.RepostiryCustomer.Find(c => c.Email == email);
             SendEmail(customer.Email, "Activation code", $"Dear user, Your Activation Code is {customer.VerificationCode}");
             uow.Commit();
         }
         public bool CheckCode(long code,string email)
         {
-            Customer c = uow.RepostiryCustomer.FindWithoutInclude(c => c.Email == email);
+            Customer c = uow.RepostiryCustomer.Find(c => c.Email == email);
 
             if (c.VerificationCode == code)
             {

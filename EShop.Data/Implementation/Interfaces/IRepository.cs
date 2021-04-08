@@ -8,8 +8,6 @@ namespace EShop.Data.Implementation
     {
         void Add(T entity);
         List<T> GetAll();
-        T FindWithoutInclude(Predicate<T> condition);
-        T FindWithInclude(Predicate<T> condition);
         T Find(Predicate<T> p);
     }
 }

@@ -60,7 +60,8 @@ namespace BusinessLogic.Classes
             }
         }
 
-        public Book Find(int? bookId) => uow.RepositoryBook.FindWithInclude(b => b.BookId == bookId);
+      //  public Book Find(int? bookId) => uow.RepositoryBook.FindWithInclude(b => b.BookId == bookId);
+        public Book Find(int? bookId) => uow.RepositoryBook.Find(b => b.BookId == bookId);
 
         public List<Book> Search(string title) => uow.RepositoryBook.SearchByTitle(title);
 

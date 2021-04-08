@@ -29,7 +29,7 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
         public Customer Find(Predicate<Customer> p)
         {
-            throw new NotImplementedException();
+            return shopContext.Customer.ToList().Find(p);
         }
 
         public Customer FindWithInclude(Predicate<Customer> condition)
