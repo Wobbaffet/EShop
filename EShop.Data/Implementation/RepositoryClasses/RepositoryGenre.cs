@@ -11,34 +11,9 @@ namespace EShop.Data.Implementation.RepositoryClasses
     public class RepositoryGenre : IRepositoryGenre
     {
         private readonly ShopContext context;
-
-        public RepositoryGenre(ShopContext context)
-        {
-            this.context = context;
-        }
-        public void Add(Genre entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Genre Find(Predicate<Genre> p)
-        {
-            return context.Genre.ToList().Find(p);
-        }
-
-        public Genre FindWithInclude(Predicate<Genre> condition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Genre FindWithoutInclude(Predicate<Genre> condition)
-        {
-            return context.Genre.ToList().Find(condition);
-        }
-
-        public List<Genre> GetAll()
-        {
-            return context.Genre.ToList();
-        }
+        public RepositoryGenre(ShopContext context) => this.context = context;
+        public void Add(Genre entity) => throw new NotImplementedException();
+        public Genre Find(Predicate<Genre> p) => context.Genre.ToList().Find(p);
+        public List<Genre> GetAll() => context.Genre.ToList();
     }
 }

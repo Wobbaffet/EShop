@@ -41,7 +41,7 @@ namespace EShop.WepApp.Controllers
         public bool AddBookToCart(int bookId)
         {
             bool addToChart = false;
-            AddBookToCart(uow.RepositoryBook.FindWithoutInclude(b => b.BookId == bookId), ref addToChart);
+            AddBookToCart(uow.RepositoryBook.Find(b => b.BookId == bookId), ref addToChart);
 
             int? cartItems = HttpContext.Session.GetInt32("cartItems");
             if (cartItems is null)
@@ -122,7 +122,7 @@ namespace EShop.WepApp.Controllers
             try
             {
                 string[] s = book.Split(" (");
-                Book b = uow.RepositoryBook.FindWithInclude(b => b.Title == s[0]);
+                Book b = uow.RepositoryBook.Find(b => b.Title == s[0]);
                 return RedirectToAction("ShowItem", "Book", new { bookId = b.BookId });
             }
             catch (NullReferenceException)

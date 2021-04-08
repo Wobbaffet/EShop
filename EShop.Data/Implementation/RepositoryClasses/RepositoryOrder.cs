@@ -13,45 +13,13 @@ namespace EShop.Data.Implementation.RepositoryClasses
     {
         private readonly ShopContext context;
 
-        public RepositoryOrder(ShopContext context)
-        {
-            this.context = context;
-        }
-        public void Add(Order entity)
-        {
-            context.Add(entity);
-        }
-
-        public Order FindWithoutInclude(Predicate<Order> condition)
-        {
-            return context.Order.ToList().Find(condition);
-        }
-
-        public List<Order> GetAll()
-        {
-            return context.Order.Include(o => o.Customer).ToList();
-        }
-      
-
-        public List<Order> GetAllOrders(Predicate<Order> condition)
-        {
-            var orders = context.Order.Include(o => o.Customer).Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList();
-            return  orders.FindAll(condition);
-        }
-
-        public Order FindWithInclude(Predicate<Order> condition)
-        {
-            return context.Order.Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList().Find(condition);
-        }
-
-        public List<Order> Sort()
-        {
-            return context.Order.Include(order => order.Customer).OrderBy(o=>o.OrderStatus).ToList();
-        }
-
-        public Order Find(Predicate<Order> p)
-        {
-            return context.Order.Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList().Find(p);
-        }
+        public RepositoryOrder(ShopContext context) => this.context = context;
+        public void Add(Order entity) => context.Add(entity);
+        public Order FindWithoutInclude(Predicate<Order> condition) => context.Order.ToList().Find(condition);
+        public List<Order> GetAll() => context.Order.Include(o => o.Customer).ToList();
+        public List<Order> GetAllOrders(Predicate<Order> condition) => context.Order.Include(o => o.Customer).Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList().FindAll(condition);
+        public Order FindWithInclude(Predicate<Order> condition) => context.Order.Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList().Find(condition);
+        public List<Order> Sort() => context.Order.Include(order => order.Customer).OrderBy(o => o.OrderStatus).ToList();
+        public Order Find(Predicate<Order> p) => context.Order.Include(o => o.OrderItems).ThenInclude(oi => oi.Book).ToList().Find(p);
     }
 }

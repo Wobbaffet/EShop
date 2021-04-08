@@ -22,17 +22,6 @@ namespace EShop.Data.Implementation.RepositoryClasses
         {
             context.Add(entity);
         }
-
-        public Book FindWithoutInclude(Predicate<Book> condition)
-        {
-            return context.Book.ToList().Find(condition);
-        }
-
-        public Book FindWithInclude(Predicate<Book> condition)
-        {
-           
-            return context.Book.Include(a => a.Autors).Include(a => a.Genres).ToList().Find(condition);
-        }
         public List<Book> GetAll()
         {
             List<Book> books = context.Book.Include(a => a.Autors).Include(a => a.Genres).ToList();
@@ -57,7 +46,6 @@ namespace EShop.Data.Implementation.RepositoryClasses
         {
             return context.Book.Include(b => b.Genres).Where(condition).ToList().Count();
         }
-
         public Book Find(Predicate<Book> p)
         {
             return context.Book.Include(a => a.Autors).Include(a => a.Genres).ToList().Find(p);

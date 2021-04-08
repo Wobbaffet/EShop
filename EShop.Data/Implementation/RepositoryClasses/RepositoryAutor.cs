@@ -12,42 +12,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
 
     public class RepositoryAutor : IRepositoryAutor
     {
-
         private readonly ShopContext context;
-
-        public RepositoryAutor(ShopContext context)
-        {
-            this.context = context;
-        }
-
-        public void Add(Autor entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Autor Find(Predicate<Autor> p)
-        {
-            return context.Autor.ToList().Find(p);
-        }
-
-        public Autor FindWithInclude(Predicate<Autor> condition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Autor FindWithoutInclude(Predicate<Autor> condition)
-        {
-          return context.Autor.ToList().Find(condition);  
-        }
-
-        public List<Autor> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Autor> GetAutorsByNames(string autors)
-        {
-            throw new NotImplementedException();
-        }
+        public RepositoryAutor(ShopContext context) => this.context = context;
+        public void Add(Autor entity) => throw new NotImplementedException();
+        public Autor Find(Predicate<Autor> p) => context.Autor.ToList().Find(p);
+        public List<Autor> GetAll() => throw new NotImplementedException();
+        public List<Autor> GetAutorsByNames(string autors) => throw new NotImplementedException();
     }
 }

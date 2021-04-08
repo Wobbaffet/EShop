@@ -12,45 +12,11 @@ namespace EShop.Data.Implementation.RepositoryClasses
     {
         private ShopContext shopContext;
 
-        public RepositoryCustomer(ShopContext shopContext)
-        {
-            this.shopContext = shopContext;
-        }
-
-        public void Add(Customer entity)
-        {
-            shopContext.Add(entity);
-        }
-
-        public void Delete(Customer customer)
-        {
-            shopContext.Customer.Remove(customer);
-        }
-
-        public Customer Find(Predicate<Customer> p)
-        {
-            return shopContext.Customer.ToList().Find(p);
-        }
-
-        public Customer FindWithInclude(Predicate<Customer> condition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Customer FindWithoutInclude(Predicate<Customer> condition)
-        {
-            return shopContext.Customer.ToList().Find(condition);
-        }
-
-        public List<Customer> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Customer customer)
-        {
-            shopContext.Update(customer);
-        }
-
+        public RepositoryCustomer(ShopContext shopContext) => this.shopContext = shopContext;
+        public void Add(Customer entity) => shopContext.Add(entity);
+        public void Delete(Customer customer) => shopContext.Customer.Remove(customer);
+        public Customer Find(Predicate<Customer> p) => shopContext.Customer.ToList().Find(p);
+        public List<Customer> GetAll() => throw new NotImplementedException();
+        public void Update(Customer customer) => shopContext.Update(customer);
     }
 }

@@ -27,7 +27,6 @@ namespace BusinessLogic.Classes
 
         }
         public IUnitOfWork uow { get; set; }
-
         public void Add(List<Book> books)
         {
             foreach (var item in books)
@@ -59,14 +58,9 @@ namespace BusinessLogic.Classes
                 uow.Commit();
             }
         }
-
       //  public Book Find(int? bookId) => uow.RepositoryBook.FindWithInclude(b => b.BookId == bookId);
         public Book Find(int? bookId) => uow.RepositoryBook.Find(b => b.BookId == bookId);
-
         public List<Book> Search(string title) => uow.RepositoryBook.SearchByTitle(title);
-
-
-
         public List<Book> GetBooksByCondition(int pageNumber, string price, List<string> genres)
         {
 
@@ -87,7 +81,6 @@ namespace BusinessLogic.Classes
 
 
         }
-
         private List<int> Price(string price)
         {
             List<int> list = new List<int>();
@@ -116,7 +109,6 @@ namespace BusinessLogic.Classes
             list.Add(secondPrice);
             return list;
         }
-
         public int GetBooksNumberByCondition(string price, List<string> genres)
         {
             var FirstSecondPrice = Price(price);
