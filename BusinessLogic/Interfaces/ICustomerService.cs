@@ -53,7 +53,7 @@ namespace BusinessLogic.Interfaces
         /// When customer forget authentication code, he call system to send code again to the email
         /// </summary>
         /// <param name="email">Represent email needed to send verification code </param>
-        public void SendCodeAgain(string email);
+        public long SendCodeAgain(string email);
 
         /// <summary>
         /// Check if user enter valid code for authentication

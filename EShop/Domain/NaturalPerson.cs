@@ -26,5 +26,6 @@ namespace EShop.Model.Domain
         {
             return $"{FirstName} {LastName}";
         }
+
     }
 }

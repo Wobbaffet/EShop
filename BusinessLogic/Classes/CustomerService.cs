@@ -185,11 +185,14 @@ namespace BusinessLogic.Classes
            
             SendEmail(email, "Reset password link", $"Reset password link: {url}");
         }
-        public void SendCodeAgain(string email)
+        public long SendCodeAgain(string email)
         {
             Customer customer = uow.RepostiryCustomer.Find(c => c.Email == email);
+            Random generateCode = new Random();
+            customer.VerificationCode = generateCode.Next(1000, 10000);
             SendEmail(customer.Email, "Activation code", $"Dear user, Your Activation Code is {customer.VerificationCode}");
             uow.Commit();
+            return customer.VerificationCode;
         }
         public bool CheckCode(long code,string email)
         {
