@@ -15,17 +15,12 @@ namespace BusinessLogic.Classes
     ///Represent class for business logic with Books
 
     /// </summary>
-    public class BookService : IBook
+    public class BookService : IBookService
     {
         /// <summary>
         /// Constructor that initialize UnitOfWork
         /// </summary>
-        public BookService()
-        {
-
-            uow = new EShopUnitOfWork(new ShopContext());
-
-        }
+        public BookService() => uow = new EShopUnitOfWork(new ShopContext());
         public IUnitOfWork uow { get; set; }
         public void Add(List<Book> books)
         {
@@ -58,7 +53,6 @@ namespace BusinessLogic.Classes
                 uow.Commit();
             }
         }
-      //  public Book Find(int? bookId) => uow.RepositoryBook.FindWithInclude(b => b.BookId == bookId);
         public Book Find(int? bookId) => uow.RepositoryBook.Find(b => b.BookId == bookId);
         public List<Book> Search(string title) => uow.RepositoryBook.SearchByTitle(title);
         public List<Book> GetBooksByCondition(int pageNumber, string price, List<string> genres)

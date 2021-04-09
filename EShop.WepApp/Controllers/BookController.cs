@@ -91,12 +91,7 @@ namespace EShop.WepApp.Controllers
         }
 
         [HttpGet]
-        public int NubmerOfBooksByCondition(string price,List<string> genres)
-        {
-
-           return  service.GetBooksNumberByCondition(price,genres);
-           
-        }
+        public int NubmerOfBooksByCondition(string price, List<string> genres) => service.GetBooksNumberByCondition(price, genres);
         [HttpGet]
         public List<Book> ReturnTwelveBooks(int pagiNumber, string price, List<string> genres)
         {
@@ -110,8 +105,6 @@ namespace EShop.WepApp.Controllers
                 return new List<Book>();
             }
         }
-
-
         [HttpPost]
         public ActionResult GenerateBookUrl(int bookId)
         {

@@ -20,7 +20,7 @@ namespace BusinessLogic.Classes
     /// <summary>
     /// Represent class for business logic with Customers
     /// </summary>
-    public class CustomerService : ICustomer
+    public class CustomerService : ICustomerService
     {
         /// <summary>
         /// Constructor that initialize UnitOfWork

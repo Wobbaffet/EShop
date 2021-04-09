@@ -8,7 +8,7 @@ namespace BusinessLogic.Interfaces
     /// <summary>
     /// Interface that manager working with OrderService
     /// </summary>
-    public interface IOrder:IService
+    public interface IOrderService:IService
     {
         /// <summary>
         /// Returning all orders for customer id 

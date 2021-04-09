@@ -11,7 +11,7 @@ namespace BusinessLogic.Interfaces
     /// <summary>
     /// Interface that manager working with CustomerService
     /// </summary>
-    public interface ICustomer : IService
+    public interface ICustomerService : IService
     {
         /// <summary>
         /// Finding customer by model

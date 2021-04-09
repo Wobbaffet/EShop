@@ -8,7 +8,7 @@ namespace BusinessLogic.Interfaces
     /// <summary>
     /// Interface that manager working with BookService
     /// </summary>
-   public  interface IBook:IService
+   public  interface IBookService:IService
     {
 
         /// <summary>

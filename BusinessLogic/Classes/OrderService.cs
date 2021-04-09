@@ -13,7 +13,7 @@ namespace BusinessLogic.Classes
     /// <summary>
     ///  Represent class for business logic with Orders
     /// </summary>
-    public class OrderService:IOrder
+    public class OrderService:IOrderService
     {
         public IUnitOfWork uow { get; set ; }
 
