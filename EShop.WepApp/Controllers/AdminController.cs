@@ -29,7 +29,7 @@ namespace EShop.WepApp.Controllers
         {
             MainClass model = await Services.GetBooksFromAPI(name);
             model.genres = uow.RepositoryGenre.GetAll();
-            return View("Index", model);
+            return View("AddBooks", model);
         }
         public ActionResult SelectedBooks()
         {
