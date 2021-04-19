@@ -17,6 +17,5 @@ namespace EShop.Data.Implementation.RepositoryClasses
         public void Add(Autor entity) => throw new NotImplementedException();
         public Autor Find(Predicate<Autor> p) => context.Autor.ToList().Find(p);
         public List<Autor> GetAll() => throw new NotImplementedException();
-        public List<Autor> GetAutorsByNames(string autors) => throw new NotImplementedException();
     }
 }

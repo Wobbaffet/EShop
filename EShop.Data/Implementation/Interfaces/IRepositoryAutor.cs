@@ -5,8 +5,12 @@ using System.Text;
 
 namespace EShop.Data.Implementation.Interfaces
 {
+    /// <inheritdoc/>
+    /// <summary>
+    /// Represent IRepository for Autor
+    /// </summary>
     public interface IRepositoryAutor : IRepository<Autor>
     {
-        public List<Autor> GetAutorsByNames(string autors);
+      
     }
 }
