@@ -10,6 +10,8 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace TestProject.BusinessLogicTests
 {
+
+
     [TestClass]
     public class OrderServiceTest
     {
@@ -28,7 +30,7 @@ namespace TestProject.BusinessLogicTests
         [TestMethod]
         public void Test_GetAllMethod()
         {
-          var orders=  os.GetAll(1126);
+          var orders=  os.GetAll(1128);
 
             Assert.IsNotNull(orders);
         }
@@ -64,11 +66,6 @@ namespace TestProject.BusinessLogicTests
                 Assert.IsTrue(order[i].Date < order[i + 1].Date);
             }
         }
-
-       
-
-
-
 
     }
 }

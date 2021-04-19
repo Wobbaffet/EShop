@@ -11,7 +11,7 @@ using Assert = NUnit.Framework.Assert;
 namespace TestProject.BusinessLogicTests
 {
     [TestClass]
-  public   class BookServiceTest
+    public class BookServiceTest
     {
 
 
@@ -30,7 +30,7 @@ namespace TestProject.BusinessLogicTests
 
         public void Test_FindMethod()
         {
-          Book b=  bs.Find(3);
+            Book b = bs.Find(3);
             Book exp = new Book()
             {
                 Title = "Women"
@@ -39,20 +39,19 @@ namespace TestProject.BusinessLogicTests
             Assert.AreEqual(b.Title, exp.Title);
         }
 
-       [TestMethod]
+        [TestMethod]
 
         public void Test_SearchMethod()
         {
-           var books= bs.Search("sex");
+            var books = bs.Search("sex");
 
             books.ForEach(b =>
             {
                 Assert.IsTrue(b.Title.ToLower().Contains("sex"));
             });
-            
+
         }
 
-
-
+       
     }
 }
