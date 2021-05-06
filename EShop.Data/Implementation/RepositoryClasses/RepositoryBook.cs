@@ -10,6 +10,11 @@ using System.Text;
 
 namespace EShop.Data.Implementation.RepositoryClasses
 {
+
+    /// <inheritdoc/>
+    /// <summary>
+    /// 
+    /// </summary>
     public class RepositoryBook : IRepositoryBook
     {
         private readonly ShopContext context;

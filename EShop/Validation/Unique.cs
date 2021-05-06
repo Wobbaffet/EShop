@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EShop.Model.Validation
 {
-
+    
     ///<inheritdoc/>
     /// <summary>
     /// Represent Unique class

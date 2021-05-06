@@ -9,6 +9,10 @@ using System.Text;
 
 namespace EShop.Data.UnitOfWorkFolder
 {
+    /// <inheritdoc/>
+    /// <summary>
+    /// Represent class Unit of work pattern
+    /// </summary>
     public class EShopUnitOfWork : IUnitOfWork
     {
         private ShopContext context;

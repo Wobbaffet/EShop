@@ -8,6 +8,11 @@ using System.Text;
 
 namespace EShop.Data.Implementation.RepositoryClasses
 {
+
+    /// <inheritdoc/>
+    /// <summary>
+    /// 
+    /// </summary>
     public class RepositoryCustomer : IRepositoryCustomer
     {
         private ShopContext shopContext;

@@ -345,3 +345,7 @@ healthchecksdb
 /EShop/index.md
 /EShop/.gitignore
 /EShop/articles
+/BusinessLogic/toc.yml
+/BusinessLogic/log.txt
+/BusinessLogic/index.md
+/BusinessLogic/docfx.json

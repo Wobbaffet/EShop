@@ -15,14 +15,13 @@ namespace EShop.Data.Implementation.Interfaces
         /// Represent method that return all orders by some condition
         /// </summary>
         /// <param name="condition">condition as predicate </param>
-        /// <returns></returns>
+        /// <returns> list of orders</returns>
         List<Order> GetAllOrders(Predicate<Order> condition);
 
         /// <summary>
         /// Sorting orders by order status
         /// </summary>
-        /// 
-        /// <returns>List<Order></returns>
+        /// <returns> list of sorted orders</returns>
         List<Order> Sort();
     }
 }

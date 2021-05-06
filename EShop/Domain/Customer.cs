@@ -5,6 +5,7 @@ using System.Text;
 
 namespace EShop.Model.Domain
 {
+    
     /// <summary>
     /// Represent abstact class for Customer
     /// <para>Contains all properties both for LegalEntity and NaturalPerson</para>

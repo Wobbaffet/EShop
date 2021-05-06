@@ -15,7 +15,7 @@ namespace BusinessLogic.Interfaces
         /// Finds book by bookId
         /// </summary>
         /// <param name="bookId">Book id as int</param>
-        /// <returns>Book</returns>
+        /// <returns> Book</returns>
         Book Find(int? bookId);
 
         /// <summary>

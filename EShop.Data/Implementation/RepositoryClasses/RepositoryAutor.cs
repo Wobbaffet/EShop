@@ -9,7 +9,10 @@ using System.Text;
 namespace EShop.Data.Implementation.RepositoryClasses
 {
 
-
+    /// <inheritdoc/>
+    /// <summary>
+    /// 
+    /// </summary>
     public class RepositoryAutor : IRepositoryAutor
     {
         private readonly ShopContext context;

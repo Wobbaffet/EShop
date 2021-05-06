@@ -17,7 +17,7 @@ namespace BusinessLogic.Interfaces
         /// Finding customer by model
         /// </summary>
         /// <param name="model">Represent MVVC for SignIn</param>
-        /// <returns>Customer</returns>
+        /// <returns> <c>Customer</c></returns>
         Customer Find(SignInViewModel model);
 
         /// <summary>

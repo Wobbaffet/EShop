@@ -26,14 +26,14 @@ namespace EShop.Data.Implementation.Interfaces
         /// </summary>
         /// <param name="condition">condition as function delegate</param>
         /// <param name="pageNumber"> represent page number in pagination</param>
-        /// <returns>List<Book></returns>
+        /// <returns> list of <c>Book</c></returns>
         List<Book> GetBooksByCondition(Func<Book, bool> condition, int pageNumber);
 
         /// <summary>
         /// Returning number of books needed to for pagination
         /// </summary>
         /// <param name="condition">condition as function</param>
-        /// <returns></returns>
+        /// <returns> total number of books by some condition in database</returns>
         public int GetTotalNumberOfBooksByCondition(Func<Book, bool> condition);
         
     }

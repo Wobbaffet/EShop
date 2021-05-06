@@ -9,6 +9,11 @@ using System.Text;
 
 namespace EShop.Data.Implementation.RepositoryClasses
 {
+
+    /// <inheritdoc/>
+    /// <summary>
+    /// 
+    /// </summary>
     public class RepositoryOrder : IRepositoryOrder
     {
         private readonly ShopContext context;

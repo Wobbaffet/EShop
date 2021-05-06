@@ -36,6 +36,7 @@ namespace TestProject.BusinessLogicTests
                 Title = "Women"
             };
 
+           
             Assert.AreEqual(b.Title, exp.Title);
         }
 
