@@ -35,9 +35,11 @@ namespace EShop.WepApp
                 option.IdleTimeout = TimeSpan.FromMinutes(10);
             });
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-      );
+          /*  services.AddControllers().AddNewtonsoftJson(options =>
+         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
+*/
+        
 
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork,EShopUnitOfWork>();
@@ -76,7 +78,7 @@ namespace EShop.WepApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Customer}/{action=SignIn}/{id?}");
             });
         }
     }

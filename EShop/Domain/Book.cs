@@ -14,13 +14,54 @@ namespace EShop.Model.Domain
         public string Title { get; set; }
         /// <value>Represent image url
         /// </value>
-        public string Image { get; set; }
+        /// <exception cref="NullReferenceException">Throws when url is null or empty</exception>
+
+        private string image;
+
+        public string Image
+        {
+            get { return image; }
+            set {
+                if (string.IsNullOrEmpty(value))
+                    throw new NullReferenceException("Image url cannot be empty or null!");
+
+                image = value; 
+            }
+        }
+
         /// <value>Represent book price as double
         /// </value>
-        public double Price { get; set; }
+        /// <exception cref="ArgumentOutOfRangeException">Throws when price is zero or negative value !</exception>
+        private double price;
+
+        public double Price
+        {
+            get { return price; }
+            set {
+
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("Price cannot be zero or negative !");
+
+                price = value;
+            }
+        }
+
         /// <value>Represent book supplies in storage 
         /// </value>
-        public int Supplies { get; set; }
+        /// <exception cref="ArgumentOutOfRangeException">Throws when value is negative!</exception>
+        private int supplies;
+
+        public int Supplies
+        {
+            get { return supplies; }
+            set {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("Supplies cannot be negative !");
+                
+                supplies = value; 
+            }
+        }
+
         /// <value>Represent book description
         /// </value>
         public string Description { get; set; }

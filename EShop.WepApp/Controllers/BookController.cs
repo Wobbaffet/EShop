@@ -87,6 +87,8 @@ namespace EShop.WepApp.Controllers
 
             order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
 
+           
+
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
         }
 

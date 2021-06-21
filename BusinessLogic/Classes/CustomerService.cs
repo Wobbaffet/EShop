@@ -145,6 +145,8 @@ namespace BusinessLogic.Classes
         public void Update(UpdateCustomerViewModel model)
         {
             Customer customer = uow.RepostiryCustomer.Find(c => c.CustomerId == model.CustomerId);
+            if (customer is null)
+                throw new CustomerNullException("Customer doesn't exist! ");
             if (model.Type == CustomerType.NaturalPerson)
             {
                 NaturalPerson np = customer as NaturalPerson;

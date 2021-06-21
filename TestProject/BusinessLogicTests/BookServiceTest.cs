@@ -26,19 +26,7 @@ namespace TestProject.BusinessLogicTests
         }
 
 
-        [TestMethod]
-
-        public void Test_FindMethod()
-        {
-            Book b = bs.Find(3);
-            Book exp = new Book()
-            {
-                Title = "Women"
-            };
-
-           
-            Assert.AreEqual(b.Title, exp.Title);
-        }
+       
 
         [TestMethod]
 
