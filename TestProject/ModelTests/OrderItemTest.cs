@@ -19,10 +19,11 @@ namespace TestProject.ModelTests
         }
 
         [TestMethod]
-        public void Test_QuantityException()
+        [DataRow(0)]
+        [DataRow(-2)]
+        public void Test_QuantityException(int quantity)
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => oi.Quantity = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => oi.Quantity = -2);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => oi.Quantity = quantity);
         } 
 
         [TestMethod]

@@ -26,11 +26,11 @@ namespace TestProject.ModelTests
         }
 
         [TestMethod]
-
-        public void Test_BookPriceException()
+        [DataRow(0)]
+        [DataRow(-5)]
+        public void Test_BookPriceException(double price)
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => book.Price = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => book.Price = -5);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => book.Price = price);
         }
         [TestMethod]
 

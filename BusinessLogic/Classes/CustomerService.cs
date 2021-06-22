@@ -25,9 +25,10 @@ namespace BusinessLogic.Classes
         /// <summary>
         /// Constructor that initialize UnitOfWork
         /// </summary>
-        public CustomerService()
+        public CustomerService(IUnitOfWork uow)
         {
-            uow = new EShopUnitOfWork(new ShopContext());
+            //this.uow = new EShopUnitOfWork(new ShopContext());
+            this.uow = uow;
         }
 
         public IUnitOfWork uow { get; set; }
@@ -99,8 +100,6 @@ namespace BusinessLogic.Classes
             SendEmail(customer.Email, "Activation code", $"Dear user, Your Activation Code is {customer.VerificationCode}");
             uow.RepostiryCustomer.Add(customer);
             uow.Commit();
-
-
         }
         public UpdateCustomerViewModel Get(int? customerId)
         {
@@ -206,8 +205,6 @@ namespace BusinessLogic.Classes
                 c.VerificationCode = 1;
                 uow.Commit();
                 return true;
-
-
             }
             else
                 return false;
@@ -219,7 +216,7 @@ namespace BusinessLogic.Classes
         /// <param name="email">Represent customer email as string</param>
         /// <param name="messageSubject">Represent email Subject as string</param>
         /// <param name="messageBody">Represent message body for email as string</param>
-        private void SendEmail(string email,string messageSubject,string messageBody)
+        public void SendEmail(string email,string messageSubject,string messageBody)
         {
             SmtpClient smtp = new SmtpClient();
 
@@ -243,7 +240,6 @@ namespace BusinessLogic.Classes
             try
             {
                 smtp.Send(message);
-
             }
             catch (Exception)
             {

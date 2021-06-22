@@ -1,8 +1,7 @@
 ﻿using EShop.Model.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace TestProject.ModelTests
 {
@@ -19,11 +18,11 @@ namespace TestProject.ModelTests
         }
 
         [TestMethod]
-
-        public void Test_OrderTotalException()
+        [DataRow(0)]
+        [DataRow(-2)]
+        public void Test_OrderTotalException(double total)
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => order.Total = -2);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => order.Total = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => order.Total =total);
         } 
         [TestMethod]
         public void Test_OrderItemException()

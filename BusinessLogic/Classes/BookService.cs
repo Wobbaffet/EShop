@@ -20,8 +20,8 @@ namespace BusinessLogic.Classes
         /// <summary>
         /// Constructor that initialize UnitOfWork
         /// </summary>
-        public BookService() => uow = new EShopUnitOfWork(new ShopContext());
         public IUnitOfWork uow { get; set; }
+        public BookService(IUnitOfWork uow) => this.uow = uow;
         public void Add(List<Book> books)
         {
             foreach (var item in books)

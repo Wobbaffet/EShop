@@ -23,13 +23,13 @@ namespace EShop.WepApp.Controllers
         public BookController(IUnitOfWork uow)
         {
             this.uow = uow;
-            service = new BookService();
+            service = new BookService(uow);
+           // service = new BookService(new EShopUnitOfWork(new ShopContext()));
         }
 
 
         public ActionResult ShowItem(int bookId)
         {
-
             return View("ShowItem", service.Find(bookId));
         }
         public ActionResult Index()
@@ -131,9 +131,8 @@ namespace EShop.WepApp.Controllers
             {
                 return service.Search(title);
             }
-            catch (Exception)
+            catch (ArgumentNullException)
             {
-
                 return null;
             }
         }

@@ -8,6 +8,8 @@ using System;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Classes;
 using BusinessLogic.Models;
+using EShop.Model;
+using EShop.Data.UnitOfWorkFolder;
 
 namespace EShop.WepApp.Controllers
 {
@@ -26,7 +28,8 @@ namespace EShop.WepApp.Controllers
         {
             
             Services = services;
-            service = new CustomerService();
+            //Ovde uvedeno ovo cudo
+            service = new CustomerService(new EShopUnitOfWork(new ShopContext()));
         }
 
         [ForbiddenForLoggedUserFillter]

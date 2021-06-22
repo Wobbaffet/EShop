@@ -39,10 +39,11 @@ namespace TestProject.ModelTests
             Assert.ThrowsException<NullReferenceException>(() => address.CityName = null);
         }
         [TestMethod]
-        public void Test_AddressPTTException()
+        [DataRow(0)]
+        [DataRow(-2)]
+        public void Test_AddressPTTException(int ptt)
         {
-            Assert.ThrowsException<NullReferenceException>(() => address.PTT =0);
-            Assert.ThrowsException<NullReferenceException>(() => address.PTT =-2);
+            Assert.ThrowsException<NullReferenceException>(() => address.PTT =ptt);
         }
 
 

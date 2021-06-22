@@ -10,7 +10,7 @@ namespace EShop.Model.Domain
     public class Autor
     {
         /// <value>Represent Autor id as int</value>
-        public int AutorId { get;}
+        public int AutorId { get; set; }
 
         private string firstName;
 

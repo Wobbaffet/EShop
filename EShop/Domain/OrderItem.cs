@@ -21,8 +21,9 @@ namespace EShop.Model.Domain
         {
             get { return quantity; }
             set {
-                if (quantity <= 0)
+                if (value <= 0)
                     throw new ArgumentOutOfRangeException("Quantity must be positiv number");
+
                 quantity = value; 
             }
         }

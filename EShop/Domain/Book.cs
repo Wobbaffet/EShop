@@ -23,7 +23,7 @@ namespace EShop.Model.Domain
             get { return image; }
             set {
                 if (string.IsNullOrEmpty(value))
-                    throw new NullReferenceException("Image url cannot be empty or null!");
+                    throw new NullReferenceException("Image url cannot be empty or null !");
 
                 image = value; 
             }

@@ -2,8 +2,7 @@
 using EShop.Model.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace TestProject.ModelTests
 {
@@ -37,21 +36,49 @@ namespace TestProject.ModelTests
             Assert.ThrowsException<NullReferenceException>(() => customer.PhoneNumber = null);
         }
         [TestMethod]
-        public void Test_VerificationCodeException()
+        [DataRow(2)]
+        [DataRow(23)]
+        [DataRow(231)]
+        [DataRow(23123)]
+        public void Test_VerificationCodeException(long verificationCode)
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => customer.VerificationCode = 32);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => customer.VerificationCode = verificationCode);
         }
         [TestMethod]
-        public void Test_EmailExcepion()
+        [DataRow("marko@gmail")]
+        [DataRow("marko@gmail.c")]
+        [DataRow("marko")]
+        public void Test_EmailExcepion(string email)
         {
-            Assert.ThrowsException<EmailException>(() => customer.Email = "123@");
+            Assert.ThrowsException<EmailException>(() => customer.Email = email);
         }
         [TestMethod]
-        public void Test_PasswordExcepion()
+        [DataRow("Ana3@")]
+        [DataRow("Ana32121")]
+        [DataRow("12312313qaas@")]
+        [DataRow("MARKO12312@@")]
+        public void Test_PasswordExcepion(string password)
         {
-            Assert.ThrowsException<PasswordException>(() => customer.Password = "Stefan.");
+            Assert.ThrowsException<PasswordException>(() => customer.Password = password);
         }
 
+        [TestMethod]
+        [DataRow("markobabovic406@gmail.com")]
+        [DataRow("markobabovic406@student.fon.bg.ac.rs")]
+        public void Test_EmailRegex(string email)
+        {
+            customer.Email = email;
+            Assert.AreEqual(customer.Email, email);
+        }
+        
+        [TestMethod]
+        [DataRow("Nikola97@.")]
+        [DataRow("Nikola97!.")]
+        public void Test_PasswordRegex(string password)
+        {
+            customer.Password = password;
+            Assert.AreEqual(customer.Password, password);
+        }
 
     }
 }

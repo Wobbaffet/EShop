@@ -12,10 +12,10 @@ namespace EShop.Model.Domain
     public class Genre
     {
         /// <value>Represent Genre id as int</value>
-        public int GenreId { get;}
+        public int GenreId { get; set; }
         /// <value>Represent name as string</value>
 
-        public string Name { get;}
+        public string Name { get; set; }
         /// <value>Represent all book genres
         /// <para>Between genre and book is association class  BookGenre</para>
         /// </value>

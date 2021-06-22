@@ -29,7 +29,7 @@ namespace EShop.Model.Domain
             {
                 if (string.IsNullOrEmpty(value))
                     throw new NullReferenceException("Email cannot be empty or null");
-                ///^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})
+
                 Regex regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})");
                 Match match = regex.Match(value);
                 if (!match.Success)
@@ -94,7 +94,7 @@ namespace EShop.Model.Domain
         {
             get { return verificationCode; }
             set {
-                if (value <= 1000 ||value >= 9999)
+                if (value <= 1000 || value >= 9999)
                     throw new ArgumentOutOfRangeException("Verification code must be 4 digit number");
 
                 verificationCode = value; 

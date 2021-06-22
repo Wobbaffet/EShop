@@ -23,7 +23,8 @@ namespace EShop.WepApp.Controllers
         public OrderController(IUnitOfWork uow)
         {
             this.uow = uow;
-            service = new OrderService();
+            service = new OrderService(uow);
+            // service = new OrderService(new EShopUnitOfWork(new ShopContext()));
         }
 
         [ForbiddenForAdminFillter]
