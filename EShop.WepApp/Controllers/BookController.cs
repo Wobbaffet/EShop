@@ -99,6 +99,7 @@ namespace EShop.WepApp.Controllers
         {
             try
             {
+                var x= service.GetBooksByCondition(pagiNumber, price, genres);
                 return service.GetBooksByCondition(pagiNumber, price, genres);
 
             }

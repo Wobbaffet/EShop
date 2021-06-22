@@ -202,7 +202,6 @@ namespace BusinessLogic.Classes
             if (c.VerificationCode == code)
             {
                 c.Status = true;
-                c.VerificationCode = 1;
                 uow.Commit();
                 return true;
             }
@@ -232,7 +231,7 @@ namespace BusinessLogic.Classes
 
             message.Subject = messageSubject;
             message.Body = messageBody;
-
+            
 
             message.To.Add(email);
             message.From = new MailAddress("dragojlo406@gmail.com");
