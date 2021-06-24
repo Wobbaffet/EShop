@@ -30,8 +30,6 @@ namespace EShop.Model.Domain
 
     public enum OrderStatus
     {
-       
-        
         Uncompleted,
         InProgress,
         Shipped,

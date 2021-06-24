@@ -87,7 +87,10 @@ namespace EShop.WepApp.Controllers
 
             order.Total = order.OrderItems.Sum(ot => ot.Quantity * ot.Book.Price);
 
-           
+            order.OrderItems.ForEach(oi => {
+                oi.Book.Autors.Clear();
+                oi.Book.Genres.Clear();
+            } ) ;
 
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
         }
@@ -100,7 +103,12 @@ namespace EShop.WepApp.Controllers
             try
             {
                 var x= service.GetBooksByCondition(pagiNumber, price, genres);
-                return service.GetBooksByCondition(pagiNumber, price, genres);
+                foreach (var item in x)
+                {
+                    item.Genres.Clear();
+                    //item.Autors.Clear();
+                }
+                return x;
 
             }
             catch (Microsoft.Data.SqlClient.SqlException)

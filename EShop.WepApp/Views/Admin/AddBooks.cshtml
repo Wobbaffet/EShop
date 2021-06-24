@@ -23,7 +23,7 @@
         <tbody>
             @for (int i = 0; i < Model.items.Count; i++)
             {
-                @if (Model.items[i].volumeInfo.imageLinks != null)
+                @if (Model.items[i].volumeInfo.imageLinks != null && Model.items[i].volumeInfo.authors!=null)
                 {
                     <tr id="row-@i">
                         <td>
@@ -33,13 +33,12 @@
                         <td><input type="number" /></td>
                         <td><input type="number" /></td>
                         <td>
-                            @if (Model.items[i].volumeInfo.authors != null)
-                            {
+                            
                                 @foreach (var author in Model.items[i].volumeInfo.authors)
                                 {
                                     <p>@author</p>
                                 }
-                            }
+                            
                         </td>
                         <td>
                             @Html.DropDownListFor(m => m.genres, new SelectList(Model.genres), "Select genres", new

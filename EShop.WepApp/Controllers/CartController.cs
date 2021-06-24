@@ -42,6 +42,8 @@ namespace EShop.WepApp.Controllers
             byte[] orderByte = HttpContext.Session.Get("order");
 
             Order order = JsonSerializer.Deserialize<Order>(orderByte);
+            var orderItem = order.OrderItems.Find(oi => oi.Book.BookId == bookid);
+            order.Total -= orderItem.Quantity*orderItem.Book.Price;
             order.OrderItems.RemoveAll(o => o.Book.BookId == bookid);
             HttpContext.Session.Set("order", JsonSerializer.SerializeToUtf8Bytes(order));
             int? items = HttpContext.Session.GetInt32("cartItems");

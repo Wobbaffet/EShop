@@ -38,8 +38,6 @@ namespace EShop.WepApp.Controllers
         }
         public ActionResult ShowOrderItems(int orderId)
         {
-
-            
             return View("OrderItems",service.GetOrderItems(orderId));
         }
 
@@ -54,14 +52,11 @@ namespace EShop.WepApp.Controllers
 
             HttpContext.Session.Remove("orderStatusChanged");
             return ViewOrders(false);
-
-
         }
 
         
         public ActionResult ViewOrders(bool sortStatus)
         {
-
             var orders = service.SortOrders(sortStatus);
 
             return View("Orders", orders);
