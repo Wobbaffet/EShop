@@ -16,6 +16,7 @@ namespace TestProject.ModelTests
         {
             address = new Address();
         }
+       
 
         [TestMethod]
 
@@ -45,8 +46,23 @@ namespace TestProject.ModelTests
         {
             Assert.ThrowsException<NullReferenceException>(() => address.PTT =ptt);
         }
-
-
+        [TestMethod]
+        [DataRow("Vienna")]
+        [DataRow("Belgrade")]
+        public void Test_AddressCityName(string cityName)
+        {
+            address.CityName = cityName;
+            Assert.AreEqual(address.CityName, cityName);
+        } 
+        [TestMethod]
+        [DataRow("Sarajevska")]
+        [DataRow("Kneza Milosa")]
+        public void Test_AddressStreetName(string streetName)
+        {
+            address.StreetName = streetName;
+            Assert.AreEqual(address.StreetName, streetName);
+           
+        }
 
 
     }

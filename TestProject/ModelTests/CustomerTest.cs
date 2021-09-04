@@ -79,6 +79,5 @@ namespace TestProject.ModelTests
             customer.Password = password;
             Assert.AreEqual(customer.Password, password);
         }
-
     }
 }

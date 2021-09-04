@@ -20,6 +20,7 @@ namespace TestProject.BusinessLogicTests
         {
             uow = MoqClass.Mocks.GetMockUnitOfWork();
         }
+
         [TestMethod]
         public void Test_FindMethod()
         {

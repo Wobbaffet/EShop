@@ -41,6 +41,8 @@ namespace EShop.Data.Implementation.RepositoryClasses
         }
         public List<Book> SearchByTitle(string title)
         {
+            if (title is null)
+                title = " ";
             return context.Book.Where(b => b.Title.ToLower().Contains(title.ToLower())).ToList();
         }
         public List<Book> GetBooksByCondition(Func<Book,bool> condition,int pageNumber)
